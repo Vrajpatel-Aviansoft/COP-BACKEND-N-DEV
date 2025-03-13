@@ -1,0 +1,198 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="featureForm" enctype="multipart/form-data">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <a
+            class="btn btn-sm btn-primary mt-4"
+            style="margin-left: auto"
+            href="/feature"
+          >
+            View Feature
+          </a>
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Edit Feature</h2>
+
+            <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+              <label class="form-check-label text-black mt-4" for="kt_flexSwitchCustomDefault_1_1">
+                <b>Visibility:</b>
+              </label>
+              <input
+                class="form-check-input mt-4 ms-5 cursor-pointer"
+                name="status"
+                type="checkbox"
+                id="status"
+                <%= feature.status ? 'checked' : '' %>
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body pt-0 col-md-6">
+          <div class="form-group mt-4">
+            <label for="spec_id" class="required">Select Specification :</label>
+            <select class="form-select" aria-label="Select Specification" id="spec_id" name="spec_id" data-control="select2">
+              <option selected="" disabled="" value="">Select Specification</option>
+              <% specifications.forEach(function(data) { %>
+                <option value="<%= data.spec_id %>" <%= feature.spec_id === data.spec_id ? 'selected' : '' %> >
+                  <%= data.spec_name %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="fuel_type" class="required mb-2">Fuel Type:</label>
+            <select class="form-select" name="fuel_type" data-control="select2">
+              <option value="">Select Fuel Type</option>
+              <option value="1" <%= feature.fuel_type === true ? 'selected' : '' %>>EV</option>
+              <option value="0" <%= feature.fuel_type === false ? 'selected' : '' %>>Non EV</option>
+              <option value="2" <%= feature.fuel_type === 2 ? 'selected' : '' %>>Both</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="features_name" class="required mb-2">Feature Name:</label>
+            <input
+              type="text"
+              id="features_name"
+              class="form-control"
+              name="features_name"
+              placeholder="Enter Feature Name"
+              value="<%= feature.features_name %>"
+            />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="su_id" class="required">Select Standard Unit :</label>
+            <select class="form-select" aria-label="Select Standard Unit" id="su_id" name="su_id" data-control="select2">
+              <option selected="" disabled="" value="">Select Standard Unit</option>
+              <% standardUnits.forEach(function(data) { %>
+                <option value="<%= data.su_id %>" <%= feature.su_id === data.su_id ? 'selected' : '' %>>
+                  <%= data.su_name %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="features_image" class="mb-2">Feature Image:</label>
+            <input type="file" id="features_image" class="form-control" name="features_image" />
+            <% if (feature.features_image) { %>
+               <img src="http://minio.aviansoft.work/copv2/feature/<%= feature.feature_id %>/<%= feature.features_image %>" alt="Current Feature Image" style="max-width: 150px;" />
+            <% } %>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="fo_id" class="required">Select Feature Option :</label>
+            <select class="form-select" aria-label="Select Feature Option" id="fo_id" name="fo_id" data-control="select2">
+              <option selected="" disabled="" value="">Select Feature Option</option>
+              <% featureOptions.forEach(function(data) { %>
+                <option value="<%= data.fo_id %>" <%= feature.fo_id === data.fo_id ? 'selected' : '' %>>
+                  <%= data.fo_value %>
+                </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <button class="btn btn-sm btn-primary mt-4" id="submitBtn" type="submit">Update</button>
+          <a class="btn btn-sm btn-danger mt-4" href="/feature">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#featureForm").validate({
+      rules: {
+        spec_id: {
+          required: true,
+        },
+        fuel_type: {
+          required: true,
+        },
+        features_name: {
+          required: true,
+          minlength: 2,
+        },
+        su_id: {
+          required: true,
+        },
+        fo_id: {
+          required: true,
+        },
+      },
+      messages: {
+        spec_id: {
+          required: "Please select a specification",
+        },
+        fuel_type: {
+          required: "Please select a fuel type",
+        },
+        features_name: {
+          required: "Please enter the feature name",
+          minlength: "Feature name must be at least 2 characters long",
+        },
+        su_id: {
+          required: "Please select a standard unit",
+        },
+        fo_id: {
+          required: "Please select a feature option",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+        formData.set("status", $("input[name='status']").is(":checked") ? 1 : 0);
+
+        // Perform AJAX request to submit the form
+        $.ajax({
+          url: "/feature/<%= feature.uuid %>",
+          method: "PUT",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            // window.location.href = "/feature";
+          },
+          error: function (xhr, status, error) {
+            let errorMessage = "An error occurred while updating the feature";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+
+    // Handle file input changes (optional: remove invalid class if file is selected)
+    $("#features_image").on("change", function () {
+      if ($(this).val()) {
+        $(this).removeClass("is-invalid");
+        $(this).next("label.error").remove();
+      }
+    });
+  });
+</script>

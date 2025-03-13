@@ -1,0 +1,422 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="featureValueForm">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Feature Value</h2>
+          </div>
+        </div>
+
+        <div class="card-body pt-0">
+          <div class="col-md-6">
+            <div
+              class="form-group mt-4"
+              data-select2-id="select2-data-142-f275"
+            >
+              <label for="brand_id" class="required">Select Brand :</label>
+              <select
+                class="form-select"
+                aria-label="Select Specification "
+                id="brand_id"
+                name="brand_id"
+                data-control="select2"
+              >
+                <option selected="" disabled="" value="">Select Brand</option>
+                <% brands.forEach(function(data) { %>
+                <option
+                  value="<%= data.brand_id  %>"
+                  data-uuid="<%= data.uuid %>"
+                >
+                  <%= data.brand_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="model_id" class="required mb-2">Select Model:</label>
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="model_id"
+                name="model_id"
+                data-control="select2"
+                required
+              >
+                <option value="" selected disabled>Select Model</option>
+              </select>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="variant_id" class="required mb-2"
+                >Select Model:</label
+              >
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="variant_id"
+                name="variant_id"
+                data-control="select2"
+                required
+              >
+                <option value="" selected disabled>Select Variant</option>
+              </select>
+            </div>
+
+            <div
+              class="form-group mt-4"
+              data-select2-id="select2-data-142-f275"
+            >
+              <label for="spec_id" class="required"
+                >Select Specification :</label
+              >
+              <select
+                class="form-select"
+                aria-label="Select Specification"
+                id="spec_id"
+                name="spec_id"
+                data-control="select2"
+              >
+                <option selected="" disabled="" value="">
+                  Select Specification
+                </option>
+                <% specifications.forEach(function(data) { %>
+                <option
+                  value="<%= data.spec_id  %>"
+                  data-uuid="<%= data.uuid %>"
+                >
+                  <%= data.spec_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+          </div>
+
+          <!-- Table to display feature names and input fields -->
+          <div
+            class="mt-8 col-12"
+            id="feature-table-container"
+            style="display: none"
+          >
+            <table
+              class="table table-striped border table-bordered"
+              style="font-size: 1.1rem !important"
+              id="feature-table"
+            >
+              <thead>
+                <tr>
+                  <th>Feature Name</th>
+                  <th>Feature Value</th>
+                  <th>Key Highlights</th>
+                </tr>
+              </thead>
+              <tbody id="feature-table-body">
+                <!-- Dynamically populated rows will appear here -->
+              </tbody>
+            </table>
+          </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    function loadOptions(
+      selectElement,
+      url,
+      placeholder,
+      emptyMessage,
+      dataKey
+    ) {
+      $(selectElement)
+        .empty()
+        .append(
+          '<option value="" selected disabled>' + placeholder + '</option>'
+        );
+
+      $.ajax({
+        url: url,
+        method: 'GET',
+        success: function (response) {
+          $(selectElement)
+            .empty()
+            .append(
+              '<option value="" selected disabled>' + emptyMessage + '</option>'
+            );
+
+          if (response && response[dataKey] && response[dataKey].length > 0) {
+            response[dataKey].forEach(function (item) {
+              let itemKey = dataKey.slice(0, -1); // Get the singular form of the key
+              let itemId = item[`${itemKey}_id`]; // Access the '_id' property
+              let itemName = item[`${itemKey}_name`]; // Access the '_name' property
+
+              $(selectElement).append(
+                `<option value="${itemId}" data-uuid="${item.uuid}">${itemName}</option>`
+              );
+            });
+          } else {
+            $(selectElement).append(
+              '<option value="" disabled>No data available</option>'
+            );
+          }
+        },
+        error: function () {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to fetch data. Please try again.',
+          }).then(() => {
+            $(selectElement)
+              .empty()
+              .append(
+                `<option value="" disabled>Select ${placeholder}</option>`
+              );
+          });
+        },
+      });
+    }
+
+    // Reset validation styles on change for select elements
+    $('#brand_id, #model_id, #variant_id').on('change', function () {
+      $(this).removeClass('is-invalid').next('.invalid-feedback').hide();
+    });
+
+    // Load models based on brand selection
+    $('#brand_id').on('change', function () {
+      var brandId = $(this).val();
+      var uuid = $('#brand_id option:selected').data('uuid'); // Getting the UUID from data attribute
+      loadOptions(
+        '#model_id',
+        `/feature-value/model/${uuid}/brand`,
+        'Loading models...',
+        'Select Model',
+        'models'
+      );
+    });
+
+    // Load variants based on model selection
+    $('#model_id').on('change', function () {
+      var modelId = $(this).val();
+      var uuid = $('#model_id option:selected').data('uuid'); // Getting the UUID from data attribute
+      loadOptions(
+        '#variant_id',
+        `/feature-value/variant/${uuid}/model`,
+        'Loading variants...',
+        'Select Variant',
+        'variants'
+      );
+    });
+
+    //first spec dropdwon disabled
+    $('#spec_id').prop('disabled', true);
+
+    //after variant selection spec dropdown enabled
+    $('#spec_id').on('change', function () {
+      $('#brand_id').prop('disabled', true);
+      $('#model_id').prop('disabled', true);
+      $('#variant_id').prop('disabled', true);
+    });
+
+    $('#variant_id').on('change', function () {
+      $('#spec_id').prop('disabled', false);
+    });
+
+    // Event listener for spec_id change
+    $('#spec_id').on('change', function () {
+      var specId = $(this).val();
+      var vuuid = $('#variant_id option:selected').val();
+      var uuid = $('#spec_id option:selected').data('uuid');
+      if (uuid) {
+        $.ajax({
+          url: `/feature-value/feature/${uuid}/spec`,
+          method: 'POST',
+          data: { vuuid },
+          success: function (response) {
+            $('#feature-table-body').empty();
+
+            if (
+              response &&
+              response.specs &&
+              response.specs[0] &&
+              response.specs[0].feature &&
+              response.specs[0].feature.length > 0
+            ) {
+              $('#feature-table-container').show();
+
+              response.specs[0].feature.forEach(function (feature) {
+                var featureValue =
+                  feature.featureValue && feature.featureValue.length > 0
+                    ? feature.featureValue[0].feature_value
+                    : '';
+
+                var featureKeyHighlight =
+                  feature.featureValue && feature.featureValue.length > 0
+                    ? feature.featureValue[0].key_highlight
+                    : '';
+
+                var row = `
+                          <tr>
+                              <td class=""form-control">${
+                                feature.features_name
+                              }</td>
+                              <td><input type="text" name="feature_value[${
+                                feature.feature_id
+                              }]" value="${featureValue}" class="form-control" placeholder="Enter value"></td>
+                              <td><div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+                <input class="form-check-input mt-4 ms-5" type="checkbox" id="key_highlight_status_${
+                  feature.feature_id
+                }" value="1" ${featureKeyHighlight ? 'checked' : ''} />
+            </div></td>
+                          </tr>
+                      `;
+                $('#feature-table-body').append(row);
+              });
+            } else {
+              Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No features available for this specification.',
+              }).then(() => {
+                $('#feature-table-container').hide();
+              });
+            }
+          },
+          error: function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to load features. Please try again.',
+            });
+          },
+        });
+      } else {
+        $('#feature-table-container').hide();
+      }
+    });
+
+    // Validate the feature form
+    $('#featureValueForm').validate({
+      rules: {
+        brand_id: {
+          required: true,
+        },
+        model_id: {
+          required: true,
+        },
+        variant_id: {
+          required: true,
+        },
+        spec_id: {
+          required: true,
+        },
+      },
+      messages: {
+        brand_id: {
+          required: 'Please select the brand',
+        },
+        model_id: {
+          required: 'Please select the model',
+        },
+        variant_id: {
+          required: 'Please select the variant',
+        },
+        spec_id: {
+          required: 'Please select the specification',
+        },
+      },
+      errorPlacement: function (error, element) {
+        if (element.attr('type') === 'radio' || element.is(':checkbox')) {
+          error.addClass('invalid-feedback');
+          error.insertAfter(element.closest('.form-check'));
+        } else {
+          error.addClass('invalid-feedback');
+          error.insertAfter(element);
+        }
+      },
+      highlight: function (element) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+      },
+      submitHandler: function (form) {
+        const $submitButton = $('#submitBtn');
+        $submitButton.prop('disabled', true);
+
+        const structuredData = {
+          brand_id: form.brand_id.value,
+          model_id: form.model_id.value,
+          variant_id: form.variant_id.value,
+          spec_id: form.spec_id.value,
+          feature_value: {},
+          key_highlight: {},
+        };
+
+        $('#feature-table-body tr').each(function () {
+          const featureId = $(this)
+            .find('input[name^="feature_value"]')
+            .attr('name')
+            .match(/\[(.*?)\]/)[1]; // Extract feature ID from name attribute
+
+          const featureValue = $(this)
+            .find('input[name^="feature_value"]')
+            .val(); // Get feature value from input
+
+          const keyHighlight = $(this)
+            .find('input[type="checkbox"]')
+            .is(':checked')
+            ? 1
+            : 0; // Determine if highlight is checked
+
+          // Populate structured data object
+          structuredData.feature_value[featureId] = featureValue;
+          structuredData.key_highlight[featureId] = keyHighlight;
+        });
+        $.ajax({
+          url: '/feature-value/create',
+          method: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify(structuredData),
+          success: function (response) {
+            Swal.fire({
+              icon: 'success',
+              title: 'Success',
+              text: 'Feature values saved successfully!',
+            }).then(() => {
+              location.reload();
+            });
+          },
+          error: function (xhr, status, error) {
+            let errorMessage =
+              'An error occurred while saving the feature values.';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: errorMessage,
+            }).then(() => {
+              location.reload();
+            });
+          },
+          complete: function () {
+            $submitButton.prop('disabled', false);
+          },
+        });
+      },
+    });
+  });
+</script>

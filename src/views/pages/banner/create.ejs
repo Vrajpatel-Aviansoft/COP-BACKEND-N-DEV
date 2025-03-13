@@ -1,0 +1,407 @@
+
+
+  <div class="col-md-12">
+    <div id="loader" class="d-none">
+        <div class="page-loader flex-column">
+            <span class="spinner-border text-primary" role="status"></span>
+            <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+        </div>
+    </div>
+    <div class="card pt-6">
+      <form id="bannerForm" enctype="multipart/form-data">
+        <div class="row">
+          <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+              <div
+                class="
+                  page-title
+                  d-flex
+                  flex-column
+                  justify-content-center
+                  flex-wrap
+                  me-3
+                "
+              >
+                <h1
+                  class="
+                    page-heading
+                    d-flex
+                    text-gray-900
+                    fw-bold
+                    fs-3
+                    flex-column
+                    justify-content-center
+                    my-0
+                  "
+                >
+                  Banner
+                </h1>
+              </div>
+              <div
+                class="
+                  form-check
+                  form-switch
+                  form-check-custom
+                  form-check-success
+                  form-check-solid
+                "
+              >
+                <input class="form-check-input" type="checkbox" checked name="status" />
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+            <!-- select banner category start --> 
+            <div class="form-group col-lg-6 mb-6">
+              <label for="banner_category" class="required mb-2">Select Banner Category:</label>
+              <select class="form-select" id="banner_category" name="bc_id" required data-control="select2"> 
+                <option value="" selected disabled>Select Banner Category</option>
+                <% bannerCategories.forEach(function(data) { %>
+                <option value="<%= data.bc_id %>">
+                  <%= data.bc_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+            <!-- select brand start -->
+             <div class="brand-model-container d-none">
+            <div class="form-group col-lg-6 mb-6">
+              <label for="brand_id" class="required mb-2">Select Brand:</label>
+              <select
+                class="form-select"
+                aria-label="Select example"
+                name="brand_id"
+                id="brand_id"
+                data-control="select2"
+                required
+              >
+                <option selected disabled>Select Brand</option>
+                <% brands.forEach(function(data) { %>
+                <option value="<%= data.brand_id %>">
+                  <%= data.brand_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+            <!-- select brand end -->
+
+            <!-- select model start -->
+            <div class="form-group col-lg-6 mb-6">
+              <label for="model_id" class="required mb-2">Select Model:</label>
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="model_id"
+                name="model_id"
+                data-control="select2"
+                required
+              >
+                <option value="" selected disabled>Select Model</option>
+              </select>
+            </div>
+
+            <!-- select variant start -->
+            <div class="form-group col-lg-6 mb-6">
+              <label for="variant_id" class="required mb-2">Select Variant:</label>
+              <select class="form-select" id="variant_id" name="variant_id" data-control="select2" required>
+                <option value="" selected disabled>Select Variant</option>
+              </select>
+            </div>
+            <!-- select variant end -->
+            </div>
+            <!-- select model end -->
+
+
+  
+
+          <!-- banner heading start -->
+          <div class="form-group col-lg-6 mb-6">
+            <label for="banner_heading" class="required mb-2">Banner Heading</label>
+            <input type="text" class="form-control" id="banner_heading" name="banner_heading" required>
+          </div>
+          <!-- banner heading end -->
+
+          <!-- banner description start -->
+          <div class="form-group col-lg-6 mb-6">
+            <label for="banner_description" class="mb-2">Banner Description</label>
+            <textarea class="form-control" id="banner_description" name="banner_description"></textarea>
+          </div>
+          <!-- banner description end -->
+
+          <!-- banner image start -->
+          <div class="form-group col-lg-6 mb-6">
+            <label for="banner_image" class="required mb-2">Banner Image</label>
+            <input type="file" class="form-control" id="banner_image" name="banner_image" accept="image/*" required>
+          </div>
+          <!-- banner image end -->
+
+          <!-- banner image mobile start -->
+          <div class="form-group col-lg-6 mb-6">
+            <label for="banner_image_mob" class="mb-2">Banner Image Mobile</label>
+            <input type="file" class="form-control" id="banner_image_mob" name="banner_image_mob" accept="image/*">
+          </div>
+          <!-- banner image mobile end -->
+
+          <!-- banner image alt tag and banner image title start -->
+          <div class="d-flex gap-3 form-group">
+            <div class="form-group col-lg-3 mb-6">
+              <label for="image_alt" class="mb-2">Banner Image Alt Tag</label>
+              <input type="text" class="form-control" id="image_alt" name="image_alt">
+            </div>
+            <div class="form-group col-lg-3 mb-6">
+              <label for="image_title" class="mb-2">Banner Image Title</label>
+              <input type="text" class="form-control" id="image_title" name="image_title">
+            </div>
+          </div>
+          <!-- banner image alt tag and banner image title end -->
+
+          <!-- button text start -->
+          <div class="form-group col-lg-6 mb-6">
+            <label for="button_text" class="required mb-2">Button Text</label>
+            <input type="text" class="form-control" id="button_text" name="btn_text" required>
+          </div>
+          <!-- button text end -->
+
+          <!-- button link start -->
+          <div class="form-group col-lg-6 mb-6">
+            <label for="button_link" class="required mb-2">Button Link</label>
+            <input type="text" class="form-control" id="button_link" name="btn_link" required>
+          </div>
+          <!-- button link end -->
+
+          <!-- priority start -->
+          <div class="form-group col-lg-6 mb-6">
+            <label for="priority" class="mb-2">Priority</label>
+            <input type="number" class="form-control" id="priority" name="priority">
+          </div>
+          <!-- priority end -->
+
+            <button class="btn btn-primary mt-6" name="submit" type="submit">Submit</button>
+            <a href="/car-graphics" class="btn btn-danger mt-6">Cancel</a>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#brand_id, #model_id, #banner_category").on("change", function () {
+      $(this).removeClass("is-invalid").next(".invalid-feedback").hide();
+    });
+
+    $("#brand_id").on("change", function () {
+      var brandId = $(this).val();
+      $("#model_id")
+        .empty()
+        .append(
+          '<option value="" selected disabled>Loading models...</option>'
+        );
+      $.ajax({
+        url: `/variant/model/${brandId}/brand`,
+        method: "GET",
+        success: function (response) {
+          $("#model_id")
+            .empty()
+            .append('<option value="" selected disabled>Select Model</option>');
+          if (response && response.models && response.models.length > 0) {
+            response.models.forEach(function (model) {
+              $("#model_id").append(
+                '<option value="' +
+                  model.model_id +
+                  '">' +
+                  model.model_name +
+                  "</option>"
+              );
+            });
+          } else {
+            $("#model_id").append(
+              '<option value="" disabled>No models available</option>'
+            );
+          }
+        },
+        error: function () {
+          alert("Failed to fetch models. Please try again.");
+          $("#model_id")
+            .empty()
+            .append('<option value="" disabled>Select Model</option>');
+        },
+      });
+    });
+
+    // load variant from model
+    $("#model_id").on("change", function () {
+      var modelId = $(this).val();
+      $("#variant_id")
+        .empty()
+        .append(
+          '<option value="" selected disabled>Loading variants...</option>'
+        );
+      $.ajax({
+        url: `/variant/model/${modelId}/variant`,
+        method: "GET",
+        success: function (response) {
+          $("#variant_id").empty().append('<option value="" selected disabled>Select Variant</option>');
+          if (response && response.variants && response.variants.length > 0) {
+            response.variants.forEach(function (variant) {
+              $("#variant_id").append('<option value="' + variant.variant_id + '">' + variant.variant_name + '</option>');
+            });
+          } else {
+            $("#variant_id").append('<option value="" disabled>No variants available</option>');
+          }
+        },
+        error: function () {
+          alert("Failed to fetch variants. Please try again.");
+          $("#variant_id").empty().append('<option value="" disabled>Select Variant</option>');
+        },
+      });
+    });
+
+    // change in banner category
+    $(document).on("change", "#banner_category", function() {
+      if ($(this).val() === "1" || $(this).val() === "2" || $(this).val() === "5") {
+        $(".brand-model-container").removeClass("d-none");
+      } else {
+        $(".brand-model-container").addClass("d-none");
+      }
+    });
+
+    $("#bannerForm").validate({
+      rules: {
+        bc_id: {
+          required: true,
+        },
+        brand_id: {
+          required: function() {
+            return $("#banner_category").val() === "1" || $("#banner_category").val() === "2" || $("#banner_category").val() === "5";
+          },
+        },
+        model_id: {
+          required: function() {
+            return $("#banner_category").val() === "1" || $("#banner_category").val() === "2" || $("#banner_category").val() === "5";
+          },
+        },
+        variant_id: {
+          required: function() {
+            return $("#banner_category").val() === "1" || $("#banner_category").val() === "2" || $("#banner_category").val() === "5";
+          },
+        },
+        banner_heading: {
+          required: true,
+        },
+        banner_image: {
+          required: true,
+        },
+        button_text: {
+          required: true,
+        },
+        button_link: {
+          required: true,
+        },
+      },
+      messages: {
+        brand_id: {
+          required: "Please select the brand",
+        },
+        model_id: {
+          required: "Please select the model",
+        },
+        variant_id: {
+          required: "Please select the variant",
+        },
+        banner_image: {
+          required: "Please upload the banner image",
+        },
+        banner_image_mob: {
+          required: "Please upload the banner image for mobile",
+        },
+        button_text: {
+          required: "Please enter the button text",
+        },
+        button_link: {
+          required: "Please enter the button link",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        try {
+          const formData = new FormData(form);
+          $("#loader").removeClass("d-none");
+          $.ajax({
+            url: "/banner/create",
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+              // Hide loader
+              $("#loader").addClass("d-none");
+              // Show success message
+              Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: "Banner created successfully!",
+              }).then(() => {
+                  window.location.href = "/banner";
+              });
+            },
+            error: function (xhr, status, error) {
+              // Hide loader
+              $("#loader").addClass("d-none");
+              
+              let errorMessage = "An error occurred while creating the banner";
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                  errorMessage = xhr.responseJSON.message;
+              }
+
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: errorMessage,
+              });
+            },
+          });
+        } catch (error) {
+          // Hide loader
+          $("#loader").addClass("d-none");
+          
+          Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "An unexpected error occurred",
+          });
+        }
+      },
+    });
+  });
+</script>
+
+<style>
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+</style>

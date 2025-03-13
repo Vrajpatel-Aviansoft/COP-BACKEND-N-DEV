@@ -1,0 +1,290 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="rtoForm" enctype="multipart/form-data">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <a
+            class="btn btn-sm btn-primary mt-4"
+            style="margin-left: auto"
+            href="/master/rto"
+          >
+            view Rto
+          </a>
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Add New Rto</h2>
+
+            <div
+              class="
+                form-check
+                form-switch
+                form-check-custom
+                form-check-success
+                form-check-solid
+              "
+            >
+              
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0 col-md-6">
+
+          <div class="form-group mt-4" data-select2-id="select2-data-142-f275">
+            <label for="state_id" class="required">Select State:</label>
+            <select
+              class="form-select"
+              aria-label="Select State"
+              id="state_id"
+              name="state_id"
+              data-control="select2"
+              required
+            >
+              <option selected disabled value="">Select State</option>
+              <% states.forEach(function(state) { %>
+              <option value="<%= state.state_id %>">
+                <%= state.state_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="rto_type" class="required">Select RTO Type:</label>
+            <select 
+            class="form-select" aria-label="Select example" name="rto_type"
+                data-control="select2" data-placeholder="Select RTO Type" id="rto_type">
+                <option value="" selected >Select Tax</option>
+                <option value="I" {{ old('rto_type') == 'I' ? 'selected' : '' }}>Indivisual</option>
+                <option value="C" {{ old('rto_type') == 'C' ? 'selected' : '' }}>Corporate</option>
+            </select>
+        </div>
+
+        <div class="form-group mt-4">
+          <label for="pre_condition" class="required">Select Pre Condition :</label>
+          <select 
+          class="form-select" 
+          aria-label="Select example" 
+          name="pre_condition"
+          data-control="select2" 
+          id="pre_condition" 
+          data-placeholder="Select Pre Condition"
+          >
+          <option value="" selected>Select Pre Condition</option>
+          <option value=">">Greater Than</option>
+          <option value="<">Less Than</option>
+          <option value=">=">Greater Than & Equal To</option>
+          <option value="<=">Less Than & Equal To</option>
+          </select>
+      </div>
+
+          <div class="form-group mt-4">
+            <label for="pre_amount" class="required"
+              >Pre Amount:
+            </label>
+            <input
+              type="number"
+              id="pre_amount"
+              class="form-control"
+              name="pre_amount"
+              placeholder="Enter Pre Amount"
+              required
+            />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="post_condition" class="required">Select Post Condition :</label>
+            <select 
+            class="form-select" 
+            aria-label="Select example" 
+            name="post_condition"
+            data-control="select2" 
+            id="post_condition" 
+            data-placeholder="Select Post Condition"
+            required
+            >
+            <option value="" selected>Select Post Condition</option>
+            <option value=">">Greater Than</option>
+            <option value="<">Less Than</option>
+            <option value=">=">Greater Than & Equal To</option>
+            <option value="<=">Less Than & Equal To</option>
+            </select>
+        </div>
+
+        <div class="form-group mt-4">
+          <label for="post_amount" class="required"
+            >Post Amount:
+          </label>
+          <input
+            type="number"
+            id="post_amount"
+            class="form-control"
+            name="post_amount"
+            placeholder="Enter Post Amount"
+            required
+          />
+        </div>
+
+        <div class="form-group mt-4" id="divmin_price">
+          <label for="percentage" class="required">Percentage:</label>
+          <input 
+          type="number" 
+          class="form-control" 
+          name="percentage" 
+          onkeypress="return isNumberKey(event)"
+          placeholder="Enter Percentage" 
+          required 
+          />
+      </div>
+
+      <div class="form-group mt-4">
+          <label for="fuel_type" class="required">Select Fuel Type:</label>
+          <select class="form-select" aria-label="Select example" name="fuel_type"
+              data-control="select2" data-placeholder="Select Fuel Type" id="fuel_type" required>
+              <option value="" selected >Select Fuel Type</option>
+              <option value="Petrol">Petrol</option>
+              <option value="Diesel">Diesel</option>
+              <option value="CNG">CNG</option>
+              <option value="EV">EV</option>
+              <option value="Hybrid">Hybrid</option>
+          </select>
+      </div>
+
+      <div class="form-group mt-4">
+          <label for="cc" class="required">CC :</label>
+          <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="1" id="cc"
+                  name="cc">
+              <label class="form-check-label" for="cc">
+                  CC
+              </label>
+          </div>
+      </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a class="btn btn-sm btn-danger mt-4" href="/master/rto"> Cancel </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    
+  // Ensure only numeric input with decimal and limited digits after the decimal
+  function isNumberKey(evt) {
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if (charCode != 46 && charCode != 8 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+      var currentValue = evt.target.value;
+      if (charCode == 46 && currentValue.indexOf('.') !== -1) {
+        return false;
+      }
+      var decimalPart = currentValue.split('.')[1];
+      if (decimalPart && decimalPart.length >= 2) {
+        return false;
+      }
+      return true;
+    }
+    
+    // Form validation and submission
+    $("#rtoForm").validate({
+      rules: {
+        state_id: {
+          required: true,
+        },
+        rto_type: {
+          required: true,
+        },
+        pre_condition: {
+          required: true,
+        },
+        pre_amount: {
+          required: true,
+        },
+        post_condition: {
+          required: true,
+        },
+        post_amount: {
+          required: true,
+        },
+        percentage: {
+          required: true,
+        },
+        fuel_type: {
+          required: true,
+        },
+      },
+      messages: {
+        state_id: {
+          required: "Please select a State",
+        },
+        pre_amount: {
+          required: "Please enter the Pre amount",
+          minlength: "Pre amount must be at least 2 characters long",
+        },
+        post_amount: {
+          required: "Please enter the Post amount",
+          minlength: "Post amount must be at least 2 characters long",
+        },
+       
+       
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+        // formData.set("status", $("input[name='status']").is(":checked"));
+        $.ajax({
+          url: "/master/rto/create",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Rto created successfully!",
+            }).then(() => {
+              window.location.href = "/master/rto";
+            });
+          },
+          error: function (xhr) {
+            let errorMessage =
+              "An error occurred while creating the Rto";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+  });
+</script>

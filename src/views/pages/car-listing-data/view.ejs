@@ -1,0 +1,170 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header border-0 pt-6">
+      <div
+        class="
+          card-title
+          d-flex
+          justify-content-between
+          align-items-center
+          w-100
+        "
+      >
+        <h2 class="card-title fs-3 fw-bold text-gray-900">Car Listing Data</h2>
+        <a
+          href="/car-listing-data/create"
+          class="btn btn-sm fw-bold btn-primary"
+          >Add Car Listing Data</a
+        >
+      </div>
+    </div>
+    <div class="card-body pt-0">
+      <table
+        id="kt_datatable_dom_positioning_car_listing_data"
+        class="table table-striped table-row-bordered gy-5 gs-7 border rounded"
+      >
+        <thead>
+          <tr class="fw-bold fs-6 text-gray-800 px-7">
+            <th>Sr No</th>
+            <th>Listing Name</th>
+            <th>Brand Name</th>
+            <th>Model Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- DataTables will populate this -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="/js/datatable/datatable.js"></script>
+<script>
+  $(document).ready(function () {
+    const table = initializeDataTable(
+      "#kt_datatable_dom_positioning_car_listing_data",
+      "/car-listing-data/all",
+      [
+        {
+          data: null,
+          name: "sr_no",
+          orderable: false,
+          render: function (data, type, row, meta) {
+            return `<span style="font-size: 1rem;">${meta.row + 1}</span>`;
+          },
+        },
+        {
+          data: "car_listing.cl_name",
+          name: "listing_name",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data || "-"}</span>`;
+          },
+        },
+        {
+          data: "brand.brand_name",
+          name: "brand_name",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data || "-"}</span>`;
+          },
+        },
+        {
+          data: "model.model_name",
+          name: "model_name",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data || "-"}</span>`;
+          },
+        },
+        {
+          data: "status",
+          name: "Status",
+          render: function (data, type, row, meta) {
+            return `
+              <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+                <input  class="form-check-input" type="checkbox" value="" ${
+                  data ? "checked" : ""
+                } uuid="${row.uuid}"/>
+
+              </div>
+            `;
+          },
+        },
+        {
+          data: "uuid",
+          name: "uuid",
+          orderable: false,
+          searchable: false,
+          render: function (data) {
+            const editRoute = `/car-listing-data/${data}/edit`;
+            return `
+              <a href="${editRoute}" class="btn-primary" style="padding: 0;">
+                <i class="fa fa-pencil fs-4 text-primary">
+                        <span class="path1"></span>
+                        <span class="path2"></span>
+                  </i>
+              </a>
+              <a href="javascript:void(0);"
+                uuid="${data}"
+                class="delete_record btn-danger" style="padding: 0;">
+                <i class="fa fa-trash fs-4 text-danger"></i>
+              </a>
+            `;
+          },
+        },
+      ]
+    );
+
+    function setupStatusToggleHandler(selector, table) {
+      $(document).on("change", selector, function () {
+        const uuid = $(this).attr("uuid");
+        $.ajax({
+          url: `/car-listing-data/${uuid}/status`,
+          type: "PATCH",
+          success: function (response) {
+            Swal.fire({
+              title: "Success",
+              text: "Car Listing Data status updated successfully",
+              icon: "success",
+            });
+          },
+        });
+      });
+    }
+
+    function setupDeleteHandler(selector, table) {
+      $(document).on("click", selector, function () {
+        const uuid = $(this).attr("uuid");
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: `/car-listing-data/${uuid}`,
+              type: "DELETE",
+              success: function (response) {
+                Swal.fire(
+                  "Deleted!",
+                  "Car Listing Data has been deleted.",
+                  "success"
+                );
+                table.ajax.reload();
+              },
+            });
+          }
+        });
+      });
+    }
+    // implement status toggle handler
+    setupStatusToggleHandler(".form-check-input", table);
+
+    // Apply delete handler for delete buttons
+    setupDeleteHandler(".delete_record", table);
+  });
+</script>

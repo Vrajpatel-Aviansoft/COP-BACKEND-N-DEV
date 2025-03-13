@@ -1,0 +1,142 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="metaTagForm" enctype="multipart/form-data">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <a
+            class="btn btn-sm btn-primary mt-4"
+            style="margin-left: auto"
+            href="/meta-tags"
+          >
+            View Meta Tag
+          </a>
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Edit Meta Tag</h2>
+
+            <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+              <label class="form-check-label text-black mt-4" for="kt_flexSwitchCustomDefault_1_1">
+                <b>Visibility:</b>
+              </label>
+              <input
+                class="form-check-input mt-4 ms-5 cursor-pointer"
+                name="status"
+                type="checkbox"
+                id="status"
+                <%= metaTag.status ? 'checked' : '' %>
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0 col-md-6">
+          <div class="form-group">
+            <label for="meta_tag_name" class="required mb-2">Meta Tag Name:</label>
+            <input
+              type="text"
+              id="meta_tag_name"
+              class="form-control"
+              name="meta_tag_name"
+              placeholder="Enter Meta Tag Name"
+              value="<%= metaTag.meta_tag_name %>"
+            />
+          </div>
+
+          <div class="form-group mt-4" data-select2-id="select2-data-142-f275">
+            <label for="meta_tag_type" class="required">Select Meta Tag Type:</label>
+            <select
+              class="form-select"
+              aria-label="Select Meta Tag Type"
+              id="meta_tag_type"
+              name="meta_tag_type"
+              data-control="select2"
+            >
+              <option value="" selected disabled>Select Meta Type</option>
+              <option value="0" <%= metaTag.meta_tag_type == 0 ? 'selected' : '' %>>title</option>
+              <option value="1" <%= metaTag.meta_tag_type == 1 ? 'selected' : '' %>>name</option>
+              <option value="2" <%= metaTag.meta_tag_type == 2 ? 'selected' : '' %>>http-equiv</option>
+              <option value="3" <%= metaTag.meta_tag_type == 3 ? 'selected' : '' %>>property</option>
+            </select>
+          </div>
+
+          <button class="btn btn-sm btn-primary mt-4" id="submitBtn" type="submit">Update</button>
+          <a class="btn btn-sm btn-danger mt-4" href="/meta-tags">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#metaTagForm").validate({
+      rules: {
+        meta_tag_name: {
+          required: true,
+          minlength: 2,
+        },
+        meta_tag_type: {
+          required: true,
+        },
+      },
+      messages: {
+        meta_tag_name: {
+          required: "Please enter the Meta Tag Name",
+          minlength: "Meta Tag Name must be at least 2 characters long",
+        },
+        meta_tag_type: {
+          required: "Please select a Meta Tag Type",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+        formData.set("status", $("input[name='status']").is(":checked"));
+
+        $.ajax({
+          url: "/meta-tags/<%= metaTag.uuid %>",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Meta Tag has been successfully updated.",
+              showConfirmButton: false,
+              timer: 1500,
+            }).then(() => {
+              window.location.href = "/meta-tags";  // Redirect after success
+            });
+          },
+          error: function (xhr, status, error) {
+            let errorMessage = "An error occurred while updating the Meta Tag";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+  });
+</script>

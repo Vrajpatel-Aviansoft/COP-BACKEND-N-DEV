@@ -1,0 +1,272 @@
+<div class="col-md-12">
+  <div id="loader" class="d-none page-loader flex-column">
+    <span class="spinner-border text-primary" role="status"></span>
+    <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+  </div>
+
+  <div class="card">
+    <div class="card-header border-0 pt-6 d-flex justify-content-between">
+      <h2 class="card-title fs-2 fw-6">EV Model (Launched) Import</h2>
+    </div>
+
+    <div class="card-body pt-0">
+      <form id="importForm" enctype="multipart/form-data" name="importForm">
+        <div class="row">
+          <div class="form-group col-lg-6 mb-3">
+            <input
+              class="form-control"
+              type="file"
+              name="file"
+              accept=".xlsx, .xls, .csv"
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-3">
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="import-errors" class="alert alert-danger" style="display: none">
+        <ul class="mb-0"></ul>
+      </div>
+
+      <div class="form-group col-lg-6 mb-3">
+        <a
+          href="/imports/model_ev_launched_import.xlsx"
+          class="btn btn-success"
+          download="model_ev_launched_import.xlsx"
+        >
+          <i class="fa fa-download"></i> Download Template File
+        </a>
+      </div>
+
+      <div class="box box-primary">
+        <div class="box-header">
+          <h3 class="box-title">Instructions</h3>
+        </div>
+        <div class="box-body">
+          <strong
+            >Follow the instructions carefully before importing the
+            file.</strong
+          >
+          <p>The columns of the file should be in the following order:</p>
+          <div class="table-responsive">
+            <table class="table table-striped">
+              <tbody>
+                <tr>
+                  <th>Column Number</th>
+                  <th>Column Name</th>
+                  <th>Instruction</th>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>Car Type <small class="text-muted">(Required)</small></td>
+                  <td>- Enter car type</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>
+                    Brand Name <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter brand name</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>
+                    Model Name <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter model name of 2 to 30 characters</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>
+                    Model Image <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>
+                    - Enter paths of model image<br />- Only 1 image is allow
+                    hence do not enter multiple image paths<br />- Enter
+                    png,jpg,jpeg,webp image file only.<br /><br />
+                    For example,
+                    <br />https://cloud.aviansoft.in/car%20images/ev%20car/BMW%20i7%20M70%20xDRIVE.webp
+                  </td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>
+                    Model Description
+                    <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter model name of 2 to 1000 characters</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>
+                    Min Price <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>
+                    - Enter min price<br />- Price should not be less than
+                    200000<br />-It should be number only
+                  </td>
+                </tr>
+                <tr>
+                  <td>7</td>
+                  <td>
+                    Max Price <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>
+                    - Enter max price<br />- Price should not be greater than
+                    500000000<br />-It should be number only
+                  </td>
+                </tr>
+                <tr>
+                  <td>8</td>
+                  <td>
+                    Model Year <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter model year less than or equal to current year</td>
+                </tr>
+                <tr>
+                  <td>9</td>
+                  <td>
+                    Model Battery Capacity
+                    <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>
+                    - Enter Model Battery Capacity between 2 to 20 charecter
+                  </td>
+                </tr>
+                <tr>
+                  <td>10</td>
+                  <td>
+                    Model Power <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter Model Power between 2 to 20 charecter</td>
+                </tr>
+                <tr>
+                  <td>11</td>
+                  <td>
+                    Model Transmission
+                    <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter Model Transmission between 2 to 20 charecter</td>
+                </tr>
+                <tr>
+                  <td>12</td>
+                  <td>
+                    Driving Range <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter Driving Range between 2 to 20 charecter</td>
+                </tr>
+                <tr>
+                  <td>13</td>
+                  <td>
+                    Model Charging Time
+                    <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Enter Model Charging Time between 2 to 20 charecter</td>
+                </tr>
+                <tr>
+                  <td>14</td>
+                  <td>
+                    NCAP/BCAP <small class="text-muted">(Required)</small>
+                  </td>
+                  <td>- Select NCAP or BCAP rating which is applicable</td>
+                </tr>
+                <tr>
+                  <td>15</td>
+                  <td>Ratings <small class="text-muted">(Required)</small></td>
+                  <td>- Select rating number</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#importForm").validate({
+      rules: {
+        file: { required: true },
+      },
+      messages: {
+        file: { required: "Please upload the file" },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback").insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const formData = new FormData(form);
+        $("#loader").removeClass("d-none");
+        $.ajax({
+          url: "/car-model/import/ev/launched",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function () {
+            $("#loader").addClass("d-none");
+            Swal.fire("Success", "Data imported successfully!", "success").then(
+              () => {
+                window.location.href = "/car-model";
+              }
+            );
+          },
+          error: function (xhr) {
+            $("#loader").addClass("d-none");
+            const errorList = $("#import-errors ul");
+            errorList.empty();
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: xhr.responseJSON.message,
+              });
+              return;
+            }
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+              xhr.responseJSON.errors.forEach(function (msg) {
+                errorList.append(`<li>${msg}</li>`);
+              });
+              $("#import-errors").show();
+            } else {
+              Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: "An error occurred while importing the brand data",
+              });
+            }
+          },
+        });
+      },
+    });
+  });
+</script>
+
+<style>
+  .page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+</style>

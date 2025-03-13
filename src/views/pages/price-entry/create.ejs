@@ -1,0 +1,540 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="featureValueForm">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Price Entry</h2>
+          </div>
+        </div>
+
+        <div class="card-body pt-0">
+          <div class="col-md-8">
+            <div
+              class="form-group mt-4"
+              data-select2-id="select2-data-142-f275"
+            >
+              <label for="brand_id" class="required">Select Brand :</label>
+              <select
+                class="form-select"
+                aria-label="Select Specification "
+                id="brand_id"
+                name="brand_id"
+                data-control="select2"
+              >
+                <option selected="" disabled="" value="">Select Brand</option>
+                <% brands.forEach(function(data) { %>
+                <option
+                  value="<%= data.brand_id  %>"
+                  data-uuid="<%= data.uuid %>"
+                >
+                  <%= data.brand_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="model_id" class="required mb-2">Select Model:</label>
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="model_id"
+                name="model_id"
+                data-control="select2"
+                required
+              >
+                <option value="" selected disabled>Select Model</option>
+              </select>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="variant_id" class="required mb-2"
+                >Select Variant:</label
+              >
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="variant_id"
+                name="variant_id"
+                data-control="select2"
+                required
+              >
+                <option value="" selected disabled>Select Variant</option>
+              </select>
+            </div>
+
+            <div
+              class="form-group mt-4"
+              data-select2-id="select2-data-142-f275"
+            >
+              <label for="country_id" class="required">Select Country:</label>
+              <select
+                class="form-select"
+                aria-label="Select Country"
+                id="country_id"
+                name="country_id"
+                data-control="select2"
+              >
+                <option selected="" disabled="" value="">Select Country</option>
+                <% country.forEach(function(data) { %>
+                <option
+                  value="<%= data.country_id  %>"
+                  data-uuid="<%= data.uuid %>"
+                >
+                  <%= data.country_name %>
+                </option>
+                <% }); %>
+              </select>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="state_id" class="required mb-2">Select State:</label>
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="state_id"
+                name="state_id"
+                data-control="select2"
+                required
+              >
+                <option value="" selected disabled>Select State</option>
+              </select>
+            </div>
+
+            <div class="form-group mt-4" id="cityDropdown">
+              <label for="" class="required mb-2">Select City :</label>
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="city_id"
+                name="city_id[]"
+                data-control="select2"
+                multiple="multiple"
+                data-placeholder="Select City"
+              >
+                <option disabled>Select City</option>
+              </select>
+            </div>
+
+            <div class="form-group mt-4" id="againstCityDropdown">
+              <label for="" class="mb-2"
+                >Against City (If data not available for above city) :</label
+              >
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="against_city_id"
+                name="against_city_id"
+                data-control="select2"
+              >
+                <option selected value="">Select Against City</option>
+              </select>
+            </div>
+
+            <div class="form-group mt-4">
+              <label for="ex_showroom_price" class="required mb-2"
+                >Ex Showroom Price</label
+              >
+              <input
+                type="text"
+                id="ex_showroom_price"
+                class="form-control"
+                name="ex_showroom_price"
+                placeholder="Enter Showroom Price"
+                value=""
+              />
+            </div>
+          </div>
+
+          <div class="form-group row mt-6">
+            <div class="col-4">
+              <label for="rto_ind" class="required mb-2"
+                >RTO (Individual)</label
+              >
+              <input
+                type="text"
+                id="rto_ind"
+                class="form-control bg-light-dark"
+                name="i_rto_price"
+                placeholder="0.00"
+                value=""
+                readonly
+              />
+            </div>
+
+            <div class="col-4">
+              <label for="rto_cor" class="required mb-2">RTO (Corporate)</label>
+              <input
+                type="text"
+                id="rto_cor"
+                class="form-control bg-light-dark"
+                name="c_rto_price"
+                placeholder="0.00"
+                value=""
+                readonly
+              />
+            </div>
+          </div>
+
+          <div class="form-group mt-4 col-md-8">
+            <label for="tax_id" class="required mb-2">Select Tax:</label>
+
+            <div class="d-flex align-items-center">
+              <select
+                class="form-select"
+                aria-label="Select example"
+                id="tax_id"
+                name="tax_id"
+                data-control="select2"
+                required
+              >
+                <option value="" selected disabled>Select Tax</option>
+              </select>
+
+              <button type="button" id="taxBtn" class="btn btn-primary ms-3">
+                Apply
+              </button>
+            </div>
+          </div>
+
+          <div id="tax_list"></div>
+
+          <div class="form-group col-md-4 mt-4 d-flex align-items-center">
+            <label class="mr-3">TCS</label>
+            <input
+              type="text"
+              id="tcs_value"
+              class="form-control bg-light-dark"
+              name="tcs_value"
+              placeholder="0.00"
+              value=""
+              readonly
+            />
+          </div>
+
+          <div class="form-group row mt-6">
+            <div class="form-group col-4">
+              <label class="required mb-2">Total Price (Individual)</label>
+              <input
+                type="text"
+                id="total_price_cal_ind"
+                class="form-control bg-light-dark"
+                name="total_price"
+                placeholder="0.00"
+                value=""
+                readonly
+              />
+            </div>
+
+            <div class="form-group col-4">
+              <label class="required mb-2">Total Price (Corporate)</label>
+              <input
+                type="text"
+                id="total_price_cal_cor"
+                class="form-control bg-light-dark"
+                name="total_price_c"
+                placeholder="0.00"
+                value=""
+                readonly
+              />
+            </div>
+          </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    function loadOptions(
+      selectElement,
+      url,
+      placeholder,
+      emptyMessage,
+      dataKey
+    ) {
+      $(selectElement)
+        .empty()
+        .append(
+          '<option value="" selected disabled>' + placeholder + '</option>'
+        );
+
+      $.ajax({
+        url: url,
+        method: 'GET',
+        success: function (response) {
+          $(selectElement)
+            .empty()
+            .append(
+              '<option value="" selected disabled>' + emptyMessage + '</option>'
+            );
+
+          if (response && response[dataKey] && response[dataKey].length > 0) {
+            response[dataKey].forEach(function (item) {
+              let itemKey = dataKey.slice(0, -1);
+              let itemId = item[`${itemKey}_id`];
+              let itemName = item[`${itemKey}_name`];
+
+              $(selectElement).append(
+                `<option value="${itemId}" data-uuid="${item.uuid}">${itemName}</option>`
+              );
+            });
+          } else {
+            $(selectElement).append(
+              '<option value="" disabled>No data available</option>'
+            );
+          }
+        },
+        error: function () {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Failed to fetch data. Please try again.',
+          }).then(() => {
+            $(selectElement)
+              .empty()
+              .append(
+                `<option value="" disabled>Select ${placeholder}</option>`
+              );
+          });
+        },
+      });
+    }
+
+    // Reset validation styles on change for select elements
+    $('#brand_id, #model_id, #variant_id').on('change', function () {
+      $(this).removeClass('is-invalid').next('.invalid-feedback').hide();
+    });
+
+    // Load models based on brand selection
+    $('#brand_id').on('change', function () {
+      var brandId = $(this).val();
+      var uuid = $('#brand_id option:selected').data('uuid'); // Getting the UUID from data attribute
+      loadOptions(
+        '#model_id',
+        `/price-entry/model/${uuid}/brand`,
+        'Loading models...',
+        'Select Model',
+        'models'
+      );
+    });
+
+    // Load variants based on model selection
+    $('#model_id').on('change', function () {
+      var modelId = $(this).val();
+      var uuid = $('#model_id option:selected').data('uuid'); // Getting the UUID from data attribute
+      loadOptions(
+        '#variant_id',
+        `/price-entry/variant/${uuid}/model`,
+        'Loading variants...',
+        'Select Variant',
+        'variants'
+      );
+    });
+
+    // Load State based on country selection
+    $('#country_id').on('change', function () {
+      var countryId = $(this).val();
+      var uuid = $('#country_id option:selected').data('uuid'); // Getting the UUID from data attribute
+      loadOptions(
+        '#state_id',
+        `/price-entry/state/${uuid}/country`,
+        'Loading states...',
+        'Select State',
+        'states'
+      );
+    });
+
+    // Load city based on state selection
+    $('#state_id').on('change', function () {
+      var countryId = $(this).val();
+      var uuid = $('#state_id option:selected').data('uuid'); // Getting the UUID from data attribute
+      loadOptions(
+        '#city_id',
+        `/price-entry/city/${uuid}/state`,
+        'Loading cities...',
+        'Select City',
+        'citys'
+      );
+    });
+
+    $('#ex_showroom_price').on('blur', function () {
+      var exShowroomPrice = $(this).val().trim();
+      var modelId = $('#model_id').val();
+      var variantId = $('#variant_id').val();
+      var stateId = $('#state_id').val();
+      var cityIds = $('#city_id').val();
+
+      if (exShowroomPrice && modelId && variantId && stateId) {
+        $.ajax({
+          url: '/price-entry/total-price',
+          method: 'POST',
+          data: {
+            ex_showroom_price: exShowroomPrice,
+            model_id: modelId,
+            variant_id: variantId,
+            state_id: stateId,
+            city_ids: cityIds,
+          },
+          success: function (response) {
+            if (response.success) {
+              const rto_cor = response.priceDetails.rto_value_c;
+              const rto_ind = response.priceDetails.rto_value_i;
+              const tcs_value = response.priceDetails.TCScost;
+
+              $('#rto_ind').val(rto_ind);
+              $('#rto_cor').val(rto_cor);
+              $('#tcs_value').val(tcs_value);
+
+              // Call the function to calculate price without taxes
+              calculateTotalPriceWithoutTax(
+                exShowroomPrice,
+                rto_ind,
+                rto_cor,
+                tcs_value
+              );
+
+              // Set up tax dropdown with available taxes
+              const allTaxName = response.priceDetails.allTaxName;
+              const $taxDropdown = $('#tax_id');
+              $taxDropdown.empty();
+              $taxDropdown.append(
+                '<option value="" selected disabled>Select Tax</option>'
+              );
+
+              allTaxName.forEach(function (tax) {
+                const taxId = tax.tax_id;
+                const taxName = tax.display_name || tax.tax_name;
+                $taxDropdown.append(
+                  '<option value="' + taxId + '">' + taxName + '</option>'
+                );
+              });
+
+              // Trigger change event for tax selection
+              $taxDropdown.trigger('change');
+            }
+          },
+          error: function () {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Failed to submit data. Please try again later.',
+            });
+          },
+        });
+      } else {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Missing Fields',
+          text: 'Please fill in all the required fields before submitting.',
+        });
+      }
+    });
+
+    // Handle tax calculation when the "Tax Button" is clicked
+    $('#taxBtn').on('click', function () {
+      const taxId = $('#tax_id').val();
+      const exShorRoomPrice = $('#ex_showroom_price').val();
+
+      $.ajax({
+        url: '/price-entry/tax-cal',
+        method: 'POST',
+        data: {
+          taxId: taxId,
+          exShorRoomPrice: exShorRoomPrice,
+        },
+        success: function (response) {
+          if (response.success) {
+            const taxDetails = response.taxDetails;
+            const taxName = taxDetails.tax_name;
+            const taxAmount = taxDetails.tax_amount;
+
+            // Create the HTML for the tax details with a remove button
+            const taxHTML = `
+                    <div class="form-group col-md-4 mt-4 d-flex align-items-center justify-content-between">
+                      <div class="d-flex align-items-center">
+                        <label class="mr-3">${taxName}</label>
+                        <input
+                          type="text"
+                          class="form-control bg-light-dark"
+                          value="${taxAmount}"
+                          readonly
+                        />
+                      </div>
+                      <button class="btn btn-danger btn-sm remove-tax-btn">Remove</button>
+                    </div>
+                  `;
+
+            // Append the HTML to the #tax_list div (this ensures multiple taxes are added)
+            $('#tax_list').append(taxHTML);
+
+            // Add event listener for the remove button
+            $('.remove-tax-btn').on('click', function () {
+              $(this).closest('.form-group').remove(); // Remove the tax details div
+              // Recalculate the total price when a tax is removed
+              recalculateTotalPrice();
+            });
+
+            // Call the function to recalculate the total price
+            recalculateTotalPrice();
+          } else {
+            console.error('Error: Tax details not found');
+          }
+        },
+        error: function (xhr, status, error) {
+          console.error('AJAX error: ', error);
+        },
+      });
+    });
+
+    // Function to calculate the total price without tax
+    const calculateTotalPriceWithoutTax = (
+      exShowroomPrice,
+      rtoInd,
+      rtoCor,
+      tcs
+    ) => {
+      const totalPriceInd =
+        parseFloat(exShowroomPrice) + parseFloat(rtoInd) + parseFloat(tcs);
+      const totalPriceCor =
+        parseFloat(exShowroomPrice) + parseFloat(rtoCor) + parseFloat(tcs);
+
+      $('#total_price_cal_ind').val(totalPriceInd.toFixed(2));
+      $('#total_price_cal_cor').val(totalPriceCor.toFixed(2));
+    };
+
+    // Function to recalculate the total price after taxes are applied or removed
+    const recalculateTotalPrice = () => {
+      const exShowroomPrice = parseFloat($('#ex_showroom_price').val());
+      const rtoInd = parseFloat($('#rto_ind').val());
+      const rtoCor = parseFloat($('#rto_cor').val());
+      const tcs = parseFloat($('#tcs_value').val());
+
+      let selectedTaxTotal = 0;
+
+      // Calculate total tax amount
+      $('#tax_list .form-group').each(function () {
+        const taxAmount = parseFloat($(this).find('input').val());
+        selectedTaxTotal += taxAmount;
+      });
+
+      // Calculate the total price for India and Cor
+      const totalPriceInd = exShowroomPrice + rtoInd + tcs + selectedTaxTotal;
+      const totalPriceCor = exShowroomPrice + rtoCor + tcs + selectedTaxTotal;
+
+      // Update the total price fields
+      $('#total_price_cal_ind').val(totalPriceInd.toFixed(2));
+      $('#total_price_cal_cor').val(totalPriceCor.toFixed(2));
+    };
+  });
+</script>

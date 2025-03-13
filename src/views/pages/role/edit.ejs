@@ -1,0 +1,149 @@
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div
+      id="kt_app_toolbar_container"
+      class="app-container container-xxl d-flex flex-stack"
+    >
+      <div
+        class="
+          page-title
+          d-flex
+          flex-column
+          justify-content-center
+          flex-wrap
+          me-3
+        "
+      >
+        <h1
+          class="
+            page-heading
+            d-flex
+            text-gray-900
+            fw-bold
+            fs-3
+            flex-column
+            justify-content-center
+            my-0
+          "
+        >
+          Add Role
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="roleForm" enctype="multipart/form-data">
+        <div class="card-body pt-0">
+          <div class="form-group">
+            <label for="name" class="required mb-2">Role Name: </label>
+            <input
+              type="text"
+              id="roleName"
+              class="form-control"
+              name="name"
+              placeholder="Enter Role Name"
+              value="<%= role.name %>"
+            />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="permission_id" class="required mb-2">Permission:</label>
+            <select 
+              class="form-select" 
+              data-control="select2" 
+              id="permission_id" 
+              multiple 
+              name="permission_id[]" 
+              placeholder="Select a permission">
+              <option value="all">All Permission</option>
+              <% prs.forEach(function(permission) { %>
+                <option value="<%= permission.id %>" <%=permission.id===permission.id ? 'selected' : '' %> >
+                  <%= permission.formattedName %>
+                </option>
+                <% }); %>
+            </select>
+          </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a class="btn btn-sm btn-danger mt-4" href="/role"> Cancel </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#roleForm").validate({
+      rules: {
+        name: {
+          required: true,
+          minlength: 2,
+        },
+        guard_name: {
+          required: true,
+          minlength: 10,
+        },
+      },
+      messages: {
+        name: {
+          required: "Please enter the role name",
+          minlength: "Role name must be at least 2 characters long",
+        },
+        guard_name: {
+          required: "Guard",
+          minlength: "Guard",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+
+        $.ajax({
+          url: `/role/<%= role.uuid %>`,
+          method: "PUT",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            window.location.href = "/role";
+          },
+          error: function (xhr, status, error) {
+            let errorMessage = "An error occurred while updating the role";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+  });
+</script>

@@ -1,0 +1,290 @@
+
+
+  <div class="col-md-12">
+    <div id="loader" class="d-none">
+        <div class="page-loader flex-column">
+            <span class="spinner-border text-primary" role="status"></span>
+            <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+        </div>
+    </div>
+    <div class="card pt-6">
+      <form id="pageContentForm" enctype="multipart/form-data">
+        <div class="row">
+          <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+              <div
+                class="
+                  page-title
+                  d-flex
+                  flex-column
+                  justify-content-center
+                  flex-wrap
+                  me-3
+                "
+              >
+                <h1
+                  class="
+                    page-heading
+                    d-flex
+                    text-gray-900
+                    fw-bold
+                    fs-3
+                    flex-column
+                    justify-content-center
+                    my-0
+                  "
+                >
+                  Page Content
+                </h1>
+              </div>
+              <div
+                class="
+                  form-check
+                  form-switch
+                  form-check-custom
+                  form-check-success
+                  form-check-solid
+                "
+              >
+                <input class="form-check-input" type="checkbox" checked name="status" />
+              </div>
+            </div>
+          </div>
+          <div class="card-body pt-0">
+  
+            <!-- page content name start -->
+            <div class="form-group col-lg-12 mb-6">
+              <label for="page_content_name" class="required mb-2">Page Content Name</label>
+              <input type="text" class="form-control" id="page_content_name" name="pc_name" required>
+            </div>
+            <!-- page content name end -->
+
+            <!-- page content title start -->
+             <div class="row">
+            <div class="form-group col-lg-6 mb-6">
+              <label for="page_content_title" class="mb-2">Page Content Title</label>
+              <input type="text" class="form-control" id="page_content_title" name="pc_title">
+            </div>
+            <div class="form-group col-lg-6 mb-6">
+              <label for="page_content_title_mob" class="mb-2">Page Content Mobile Title</label>
+              <input type="text" class="form-control" id="page_content_title_mob" name="pc_m_title">
+            </div>
+          </div>
+            <!-- page content title end -->
+
+            <!-- page content sub title start -->
+            <div class="row">
+              <div class="form-group col-lg-6 mb-6">
+                <label for="page_content_sub_title" class="mb-2">Page Content Sub Title</label>
+                <input type="text" class="form-control" id="page_content_sub_title" name="pc_sub_title">
+              </div>
+              <div class="form-group col-lg-6 mb-6">
+                <label for="page_content_sub_title_mob" class="mb-2">Page Content Mobile Sub Title</label>
+                <input type="text" class="form-control" id="page_content_sub_title_mob" name="pc_m_sub_title">
+              </div>
+            </div>
+            <!-- page content sub title end -->
+
+            <!-- page content description start -->
+             <div class="row">
+            <div class="form-group col-lg-6 mb-6 d-flex flex-column">
+              <label for="page_content_description" class="mb-2">Page Content Description</label>
+              <div id="editor" style="min-height: 200px;"></div>
+              <input type="hidden" id="pc_description" name="pc_description">
+            </div>
+            <div class="form-group col-lg-6 mb-6 d-flex flex-column">
+              <label for="page_content_description_mob" class="mb-2">Page Content Mobile Description</label>
+              <div id="editor-mob" style="min-height: 200px;"></div>
+              <input type="hidden" id="pc_m_description" name="pc_m_description">
+            </div>
+          </div>
+            <!-- page content description end -->
+
+             <!-- page content button title start -->
+             <div class="row">
+              <div class="form-group col-lg-6 mb-6">
+                <label for="page_content_button_title" class="mb-2">Page Content Button Text: </label>
+                <input type="text" class="form-control" id="page_content_button_title" name="pc_b_text">
+              </div>
+              <div class="form-group col-lg-6 mb-6">
+                <label for="page_content_button_title_mob" class="mb-2">Page Content Button Link:</label>
+                <input type="text" class="form-control" id="page_content_button_title_mob" name="pc_b_link">
+              </div>
+            </div>
+            <!-- page content button title end -->
+
+            <!-- page content button type start -->
+             <div class="form-group col-lg-6 mb-6">
+              <label for="pc_button_type" class="mb-2">Page Content Button Type:</label>
+              <select class="form-select" id="pc_b_type" name="pc_b_type"> 
+                <option value="" selected disabled>Select Button Type</option>
+                <option value="_blank">_blank</option>
+                <option value="_self">_self</option>
+                <option value="_parent">_parent</option>
+                <option value="_top">_top</option>
+              </select>
+            </div>
+            <!-- page content button type end -->
+          
+
+            <button class="btn btn-primary mt-6" name="submit" type="submit">Submit</button>
+            <a href="/page-content" class="btn btn-danger mt-6">Cancel</a>
+
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- include quill editor -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+<script>  
+var KTQuilDemos = function() {
+var pc_description = function() {
+    var quill = new Quill('#editor', {
+        modules: {
+            toolbar: [
+                [{
+                    header: [1, 2, false]
+                }],
+                ['bold', 'italic', 'underline'],
+                ['image', 'code-block']
+            ]
+        },
+        placeholder: 'Type your text here...',
+        theme: 'snow' 
+    });
+    quill.on('text-change', function() {
+        document.getElementById('pc_description').value = quill.root.innerHTML;
+    });
+}
+
+var pc_m_description = function() {
+    var quill = new Quill('#editor-mob', {
+        modules: {
+            toolbar: [
+                [{
+                    header: [1, 2, false]
+                }],
+                ['bold', 'italic', 'underline'],
+                ['image', 'code-block']
+            ]
+        },
+        placeholder: 'Type your text here...',
+        theme: 'snow' 
+    });
+    quill.on('text-change', function() {
+        document.getElementById('pc_m_description').value = quill.root.innerHTML;
+    });
+}
+
+return {
+    // public functions
+    init: function() {
+        pc_description();
+        pc_m_description();
+    }
+};
+}();
+
+jQuery(document).ready(function() {
+KTQuilDemos.init();
+});
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#pageContentForm").validate({
+      rules: {
+        pc_name: {
+          required: true,
+        },
+      },
+      messages: {
+        pc_name: {
+          required: "Please enter the page content name",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        try {
+          const formData = new FormData(form);
+          $("#loader").removeClass("d-none");
+          $.ajax({
+            url: "/page-content/create",
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+              // Hide loader
+              $("#loader").addClass("d-none");
+              // Show success message
+              Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: "Page content created successfully!",
+              }).then(() => {
+                  // window.location.href = "/page-content";
+              });
+            },
+            error: function (xhr, status, error) {
+              // Hide loader
+              $("#loader").addClass("d-none");
+              
+              let errorMessage = "An error occurred while creating the page content";
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                  errorMessage = xhr.responseJSON.message;
+              }
+
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: errorMessage,
+              });
+            },
+          });
+        } catch (error) {
+          // Hide loader
+          $("#loader").addClass("d-none");          
+          Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "An unexpected error occurred",
+          });
+        }
+      },
+    });
+  });
+</script>
+
+<style>
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+</style>

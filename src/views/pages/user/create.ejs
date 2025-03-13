@@ -1,0 +1,253 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="userForm" enctype="multipart/form-data">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <a
+            class="btn btn-sm btn-primary mt-4"
+            style="margin-left: auto"
+            href="/user"
+          >
+            View User
+          </a>
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Add New User</h2>
+          </div>
+        </div>
+        <div class="card-body pt-0 col-md-6">
+          <!-- User Name -->
+          <div class="form-group">
+            <label for="name" class="required mb-2">User Name:</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              name="name"
+              placeholder="Enter the official name of the User"
+            />
+          </div>
+
+          <!-- Email -->
+          <div class="form-group mt-4">
+            <label for="email" class="required mb-2">Email:</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              name="email"
+              placeholder="Enter User Email"
+            />
+          </div>
+
+          <!-- Role Selection -->
+          <div class="form-group mt-4">
+            <label for="role_id" class="required mb-2">Select Role:</label>
+            <select
+              class="form-select"
+              id="role_id"
+              name="role_id"
+              data-control="select2"
+              aria-label="Select Role"
+            >
+              <option selected disabled value="">Select role</option>
+              <% roles.forEach(function(role) { %>
+              <option value="<%= role.id %>"><%= role.name %></option>
+              <% }); %>
+            </select>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group mt-4">
+            <label for="password" class="required mb-2">Password:</label>
+            <div class="position-relative">
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                name="password"
+                placeholder="Password"
+                required
+              />
+              <a
+                href="javascript:void(0)"
+                class="position-absolute pr-3 toggle-password"
+                style="top: 50%; transform: translate(0, -50%); right: 10px"
+                data-toggle="password"
+              >
+                <i class="far fa-eye-slash" style="color: #1f2937"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-group mt-4">
+            <label for="confirmed_password" class="required mb-2"
+              >Confirm Password:</label
+            >
+            <div class="position-relative">
+              <input
+                type="password"
+                id="confirmed_password"
+                class="form-control"
+                name="confirmed_password"
+                placeholder="Confirm Password"
+                required
+              />
+              <a
+                href="javascript:void(0)"
+                class="position-absolute pr-3 toggle-password"
+                style="top: 50%; transform: translate(0, -50%); right: 10px"
+                data-toggle="confirmed_password"
+              >
+                <i class="far fa-eye-slash" style="color: #1f2937"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a class="btn btn-sm btn-danger mt-4" href="/user">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Toggle Password Visibility
+    $(".toggle-password").on("click", function () {
+      const input = $(this).prev("input"); // Finds the input field before the toggle button
+      const icon = $(this).find("i"); // Finds the icon inside the toggle button
+
+      if (input.attr("type") === "password") {
+        input.attr("type", "text");
+        icon.removeClass("fa-eye-slash").addClass("fa-eye");
+      } else {
+        input.attr("type", "password");
+        icon.removeClass("fa-eye").addClass("fa-eye-slash");
+      }
+    });
+
+    // // Toggle Password Visibility
+    // $("#new_pass_button").click(function () {
+    //   var passwordField = $("#password");
+    //   var icon = $(this);
+    //   if (passwordField.prop("type") === "password") {
+    //     passwordField.prop("type", "text");
+    //     icon.removeClass("fa-eye-slash").addClass("fa-eye");
+    //   } else {
+    //     passwordField.prop("type", "password");
+    //     icon.removeClass("fa-eye").addClass("fa-eye-slash");
+    //   }
+    // });
+
+    $("#conf_pass_button").click(function () {
+      var passwordField = $("#confirmed_password");
+      var icon = $(this);
+      if (passwordField.prop("type") === "password") {
+        passwordField.prop("type", "text");
+        icon.removeClass("fa-eye-slash").addClass("fa-eye");
+      } else {
+        passwordField.prop("type", "password");
+        icon.removeClass("fa-eye").addClass("fa-eye-slash");
+      }
+    });
+
+    // Form validation and submission
+    $("#userForm").validate({
+      rules: {
+        name: {
+          required: true,
+          minlength: 2,
+        },
+        email: {
+          required: true,
+          email: true,
+        },
+        role_id: {
+          required: true,
+        },
+        password: {
+          required: true,
+          minlength: 6,
+        },
+        confirmed_password: {
+          required: true,
+          equalTo: "#password", // Ensures the confirm password matches the password field
+        },
+      },
+      messages: {
+        name: {
+          required: "Please enter the User Name",
+          minlength: "User Name must be at least 2 characters long",
+        },
+        email: {
+          required: "Please enter the Email",
+          email: "Please enter a valid email address",
+        },
+        role_id: {
+          required: "Please select a Role",
+        },
+        password: {
+          required: "Please enter a password",
+          minlength: "Password must be at least 6 characters long",
+        },
+        confirmed_password: {
+          required: "Please confirm your password",
+          equalTo: "Passwords do not match",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+        $.ajax({
+          url: "/user/create",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function () {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "User created successfully!",
+            }).then(() => {
+              window.location.href = "/user";
+            });
+          },
+          error: function (xhr) {
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text:
+                xhr.responseJSON?.message ||
+                "An error occurred while creating the User",
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+  });
+</script>

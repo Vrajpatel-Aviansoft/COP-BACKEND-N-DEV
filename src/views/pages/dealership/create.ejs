@@ -1,0 +1,386 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="dealerShipForm" enctype="multipart/form-data">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <a
+            class="btn btn-sm btn-primary mt-4"
+            style="margin-left: auto"
+            href="/dealership"
+          >
+            view Dealership
+          </a>
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Add New Dealership</h2>
+
+            <div
+              class="
+                form-check
+                form-switch
+                form-check-custom
+                form-check-success
+                form-check-solid
+              "
+            >
+              <label
+                class="form-check-label text-black mt-4"
+                for="kt_flexSwitchCustomDefault_1_1"
+              >
+                <b>Visibility:</b>
+              </label>
+              <input
+                class="form-check-input mt-4 ms-5 cursor-pointer"
+                name="status"
+                type="checkbox"
+                checked
+                id="status"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0 col-md-6">
+          <div class="form-group">
+            <label for="company_name" class="required mb-2"
+              >Company Name:
+            </label>
+            <input
+              type="text"
+              id="company_name"
+              class="form-control"
+              name="company_name"
+              placeholder="Enter the official name of the company"
+            />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="dealer_name" class="required mb-2">Dealer Name: </label>
+            <input
+              type="text"
+              id="dealer_name"
+              class="form-control"
+              name="dealer_name"
+              placeholder="Enter Dealer Name"
+            />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="email" class="required mb-2">Email: </label>
+            <input
+              type="text"
+              id="email"
+              class="form-control"
+              name="email"
+              placeholder="Enter Email's (e.g., admin@example.com,user@example.com)"
+            />
+            <span class="note">
+              <strong>Note:</strong> Use a comma (,) to separate multiple email
+              addresses. Ensure each email is valid.</span
+            >
+          </div>
+
+          <div class="form-group mt-4" data-select2-id="select2-data-142-f275">
+            <label for="brand_id" class="required">Select Brand:</label>
+            <select
+              class="form-select"
+              aria-label="Select Brand"
+              id="brand_id"
+              name="brand_id"
+              data-control="select2"
+            >
+              <option selected="" disabled="" value="">Select Brand</option>
+              <% brands.forEach(function(brand) { %>
+              <option value="<%= brand.brand_id %>">
+                <%= brand.brand_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group mt-4" data-select2-id="select2-data-142-f275">
+            <label for="state_id" class="required">Select State:</label>
+            <select
+              class="form-select"
+              aria-label="Select State"
+              id="state_id"
+              name="state_id"
+              data-control="select2"
+            >
+              <option selected="" disabled="" value="">Select State</option>
+              <% states.forEach(function(data) { %>
+              <option value="<%= data.state_id  %>">
+                <%= data.state_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="city_id" class="required mb-2">Select City:</label>
+            <select
+              class="form-select"
+              aria-label="Select example"
+              id="city_id"
+              name="city_id"
+              data-control="select2"
+              required
+            >
+              <option value="" selected disabled>Select City</option>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="phone_no" class="required mb-2">Phone Number: </label>
+            <input
+              type="text"
+              id="phone_no"
+              class="form-control"
+              name="phone_no"
+              placeholder="Enter Phone Number"
+            />
+
+            <span class="note">
+              <strong>Note:</strong>Use comma (,) seperater for multiple phone
+              number</span
+            >
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="address" class="required mb-2">Address: </label>
+            <textarea
+              id="address"
+              class="form-control"
+              name="address"
+              placeholder="Enter Dealership Address"
+              rows="4"
+            ></textarea>
+            <span class="note">
+              <strong>Note:</strong>Provide the full address including street, city, and state.</span
+            >
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="map_location" class="required mb-2">Map Url: </label>
+            <input
+              type="text"
+              id="map_location"
+              class="form-control"
+              name="map_location"
+              placeholder="Enter Map URL (e.g., https://maps.google.com/...)"
+            />
+            <span class="note">
+              <strong>Note:</strong> Provide the full URL to the map (e.g.,
+              Google Maps link).</span
+            >
+          </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a class="btn btn-sm btn-danger mt-4" href="/dealership"> Cancel </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Reset validation styles on change for select elements
+    $("#state_id, #city_id").on("change", function () {
+      $(this).removeClass("is-invalid").next(".invalid-feedback").hide();
+    });
+
+    // Load cities based on state selection
+    $("#state_id").on("change", function () {
+      var stateId = $(this).val();
+      $("#city_id")
+        .empty()
+        .append(
+          '<option value="" selected disabled>Loading cities...</option>'
+        );
+      $.ajax({
+        url: `/dealership/city/${stateId}/state`,
+        method: "GET",
+        success: function (response) {
+          $("#city_id")
+            .empty()
+            .append('<option value="" selected disabled>Select City</option>');
+          if (response && response.cities && response.cities.length > 0) {
+            response.cities.forEach(function (city) {
+              $("#city_id").append(
+                '<option value="' +
+                  city.city_id +
+                  '">' +
+                  city.city_name +
+                  "</option>"
+              );
+            });
+          } else {
+            $("#city_id").append(
+              '<option value="" disabled>No city available</option>'
+            );
+          }
+        },
+        error: function () {
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to fetch cities. Please try again.",
+          });
+          $("#city_id")
+            .empty()
+            .append('<option value="" disabled>Select City</option>');
+        },
+      });
+    });
+    // Define custom validation for multiple emails
+    $.validator.addMethod(
+      "validateEmails",
+      function (value, element) {
+        const emails = value.split(",").map((email) => email.trim()); // Split and trim
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Standard email validation regex
+        return emails.every((email) => emailRegex.test(email)); // Check each email
+      },
+      "Each email address must be valid and separated by commas."
+    );
+
+    // Define custom validation for phone numbers
+    $.validator.addMethod(
+      "validatePhoneNumbers",
+      function (value, element) {
+        const phoneNumbers = value.split(",").map((num) => num.trim()); // Split and trim
+        return phoneNumbers.every((num) => /^\d{10}$/.test(num)); // Check each number
+      },
+      "Each phone number must be exactly 10 digits long and separated by commas."
+    );
+
+    // Form validation and submission
+    $("#dealerShipForm").validate({
+      rules: {
+        company_name: {
+          required: true,
+          minlength: 2,
+        },
+        dealer_name: {
+          required: true,
+          minlength: 2,
+        },
+        email: {
+          required: true,
+          validateEmails: true,
+        },
+        brand_id: {
+          required: true,
+        },
+        state_id: {
+          required: true,
+        },
+        city_id: {
+          required: true,
+        },
+        phone_no: {
+          required: true,
+          validatePhoneNumbers: true,
+        },
+        address: {
+          required: true,
+          minlength: 10,
+        },
+        map_location: {
+          required: true,
+          url: true,
+        },
+      },
+      messages: {
+        company_name: {
+          required: "Please enter the Company Name",
+          minlength: "Company Name must be at least 2 characters long",
+        },
+        dealer_name: {
+          required: "Please enter the Dealer Name",
+          minlength: "Dealer Name must be at least 2 characters long",
+        },
+        email: {
+          required: "Please enter the Email(s)",
+          validateEmails:
+            "Each email address must be valid and separated by commas.",
+        },
+        brand_id: {
+          required: "Please select a Brand",
+        },
+        state_id: {
+          required: "Please select a State",
+        },
+        city_id: {
+          required: "Please select a City",
+        },
+        phone_no: {
+          required: "Please enter the Phone Number(s)",
+          validatePhoneNumbers:
+            "Each phone number must be exactly 10 digits long and separated by commas.",
+        },
+        address: {
+          required: "Please enter the Address",
+          minlength: "Address must be at least 10 characters long",
+        },
+        map_location: {
+          required: "Please enter the Map URL",
+          url: "Please enter a valid Map URL",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+        formData.set("status", $("input[name='status']").is(":checked"));
+        $.ajax({
+          url: "/dealership/create",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Dealership created successfully!",
+            }).then(() => {
+              window.location.href = "/dealership";
+            });
+          },
+          error: function (xhr) {
+            let errorMessage =
+              "An error occurred while creating the specification";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+  });
+</script>

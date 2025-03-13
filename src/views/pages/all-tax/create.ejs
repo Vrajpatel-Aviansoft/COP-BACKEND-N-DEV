@@ -1,0 +1,400 @@
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div
+      id="kt_app_toolbar_container"
+      class="app-container container-xxl d-flex flex-stack"
+    >
+      <div
+        class="
+          page-title
+          d-flex
+          flex-column
+          justify-content-center
+          flex-wrap
+          me-3
+        "
+      >
+        <h1
+          class="
+            page-heading
+            d-flex
+            text-gray-900
+            fw-bold
+            fs-3
+            flex-column
+            justify-content-center
+            my-0
+          "
+        >
+          Add Tax
+        </h1>
+      </div>
+      <div class="d-flex align-items-center gap-2 gap-lg-3">
+        <a href="/master/all-tax" class="btn btn-sm fw-bold btn-primary">
+          View Tax
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+
+    <div class="card pt-6">
+      <form id="allTaxForm">
+        <div class="card-body pt-0 col-md-6">
+          <!-- Tax Name Field -->
+          <div class="form-group">
+            <label for="tax_name" class="required mb-2">Tax Name:</label>
+            <input
+              type="text"
+              id="tax_name"
+              class="form-control"
+              name="tax_name"
+              placeholder="Enter Tax Name"
+              required
+            />
+          </div>
+
+          <!-- Display Name Field -->
+          <div class="form-group mt-4">
+            <label for="display_name" class="required mb-2"
+              >Display Name:</label
+            >
+            <input
+              type="text"
+              id="display_name"
+              class="form-control"
+              name="display_name"
+              placeholder="Enter Display Name"
+              required
+            />
+          </div>
+
+          <!-- City Field -->
+
+          <div class="form-group mt-4">
+            <label for="city_id" class="required mb-2"
+              >Select City:</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select example"
+              name="city_id"
+              id="city_id"
+              required
+            >
+              <option selected hidden disabled>Select City</option>
+              <% cities.forEach(city => { %>
+              <option value="<%= city.city_id %>"><%= city.city_name %></option>
+              <% }) %>
+            </select>
+          </div>
+
+          <!-- Condition Status Dropdown -->
+          <div class="form-group mt-4">
+            <label for="condition_status" class="required mb-2"
+              >Select Condition Status:</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select example"
+              name="condition_status"
+              id="condition_status"
+              required
+            >
+              <option selected hidden disabled>Select Condition</option>
+              <option value="1">Condition</option>
+              <option value="0">No condition</option>
+            </select>
+          </div>
+
+          <!-- Fields for "No Condition" (Hidden by Default) -->
+          <div id="condition_fields" style="display: none">
+            <div class="form-group mt-6 tax_percent">
+              <label for="tax_percent" class="required mb-2"
+                >Tax Percent:</label
+              >
+              <input
+                class="form-control"
+                name="percent"
+                id="tax_percent"
+                value=""
+                placeholder="Enter Tax %"
+              />
+            </div>
+
+            <div class="form-group mt-6 tax_percent">
+              <label for="tax_value" class="required mb-2">Tax Value:</label>
+              <input
+                class="form-control"
+                type="number"
+                name="value"
+                id="tax_value"
+                value=""
+                placeholder="Enter Tax Value"
+              />
+            </div>
+          </div>
+
+          <!-- Fields for "Condition" (Hidden by Default) -->
+          <div id="condition_container" style="display: none">
+            <div class="form-group mt-6">
+              <label for="amount" class="required mb-2"
+                >Enter Tax Percent with Conditions:</label
+              >
+              <input
+                type="number"
+                id="amount"
+                class="form-control"
+                name="amount"
+                placeholder="Enter Amount"
+                value=""
+                required
+              />
+            </div>
+
+            <!-- Condition Dropdowns and Percent Fields -->
+            <div id="infoContainer">
+              <div class="row mt-4" id="input-field">
+                <div class="col-md-6">
+                  <select
+                    class="form-select condition-dropdown"
+                    aria-label="Select example"
+                    name="condition1"
+                    required
+                  >
+                    <option selected hidden value=" ">Select Condition</option>
+                    <option value=">">Greater than</option>
+                    <option value=">=">Greater than or equal to</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <input
+                    class="form-control"
+                    name="percent1"
+                    value=""
+                    placeholder="Enter Tax %"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="row mt-4" id="input-field">
+                <div class="col-md-6">
+                  <select
+                    class="form-select condition-dropdown"
+                    aria-label="Select example"
+                    name="condition2"
+                    required
+                  >
+                    <option selected hidden value=" ">Select Condition</option>
+                    <option value="<">Less than</option>
+                    <option value="<=">Less than or equal to</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <input
+                    class="form-control"
+                    name="percent2"
+                    value=""
+                    placeholder="Enter Tax %"
+                    required
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-check form-switch form-check-custom form-check-success form-check-solid mt-4">
+          <label class="form-check-label text-black" for="status">
+            <b>Visibility:</b>
+          </label>
+          <input
+            class="form-check-input ms-5"
+            name="status"
+            type="checkbox"
+            checked
+            id="status"
+          />
+        </div>
+
+          <!-- Submit and Cancel Buttons -->
+          <button
+            class="btn btn-sm btn-primary mt-6"
+            name="submit"
+            type="submit"
+            id="submitBtn"
+          >
+            Submit
+          </button>
+          <a href="master/all-tax" class="btn btn-sm btn-danger mt-6">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Condition-based fields show and hide logic
+    $("#city_id").select2();
+    $("#condition_status").select2();
+    $("#condition_status").on("select2:select", function (e) {
+      const condition_value = $(this).val();
+      if (condition_value === "1") {
+        $("#condition_fields").hide();
+        $("#condition_container").show();
+      } else if (condition_value === "0") {
+        $("#condition_fields").show();
+        $("#condition_container").hide();
+      }
+    });
+
+    // Condition value updates and disables based on user selection
+    $('select[name="condition1"], select[name="condition2"]').on(
+      "change",
+      function () {
+        const condition1Value = $('select[name="condition1"]').val();
+        const condition2Value = $('select[name="condition2"]').val();
+
+        if (this.name === "condition1") {
+          if (condition1Value === ">") {
+            $('select[name="condition2"]').val("<=");
+          } else if (condition1Value === ">=") {
+            $('select[name="condition2"]').val("<");
+          }
+        } else if (this.name === "condition2") {
+          if (condition2Value === "<") {
+            $('select[name="condition1"]').val(">=");
+          } else if (condition2Value === "<=") {
+            $('select[name="condition1"]').val(">");
+          }
+        }
+      }
+    );
+
+    // Disable tax value field when tax percent is entered, and vice versa
+    $("#tax_percent").on("input", function () {
+      const taxPercent = $("#tax_percent").val();
+      if (taxPercent !== "") {
+        $("#tax_value").prop("disabled", true);
+      } else {
+        $("#tax_value").prop("disabled", false);
+      }
+    });
+
+    $("#tax_value").on("input", function () {
+      const taxValue = $("#tax_value").val();
+      if (taxValue !== "") {
+        $("#tax_percent").prop("disabled", true);
+      } else {
+        $("#tax_percent").prop("disabled", false);
+      }
+    });
+
+    // Form validation using jQuery Validate
+    $("#allTaxForm").validate({
+      rules: {
+        tax_name: {
+          required: true,
+        },
+        display_name: {
+          required: true,
+        },
+        city_id: {
+          required: true,
+        },
+        condition_status: {
+          required: true,
+        },
+        percent: {
+          required: function () {
+            return $("#condition_status").val() == "0";
+          },
+        },
+        value: {
+          required: function () {
+            return $("#condition_status").val() == "0";
+          },
+        },
+        amount: {
+          required: function () {
+            return $("#condition_status").val() == "1";
+          },
+        },
+      },
+      messages: {
+        tax_name: {
+          required: "Tax name is required",
+        },
+        display_name: {
+          required: "Display name is required",
+        },
+        city_id: {
+          required: "City is required",
+        },
+        condition_status: {
+          required: "Please select condition status",
+        },
+        percent: {
+          required: "Tax percent is required",
+        },
+        value: {
+          required: "Tax value is required",
+        },
+        amount: {
+          required: "Amount is required for condition",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+
+        // Handle the form submission using AJAX
+        $.ajax({
+          url: "/master/all-tax/create",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "Tax added successfully!",
+            }).then(() => {
+              window.location.href = "/master/all-tax"; // Redirect after success
+            });
+          },
+          error: function (xhr, status, error) {
+            let errorMessage = "An error occurred while adding the tax.";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+  });
+</script>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Login</title>
+    <meta charset="utf-8" />
+    <meta name="description" content="description content" />
+    <meta name="keywords" content="keywords content" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content="Login Page" />
+    <meta property="og:url" content="https://yourwebsite.com" />
+    <meta property="og:site_name" content="Your Website" />
+    <link rel="canonical" href="https://yourwebsite.com/login" />
+    <link rel="shortcut icon" href="https://alpk.avianlabs.in/assets/media/logos/favicon.ico" />
+
+    <!-- Fonts -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Inter:300,400,500,600,700"
+    />
+
+    <!-- Stylesheets -->
+    <link
+      href="/assets/plugins/global/plugins.bundle.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="/assets/css/style.bundle.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+
+    <!-- jQuery (moved to head for faster loading) -->
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Custom styles -->
+    <style>
+      .btn-check:active + .btn.btn-primary,
+      .btn-check:checked + .btn.btn-primary,
+      .btn.btn-primary.active,
+      .btn.btn-primary.show,
+      .btn.btn-primary:active:not(.btn-active),
+      .btn.btn-primary:focus:not(.btn-active),
+      .btn.btn-primary:hover:not(.btn-active),
+      .show > .btn.btn-primary {
+        color: var(--bs-primary-inverse) !important;
+        border-color: var(--bs-primary) !important;
+        background-color: var(--bs-primary) !important;
+      }
+    </style>
+
+    <!-- Frame-busting script -->
+    <script>
+      if (window.top != window.self) {
+        window.top.location.replace(window.self.location.href);
+      }
+    </script>
+
+    <!-- Add this style block in the <head> section of your HTML -->
+  </head>
+
+  <body
+    id="kt_app_body"
+    data-kt-app-layout="dark-sidebar"
+    data-kt-app-header-fixed="true"
+    data-kt-app-sidebar-enabled="true"
+    data-kt-app-sidebar-fixed="true"
+    data-kt-app-sidebar-hoverable="true"
+    data-kt-app-sidebar-push-header="true"
+    data-kt-app-sidebar-push-toolbar="true"
+    data-kt-app-sidebar-push-footer="true"
+    data-kt-app-toolbar-enabled="true"
+    class="app-default"
+  >
+    <div class="d-flex flex-column flex-root" id="kt_app_root">
+      <div class="d-flex flex-column flex-lg-row flex-column-fluid">
+        <div
+          class="
+            d-flex
+            flex-column flex-lg-row-fluid
+            w-lg-50
+            p-10
+            order-2 order-lg-1
+          "
+        >
+          <div class="d-flex flex-center flex-column flex-lg-row-fluid">
+            <div class="w-lg-500px p-10">
+              <form class="form w-100" id="loginForm" method="post">
+                <div class="text-center mb-11">
+                  <div
+                    id="loginError"
+                    class="
+                      alert alert-danger
+                      d-flex
+                      align-items-center
+                      p-5
+                      mb-10
+                      d-none
+                    "
+                  >
+                    <span class="svg-icon svg-icon-2hx svg-icon-danger me-4">
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <rect
+                          opacity="0.3"
+                          x="2"
+                          y="2"
+                          width="20"
+                          height="20"
+                          rx="10"
+                          fill="currentColor"
+                        ></rect>
+                        <rect
+                          x="11"
+                          y="14"
+                          width="7"
+                          height="2"
+                          rx="1"
+                          transform="rotate(-90 11 14)"
+                          fill="currentColor"
+                        ></rect>
+                        <rect
+                          x="11"
+                          y="17"
+                          width="2"
+                          height="2"
+                          rx="1"
+                          transform="rotate(-90 11 17)"
+                          fill="currentColor"
+                        ></rect>
+                      </svg>
+                    </span>
+                    <div class="d-flex flex-column">
+                      <h4 class="mb-1 text-danger">Error</h4>
+                      <span id="loginErrorText"></span>
+                    </div>
+                  </div>
+
+                  <h1 class="text-gray-900 fw-bolder mb-3">Sign In</h1>
+                </div>
+
+                <div class="fv-row mb-8">
+                  <input
+                    type="text"
+                    placeholder="Email"
+                    name="email"
+                    id="email"
+                    autocomplete="off"
+                    class="form-control bg-transparent"
+                  />
+                  <div
+                    id="emailError"
+                    class="invalid-feedback"
+                    style="display: none"
+                  ></div>
+                </div>
+
+                <div class="fv-row mb-3">
+                  <input
+                    type="password"
+                    placeholder="Password"
+                    name="password"
+                    id="password"
+                    autocomplete="off"
+                    class="form-control bg-transparent"
+                  />
+                  <div
+                    id="passwordError"
+                    class="invalid-feedback"
+                    style="display: none"
+                  ></div>
+                </div>
+
+                <div
+                  class="
+                    d-flex
+                    flex-stack flex-wrap
+                    gap-3
+                    fs-base
+                    fw-semibold
+                    mb-8
+                    mt-6
+                  "
+                >
+                  <a href="#" class="link-primary">Forgot Password?</a>
+                </div>
+                <div class="d-grid mb-10">
+                  <button
+                    type="submit"
+                    id="kt_sign_in_submit"
+                    class="btn btn-primary"
+                  >
+                    <span class="indicator-label">Sign In</span>
+                    <span class="indicator-progress"
+                      >Please wait...
+                      <span
+                        class="
+                          spinner-border spinner-border-sm
+                          align-middle
+                          ms-2
+                        "
+                      ></span
+                    ></span>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="
+            d-flex
+            flex-lg-row-fluid
+            w-lg-50
+            bgi-size-cover bgi-position-center
+            order-1 order-lg-2
+          "
+          style="background-image: url(/assets/media/misc/auth-bg.png)"
+        >
+          <div
+            class="
+              d-flex
+              flex-column flex-center
+              py-7 py-lg-15
+              px-5 px-md-15
+              w-100
+            "
+          >
+            <a href="/" class="mb-0 mb-lg-12">
+              <img
+                alt="Logo"
+                src="/assets/media/logos/custom-1.png"
+                class="h-60px h-lg-75px"
+              />
+            </a>
+            <img
+              class="
+                d-none d-lg-block
+                mx-auto
+                w-275px w-md-50 w-xl-500px
+                mb-10 mb-lg-20
+              "
+              src="/assets/media/misc/auth-screens.png"
+              alt=""
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Login form handling script -->
+    <script>
+      $(document).ready(function () {
+        const emailInput = $("#email");
+        const passwordInput = $("#password");
+        const emailError = $("#emailError");
+        const passwordError = $("#passwordError");
+        const loginError = $("#loginError");
+        const loginForm = $("#loginForm");
+
+        function validateEmail(email) {
+          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return re.test(email);
+        }
+
+        function validatePassword(password) {
+          return password.length > 0;
+        }
+
+        function showError(element, message) {
+          if (element.attr("id") === "loginError") {
+            $("#loginErrorText").text(message);
+            element.show();
+          } else {
+            element.text(message).show();
+            element.prev("input").addClass("is-invalid");
+          }
+        }
+
+        function clearError(element) {
+          if (element.attr("id") === "loginError") {
+            $("#loginErrorText").text("");
+            element.hide();
+          } else {
+            element.text("").hide();
+            element.prev("input").removeClass("is-invalid");
+          }
+        }
+
+        function validateInputs() {
+          let isValid = true;
+
+          if (!validateEmail(emailInput.val())) {
+            showError(emailError, "Please enter a valid email address");
+            isValid = false;
+          } else {
+            clearError(emailError);
+          }
+
+          if (!validatePassword(passwordInput.val())) {
+            showError(passwordError, "Please enter password");
+            isValid = false;
+          } else {
+            clearError(passwordError);
+          }
+
+          return isValid;
+        }
+
+        emailInput.on("input", function () {
+          if (validateEmail($(this).val())) {
+            clearError(emailError);
+          } else {
+            showError(emailError, "Please enter a valid email address");
+          }
+        });
+
+        passwordInput.on("input", function () {
+          if (validatePassword($(this).val())) {
+            clearError(passwordError);
+          } else {
+            showError(
+              passwordError,
+              "Password must be at least 6 characters long"
+            );
+          }
+        });
+
+        function showLoginError(message) {
+          $("#loginErrorText").text(message);
+          loginError.removeClass("d-none");
+        }
+
+        function hideLoginError() {
+          loginError.addClass("d-none");
+        }
+
+        function clearAllErrors() {
+          hideLoginError();
+          clearError(emailError);
+          clearError(passwordError);
+        }
+
+        loginForm.submit(function (e) {
+          e.preventDefault();
+          clearAllErrors();
+
+          if (!validateInputs()) {
+            return;
+          }
+
+          var email = emailInput.val().trim();
+          var password = passwordInput.val().trim();
+          var $submitButton = $("#kt_sign_in_submit");
+
+          $submitButton
+            .prop("disabled", true)
+            .find(".indicator-label")
+            .hide()
+            .end()
+            .find(".indicator-progress")
+            .show();
+
+          $.ajax({
+            url: "/auth/login",
+            method: "POST",
+            data: { email: email, password: password },
+            success: function (response) {
+              window.location.href = "/dashboard";
+            },
+            error: function (xhr, status, error) {
+              console.error("Login error:", error);
+              if (xhr.status === 403) {
+                showLoginError("You are not authorized to access admin");
+              } else if (xhr.status === 401) {
+                showLoginError("Invalid email or password");
+              } else {
+                showLoginError(
+                  "An unexpected error occurred. Please try again later."
+                );
+              }
+            },
+            complete: function () {
+              $submitButton
+                .prop("disabled", false)
+                .find(".indicator-progress")
+                .hide()
+                .end()
+                .find(".indicator-label")
+                .show();
+            },
+          });
+        });
+
+        // Hide login error when user starts typing
+        emailInput.add(passwordInput).on("input", function () {
+          hideLoginError();
+        });
+      });
+    </script>
+  </body>
+</html>

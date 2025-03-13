@@ -1,0 +1,214 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header border-0 pt-6">
+      <div
+        class="
+          card-title
+          d-flex
+          justify-content-between
+          align-items-center
+          w-100
+        "
+      >
+        <h2 class="card-title fs-3 fw-bold text-gray-900">Rto View</h2>
+        <a href="/master/rto/create" class="btn btn-sm fw-bold btn-primary">Add Rto</a>
+      </div>
+    </div>
+    <div class="card-body pt-0">
+      <table
+        id="kt_datatable_dom_positioning_rto"
+        class="table table-striped table-row-bordered gy-5 gs-7 border rounded"
+      >
+        <thead>
+          <tr class="fw-bold fs-6 text-gray-800 px-7">
+            <th>Sr No</th>
+            <th>State</th>
+            <th>Rto Type</th>
+            <th>Pre Condition</th>
+            <th>Pre Amount</th>
+            <th>Post Condition</th>
+            <th>Post Amount</th>
+            <th>Percentage</th>
+            <th>Fuel Type</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- DataTables will populate this -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="/js/datatable/datatable.js"></script>
+<script>
+  $(document).ready(function () {
+    const table = initializeDataTable(
+      "#kt_datatable_dom_positioning_rto",
+      "/master/rto/all",
+      [
+        {
+          data: null,
+          name: "sr_no",
+          orderable: false,
+          render: function (data, type, row, meta) {
+            return `<span style="font-size: 1rem;">${meta.row + 1}</span>`;
+          },
+        },
+        {
+          data: "state.state_name",
+          name: "State",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data}</span>`;
+          },
+        },
+        {
+          data: "rto_type",
+          name: "Rto Type",
+          orderable: true,
+          render: function (data) {
+            // Map rto_type values to display strings
+            if (data === "C") {
+              return `<span style="font-size: 1rem;">Corporate</span>`;
+            } else if (data === "I") {
+              return `<span style="font-size: 1rem;">Individual</span>`;
+            } else {
+              // If data is null, undefined, or any other invalid value, show blank
+              return `<span style="font-size: 1rem;"> </span>`;
+            }
+          },
+        },
+
+        {
+          data: "pre_condition",
+          name: "Pre Condition",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data ? data : " "}</span>`;
+          },
+        },
+        {
+          data: "pre_amount",
+          name: "Pre Amount",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data ? data : " "}</span>`;
+          },
+        },
+        {
+          data: "post_condition",
+          name: "Post Condition",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data ? data : " "}</span>`;
+          },
+        },
+        {
+          data: "post_amount",
+          name: "Post Amount",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data ? data : " "}</span>`;
+          },
+        },
+        {
+          data: "percentage",
+          name: "Percentage",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data ? data : " "}</span>`;
+          },
+        },
+
+        {
+          data: "fuel_type",
+          name: "Fuel Type",
+          orderable: true,
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data ? data : " "}</span>`;
+          },
+        },
+        // {
+        //   data: "status",
+        //   name: "Status",
+        //   render: function (data, type, row, meta) {
+        //     return `
+        //       <div class="form-check form-switch form-check-custom form-check-success form-check-solid">
+        //         <input  class="form-check-input" type="checkbox" value="" ${
+        //           data ? "checked" : ""
+        //         } uuid="${row.uuid}"/>
+
+        //       </div>
+        //     `;
+        //   },
+        // },
+        {
+          data: "uuid",
+          name: "uuid",
+          orderable: false,
+          searchable: false,
+          render: function (data) {
+            const editRoute = `/master/rto/${data}/edit`;
+            return `
+              <a href="${editRoute}" class="btn-primary" style="padding: 0;">
+                <i class="fa fa-pencil fs-4 text-primary">
+                  </i>
+              </a>
+              <a href="javascript:void(0);"
+                uuid="${data}"
+                class="delete_record btn-danger" style="padding: 0;">
+                <i class="fa fa-trash fs-4 text-danger"></i>
+              </a>
+            `;
+          },
+        },
+      ]
+    );
+
+    // function setupStatusToggleHandler(selector, table) {
+    //   $(document).on("change", selector, function () {
+    //     const uuid = $(this).attr("uuid");
+    //     $.ajax({
+    //       url: `/dealership/${uuid}/status`,
+    //       type: "PATCH",
+    //       success: function (response) {
+    //         Swal.fire({
+    //           title: "Success",
+    //           text: "Dealership status updated successfully",
+    //           icon: "success",
+    //         });
+    //       },
+    //     });
+    //   });
+    // }
+
+    function setupDeleteHandler(selector, table) {
+      $(document).on("click", selector, function () {
+        const uuid = $(this).attr("uuid");
+        Swal.fire({
+          title: "Are you sure?",
+          text: "You won't be able to revert this!",
+          icon: "warning",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            $.ajax({
+              url: `/master/rto/${uuid}`,
+              type: "DELETE",
+              success: function (response) {
+                Swal.fire("Deleted!", "Rto has been deleted.", "success");
+                table.ajax.reload();
+              },
+            });
+          }
+        });
+      });
+    }
+    // implement status toggle handler
+    // setupStatusToggleHandler(".form-check-input", table);
+
+    // Apply delete handler for delete buttons
+    setupDeleteHandler(".delete_record", table);
+  });
+</script>

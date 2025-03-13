@@ -1,0 +1,15 @@
+# Normalize all text files to LF line endings
+* text eol=lf
+
+# Specific rules for JavaScript files
+*.js text eol=lf
+
+# Treat binary files as binary (to avoid line-ending normalization)
+*.png binary
+*.woff binary
+*.woff2 binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ttf binary
+*.eot binary

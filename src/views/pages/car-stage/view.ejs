@@ -1,0 +1,124 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header border-0 pt-6">
+      <div
+        class="
+          card-title
+          d-flex
+          justify-content-between
+          align-items-center
+          w-100
+        "
+      >
+        <h2 class="card-title fs-3 fw-bold text-gray-900">Car Stage View</h2>
+        <a href="/master/car-stage/create" class="btn btn-sm btn-primary"
+          >Add Car Stage</a
+        >
+      </div>
+    </div>
+
+    <div class="card-body pt-0">
+      <table
+        id="DataTable"
+        class="table table-striped table-row-bordered gy-5 gs-7 border rounded"
+      >
+        <thead>
+          <tr class="fw-bold fs-6 text-gray-800 px-7">
+            <th>Sr No</th>
+            <th>Car Stage Name</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- DataTables will populate this -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+  const renderAction = (data, type, row, meta) => {
+    return `<a href="/master/car-stage/${row.uuid}/edit" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
+              <a data-uuid="${row.uuid}" class="btn btn-sm btn-danger delete-car-stage"><i class="fas fa-trash"></i></a>`;
+  };
+  $(document).ready(function () {
+    const t = $("#DataTable").DataTable({
+      paging: true,
+      pageLength: 10,
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: "/master/car-stage/all",
+      },
+      columns: [
+        {
+          data: "uuid",
+          defaultContent: "",
+          name: "Sr No",
+          render: function (data, type, row, meta) {
+            return meta.row + 1;
+          },
+        },
+        { data: "cs_name", defaultContent: "", name: "Car Stage Name" },
+        {
+          data: null,
+          defaultContent: "",
+          name: "Action",
+          render: renderAction,
+        },
+      ],
+      columnDefs: [
+        {
+          searchable: false,
+          orderable: false,
+          targets: 0,
+        },
+        {
+          searchable: true,
+          orderable: false,
+          targets: 1,
+        },
+        {
+          searchable: false,
+          orderable: false,
+          targets: 2,
+        },
+      ],
+    });
+
+    // delete car stage jquery
+    $(document).on("click", ".delete-car-stage", function () {
+      const csUuid = $(this).data("uuid");
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `/master/car-stage/${csUuid}`,
+            method: "DELETE",
+            success: function (response) {
+              Swal.fire("Deleted!", "Car stage has been deleted.", "success");
+              t.ajax.reload();
+            },
+            error: function (xhr, status, error) {
+              Swal.fire(
+                "Error!",
+                "An unexpected error occurred. Please try again later.",
+                "error"
+              );
+              console.error("Car stage deletion error:", error);
+            },
+          });
+        }
+      });
+    });
+  });
+</script>

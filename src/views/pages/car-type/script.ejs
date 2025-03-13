@@ -1,0 +1,180 @@
+<script>
+  const renderAction = (data, type, row, meta) => {
+    return `<a href="/car-type/edit/${row.ct_id}" class="btn btn-sm btn-primary"><i class="fas fa-pen"></i></a>
+              <a data-id="${row.ct_id}" class="btn btn-sm btn-danger delete-car-stage"><i class="fas fa-trash"></i></a>`;
+  };
+
+ $(document).ready(function () {
+  const t = $("#DataTable").DataTable({
+    paging: true,
+    pageLength: 10,
+    processing: true,
+    serverSide: true,
+    ajax: {
+      url: "/master/car-type/all",
+    },
+    columns: [
+      {
+        data: "ct_id",
+        render: function (data, type, row, meta) {
+          return meta.row + 1;
+        },
+      },
+      { data: "ct_name", name: "Car Type Name" },
+      {
+        data: "ct_image",
+        render: function (data, type, row) {
+          return data ? `<img style="width:75px; height:75px;"
+                          src="/cartypes/${row.ct_id}/${data}"
+                          alt="${row.ct_name} image">`
+                       : "No image";
+        },
+      },
+      {
+        data: null,
+        render: renderAction,
+      },
+    ],
+    columnDefs: [
+      {
+        searchable: false,
+        orderable: false,
+        targets: 0, // Disable sorting for the first column
+      },
+      {
+        searchable: true,
+        orderable: false,
+        targets: 1, // Allow searching on car type names
+      },
+      {
+        searchable: false,
+        orderable: false,
+        targets: 2, // Disable searching and ordering for the image column
+      },
+       {
+        searchable: false,
+        orderable: false,
+        targets: 3, // Disable searching and ordering for the image column
+      },
+    ],
+  });
+
+
+    const ctNameInput = $("#ctName");
+    const ctImageInput = $("#ctImage");
+    const carTypeForm = $("#carTypeForm");
+    const ctNameError = $("#ctNameError");
+    const ctImageError = $("#ctImageError");
+
+    function validateCtName(ctName) {
+      const re = /^[^\s@]+$/;
+      return re.test(ctName);
+    }
+
+    function showError(element, message) {
+      element.find("#ctNameErrorText").text(message);
+      element.show();
+      element.prev("input").addClass("is-invalid");
+    }
+
+    function clearError(element) {
+      element.find("#ctNameErrorText").text("");
+      element.hide();
+      element.prev("input").removeClass("is-invalid");
+    }
+
+    function validateInputs() {
+      let isValid = true;
+
+      if (!validateCtName(ctNameInput.val())) {
+        showError(ctNameError, "Please enter a valid car Type name");
+        isValid = false;
+      } else {
+        clearError(ctNameError);
+      }
+
+      return isValid;
+    }
+
+    carTypeForm.submit(function (e) {
+      e.preventDefault();
+      clearError(ctNameError);
+      if (!validateInputs()) {
+        return;
+      }
+
+      var ctName = ctNameInput.val().trim();
+      var $submitButton = $("#submitBtn");
+      $submitButton.prop("disabled", true);
+
+
+      $.ajax({
+        url: "/master/car-type",
+        method: "POST",
+        data: { ct_name: ctName, ct_image: ctImage },
+        success: function (response) {
+          t.ajax.reload();
+          carTypeForm[0].reset();
+        },
+        error: function (xhr, status, error) {
+          if (xhr.status === 403) {
+            showError(csNameError, "You are not authorized to access admin");
+          } else if (xhr.status === 401) {
+            showError(csNameError, "Invalid car Type name");
+          } else if (xhr.status === 400) {
+            showError(csNameError, "Car Type already exists");
+          } else {
+            showError(
+              csNameError,
+              "An unexpected error occurred. Please try again later."
+            );
+          }
+        },
+        complete: function () {
+          $submitButton.prop("disabled", false);
+        },
+      });
+    });
+
+    ctNameInput.on("input", function () {
+      if (validateCtName($(this).val())) {
+        clearError(ctNameError);
+      } else {
+        showError(ctNameError, "Please enter a valid car type name");
+      }
+    });
+    // delete car stage jquery
+    $(document).on("click", ".delete-car-stage", function () {
+      const csId = $(this).data("id");
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          $.ajax({
+            url: `/master/car-stage/${csId}`,
+            method: "DELETE",
+            success: function (response) {
+              Swal.fire("Deleted!", "Car stage has been deleted.", "success");
+              t.ajax.reload();
+            },
+            error: function (xhr, status, error) {
+              Swal.fire(
+                "Error!",
+                "An unexpected error occurred. Please try again later.",
+                "error"
+              );
+              console.error("Car stage deletion error:", error);
+            },
+          });
+        }
+      });
+    });
+  });
+</script>
