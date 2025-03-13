@@ -197,3 +197,5 @@
 [32minfo[39m: GET /assets/js/custom/utilities/modals/users-search.js 304 - 3.613 ms
 [32minfo[39m: GET /js/components/app.js 304 - 4.678 ms
 [32minfo[39m: GET /assets/plugins/global/fonts/keenicons/keenicons-duotone.ttf?eut7fk 304 - 0.468 ms
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000

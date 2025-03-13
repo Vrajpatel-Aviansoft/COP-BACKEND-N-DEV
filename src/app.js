@@ -9,6 +9,7 @@ const corsConfig = {
 };
 const passport = require('passport');
 const config = require('./config/config');
+require("./config/redis-config");
 const morgan = require('./config/morgan');
 const { jwtStrategy } = require('./config/passport');
 const { authLimiter } = require('./middlewares/rateLimiter');
