@@ -11,6 +11,7 @@
   },
   "scripts": {
     "start": "node index.js",
+    "start_dev": "cross-env NODE_ENV=production node index.js",
     "dev": "cross-env NODE_ENV=development nodemon src/index.js",
     "truncate": "cross-env NODE_ENV=development node src/truncate_db.js",
     "lint": "eslint .",
