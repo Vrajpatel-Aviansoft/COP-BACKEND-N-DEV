@@ -30,7 +30,7 @@ const logger = winston.createLogger({
     new winston.transports.Console({
       stderrLevels: ["error"],
     }),
-    new winston.transports.File({ filename: `src/logs/${formattedDate}-combined.log` }),
+    //new winston.transports.File({ filename: `src/logs/${formattedDate}-combined.log` }),
   ],
 });
 
