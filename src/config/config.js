@@ -107,6 +107,7 @@ module.exports = {
       logging: false,
       dialect: 'mysql',
       dialectModule: require('mysql2'),
+      ssl: envVars.DB_SSL,
     },
     test: {
       username: envVars.DB_USER,
@@ -116,19 +117,17 @@ module.exports = {
       port: envVars.DB_PORT,
       dialect: 'mysql',
       dialectModule: require('mysql2'),
+      ssl: envVars.DB_SSL,
     },
     production: {
-      dialect: "sqlite",
-      storage: "database.sqlite"
-    }
-    // production: {
-    //   username: envVars.DB_USER,
-    //   password: envVars.DB_PASSWORD,
-    //   database: envVars.DB_NAME,
-    //   host: envVars.DB_HOST,
-    //   port: envVars.DB_PORT,
-    //   dialect: 'mysql',
-    //   dialectModule: require('mysql2'),
-    // },
+      username: envVars.DB_USER,
+      password: envVars.DB_PASSWORD,
+      database: envVars.DB_NAME,
+      host: envVars.DB_HOST,
+      port: envVars.DB_PORT,
+      dialect: 'mysql',
+      dialectModule: require('mysql2'),
+      ssl: envVars.DB_SSL,
+    },
   },
 };

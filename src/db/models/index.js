@@ -25,6 +25,9 @@ if (config.use_env_variable) {
         timezone: 'Z', // Use UTC timezone for Sequelize
         multipleStatements: true,
         insecureAuth: true,
+        ssl: {
+          rejectUnauthorized: config.ssl,  // Adjust if your cloud provider requires SSL
+        },
       },
       define: {
         charset: "utf8mb4",
