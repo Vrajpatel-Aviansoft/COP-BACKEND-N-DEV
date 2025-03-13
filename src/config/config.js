@@ -119,8 +119,8 @@ module.exports = {
     },
     production: {
       dialect: "sqlite",
-      storage: ":memory:", // Use in-memory SQLite
-    },
+      storage: "database.sqlite"
+    }
     // production: {
     //   username: envVars.DB_USER,
     //   password: envVars.DB_PASSWORD,
