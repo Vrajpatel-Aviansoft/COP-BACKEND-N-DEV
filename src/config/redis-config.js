@@ -8,7 +8,7 @@ const redis = new Redis(redisUrl, {
   password: token,
 });
 
-redis.set('key', 'value');
-redis.get('key', (err, result) => {
-  console.log(result); // Output: value
-});
+// redis.set('key', 'value');
+// redis.get('key', (err, result) => {
+//   console.log(result); // Output: value
+// });
