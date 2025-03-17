@@ -6,3 +6,5 @@ tmp/
 temp/
 .env
 .env.development
+.env.development.local
+.env.example
