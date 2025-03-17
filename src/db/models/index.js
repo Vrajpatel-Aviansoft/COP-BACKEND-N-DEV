@@ -23,6 +23,7 @@ if (config.use_env_variable) {
       port: config.port,
       dialectOptions: {
         timezone: 'Z', // Use UTC timezone for Sequelize
+        connectTimeout: 10000,
         multipleStatements: true,
         insecureAuth: true,
         ssl: {
@@ -30,10 +31,16 @@ if (config.use_env_variable) {
           ca: fs.readFileSync(path.resolve('./src/db/ca.pem')), // Path to the CA certificate
         },
       },
+      pool: {
+        max: 10, // Maximum number of connections
+        min: 0,  // Minimum number of connections
+        acquire: 30000, // Maximum time (ms) to acquire a connection
+        idle: 10000,    // Maximum idle time (ms) before releasing a connection
+      },
       define: {
         charset: "utf8mb4",
       },
-      logging: env === "development" ? console.log : false,
+      logging: console.log, //env === "development" ? console.log : false,
       ...config,
     });
 }
