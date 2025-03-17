@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   RoleHasPermission.init(
     {
       permission_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT.UNSIGNED,
         allowNull: false,
         references: {
           model: "permissions",
@@ -29,7 +29,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       role_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
         allowNull: false,
         references: {

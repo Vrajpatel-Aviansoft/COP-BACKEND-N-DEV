@@ -74,14 +74,14 @@ db.Sequelize = Sequelize;
   }
 })();
 
-db.sequelize
-  .sync({ alter: true })
-  .then(() => {
-    console.log("All tables synchronized successfully.");
-  })
-  .catch((err) => {
-    console.error("Error synchronizing tables:", err);
-  });
+// db.sequelize
+//   .sync({ alter: true })
+//   .then(() => {
+//     console.log("All tables synchronized successfully.");
+//   })
+//   .catch((err) => {
+//     console.error("Error synchronizing tables:", err);
+//   });
 
  
   

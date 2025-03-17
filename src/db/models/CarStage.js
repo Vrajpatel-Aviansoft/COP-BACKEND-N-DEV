@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
   CarStage.init(
     {
       cs_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
       },

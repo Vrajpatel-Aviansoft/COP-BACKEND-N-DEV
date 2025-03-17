@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   BannerCategory.init(
     {
       bc_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BIGINT.UNSIGNED,
         primaryKey: true,
         autoIncrement: true,
       },
