@@ -26,7 +26,8 @@ if (config.use_env_variable) {
         multipleStatements: true,
         insecureAuth: true,
         ssl: {
-          rejectUnauthorized: config.ssl,  // Adjust if your cloud provider requires SSL
+          require: true,
+          ca: fs.readFileSync(path.resolve('./src/db/ca.pem')), // Path to the CA certificate
         },
       },
       define: {
@@ -63,6 +64,16 @@ Object.keys(db).forEach((modelName) => {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+
+(async () => {
+  try {
+    await db.sequelize.authenticate();
+    console.log('Connection has been established successfully.');
+  } catch (error) {
+    console.error('Unable to connect to the database:', error);
+  }
+})();
+
 db.sequelize
   .sync({ alter: true })
   .then(() => {
@@ -71,5 +82,9 @@ db.sequelize
   .catch((err) => {
     console.error("Error synchronizing tables:", err);
   });
+
+ 
+  
+ 
 
 module.exports = db;
