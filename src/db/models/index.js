@@ -18,17 +18,19 @@ if (config.use_env_variable) {
     config.username,
     config.password, 
     {
+      ...config,
       host: config.host,
       dialect: config.dialect,
       port: config.port,
       dialectOptions: {
         timezone: 'Z', // Use UTC timezone for Sequelize
         connectTimeout: 10000,
-        multipleStatements: true,
-        insecureAuth: true,
+        //multipleStatements: true,
+        //insecureAuth: true,
         ssl: {
           require: true,
           ca: fs.readFileSync(path.resolve('./src/db/ca.pem')), // Path to the CA certificate
+          rejectUnauthorized: true,
         },
       },
       pool: {
@@ -41,7 +43,6 @@ if (config.use_env_variable) {
         charset: "utf8mb4",
       },
       logging: console.log, //env === "development" ? console.log : false,
-      ...config,
     });
 }
 

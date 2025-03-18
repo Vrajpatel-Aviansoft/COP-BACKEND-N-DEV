@@ -22,6 +22,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       permission_id: {
         type: DataTypes.BIGINT.UNSIGNED,
+        primaryKey: true,
         allowNull: false,
         references: {
           model: "permissions",

@@ -3,10 +3,10 @@ const { minio: minioConfig } = require('./config');
 
 const minioClient = new minio.Client({
   endPoint: minioConfig.endPoint,
+  port: 443,
+  useSSL: true,
   accessKey: minioConfig.accessKey,
-  port: 9000,
   secretKey: minioConfig.secretKey,
-  useSSL: false,
 });
 
 const putObject = async (path, fileBuffer, contentType) => {
