@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "Icon",
-      timestamps: false,
+      timestamps: true,
       underscored: true,
       tableName: "cop_icon_ms",
     }

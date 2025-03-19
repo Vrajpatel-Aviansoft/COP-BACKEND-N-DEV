@@ -47,11 +47,20 @@ const createBrand = async (user, brandBody, brandFiles) => {
       contentType: 'image/webp',
     },
   ];
-  await uploadFiles(brandFileConfig);
+  const image_urls= await uploadFiles(brandFileConfig);
+  console.log("TEst dtaa1243-",image_urls[0])
+  console.log("TEst temp-",image_urls[1])       
+  // await brand
+  //   .set({
+  //     brand_logo: `${brand.brand_id}.webp`,
+  //     brand_banner: `${brand.brand_id}_banner.webp`,
+  //   })
+  //   .save();
+
   await brand
     .set({
-      brand_logo: `${brand.brand_id}.webp`,
-      brand_banner: `${brand.brand_id}_banner.webp`,
+      brand_logo: image_urls[0],
+      brand_banner: image_urls[1],
     })
     .save();
 };

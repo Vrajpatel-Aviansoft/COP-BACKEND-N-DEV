@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "CarListing",
-      timestamps: false,
+      timestamps: true,
       underscored: true,
       tableName: "cop_cl_ms",
     }

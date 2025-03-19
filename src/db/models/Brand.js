@@ -28,12 +28,14 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
       },
       brand_logo: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.STRING(500),
+        allowNull: false,
+        defaultValue: ''
       },
       brand_banner: {
-        type: DataTypes.STRING,
-        allowNull: true,
+        type: DataTypes.STRING(500),
+        allowNull: false,
+        defaultValue: ''
       },
       brand_description: {
         type: DataTypes.TEXT,

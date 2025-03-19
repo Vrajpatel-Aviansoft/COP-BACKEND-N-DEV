@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "StandardUnit",
-      timestamps: false,
+      timestamps: true,
       underscored: true,
       tableName: "cop_su_ms",
     }

@@ -7,6 +7,8 @@ const minioClient = new minio.Client({
   useSSL: true,
   accessKey: minioConfig.accessKey,
   secretKey: minioConfig.secretKey,
+  s3ForcePathStyle: true, // may be required for Wasabi
+  signatureVersion: 'v4'
 });
 
 const putObject = async (path, fileBuffer, contentType) => {
@@ -17,10 +19,29 @@ const putObject = async (path, fileBuffer, contentType) => {
       fileBuffer,
       contentType
     );
+    return await getPresignedReadURL(minioConfig.bucket, path, 86400 * 7);
   } catch (error) {
     throw error;
   }
 };
+
+/**
+ * Generate a presigned URL for reading an object from Wasabi.
+ * @param {string} bucket - Your bucket name.
+ * @param {string} objectName - The object key.
+ * @param {number} expiry - Time in seconds until expiration.
+ * @returns {Promise<string>}
+ */
+async function getPresignedReadURL(bucket, objectName, expiry) {
+  return new Promise(async (resolve, reject) => {
+    await minioClient.presignedGetObject(bucket, objectName, expiry, (err, url) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(url);
+    });
+  });
+}
 
 const moveObject = async (sourceFolder, destinationFolder) => {
   try {

@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: "FeatureOption",
-      timestamps: false,
+      timestamps: true,
       underscored: true,
       tableName: "cop_fo_ms",
     }

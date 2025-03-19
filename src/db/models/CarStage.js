@@ -23,6 +23,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         unique: true,
       },
+      created_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        allowNull: false,
+        defaultValue: DataTypes.NOW,
+      },
       uuid: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -32,7 +42,8 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "CarStage",
       tableName: "cop_cs_ms",
-      timestamps: false,
+      timestamps: true,
+      underscored: true,
     }
   );
 

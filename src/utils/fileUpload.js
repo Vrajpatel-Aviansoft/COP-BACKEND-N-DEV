@@ -10,13 +10,13 @@ const uploadFiles = async (files) => {
   return Promise.all(
     files.map(async (file) => {
       if (!file.compress) {
-        return putObject(file.filename, file.buffer, file.contentType);
+        return await putObject(file.filename, file.buffer, file.contentType);
       } else {
         const compressedFile = await sharp(file.buffer)
           .webp({ quality: COMPRESSION_QUALITY })
           .toBuffer();
         file.buffer = compressedFile;
-        return putObject(file.filename, file.buffer, file.contentType);
+        return await putObject(file.filename, file.buffer, file.contentType);
       }
     })
   );
