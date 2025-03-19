@@ -1,0 +1,243 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="userForm" enctype="multipart/form-data">
+        <div class="card-header d-flex justify-content-between align-items-center border-0 pt-6">
+          <h2 class="card-title fs-2 fw-6">Edit User</h2>
+          <a class="btn btn-sm btn-primary mt-4" href="/user">View Users</a>
+        </div>
+
+        <div class="card-body pt-0 col-md-6">
+          <!-- Name Input -->
+          <div class="form-group">
+            <label for="name" class="required mb-2">Name:</label>
+            <input
+              type="text"
+              id="name"
+              class="form-control"
+              name="name"
+              placeholder="Enter the official name of the User"
+              value="<%= user.name %>"
+              required
+              minlength="2"
+            />
+          </div>
+
+          <!-- Email Input -->
+          <div class="form-group mt-4">
+            <label for="email" class="required mb-2">Email:</label>
+            <input
+              type="email"
+              id="email"
+              class="form-control"
+              name="email"
+              placeholder="Enter User Email"
+              value="<%= user.email %>"
+              required
+            />
+          </div>
+
+          <!-- Role Selection -->
+          <div class="form-group mt-4">
+            <label for="role_id" class="required">Select Role:</label>
+            <select
+              class="form-select"
+              id="role_id"
+              name="role_id"
+              data-control="select2"
+              required
+            >
+              <!-- Placeholder option -->
+              <option disabled value="" <%= user.role_id ? '' : 'selected' %>>Select Role</option>
+          
+              <!-- Loop through roles and populate the dropdown -->
+              <% roles.forEach(function (role) { %>
+                <option
+                  value="<%= role.id %>" 
+                  <%= user.role_id == role.id ? 'selected' : '' %>
+                >
+                  <%= role.name %>
+                </option>
+              <% }); %>
+            </select>
+          </div>          
+
+          <!-- Password Input -->
+          <div class="form-group mt-4">
+            <label for="password" class="required mb-2">Password:</label>
+            <div class="position-relative">
+              <input
+                type="password"
+                id="password"
+                class="form-control"
+                name="password"
+                placeholder="Password"
+              />
+              <a
+                href="javascript:void(0)"
+                class="position-absolute"
+                style="top: 50%; right:10px; transform: translateY(-50%);"
+              >
+                <i class="far fa-eye-slash" id="new_pass_button" style="color:#1f2937;"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Confirm Password Input -->
+          <div class="form-group mt-4">
+            <label for="confirmed_password" class="required mb-2">Confirm Password:</label>
+            <div class="position-relative">
+              <input
+                type="password"
+                id="confirmed_password"
+                class="form-control"
+                name="confirmed_password"
+                placeholder="Confirm Password"
+              />
+              <a
+                href="javascript:void(0)"
+                class="position-absolute"
+                style="top: 50%; right:10px; transform: translateY(-50%);"
+              >
+                <i class="far fa-eye-slash" id="conf_pass_button" style="color:#1f2937;"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="d-flex mt-4">
+            <button class="btn btn-sm btn-primary" id="submitBtn" type="submit">Update</button>
+            <a class="btn btn-sm btn-danger ms-2" href="/user">Cancel</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- JavaScript Section -->
+<script>
+  $(document).ready(function () {
+     // Toggle Password Visibility
+  function togglePasswordVisibility(buttonId, inputId) {
+    const button = document.getElementById(buttonId);
+    const input = document.getElementById(inputId);
+    button.addEventListener("click", function () {
+      if (input.type === "password") {
+        input.type = "text";
+        this.classList.remove("fa-eye-slash");
+        this.classList.add("fa-eye");
+      } else {
+        input.type = "password";
+        this.classList.remove("fa-eye");
+        this.classList.add("fa-eye-slash");
+      }
+    });
+  }
+
+  togglePasswordVisibility("new_pass_button", "password");
+  togglePasswordVisibility("conf_pass_button", "confirmed_password");
+
+  // Extend jQuery Validate with a custom rule for password confirmation
+  $.validator.addMethod(
+    "passwordMatch",
+    function (value, element) {
+      const password = $("#password").val();
+      return this.optional(element) || value === password;
+    },
+    "Passwords do not match"
+  );
+
+    // Form Validation and Submission
+    $("#userForm").validate({
+      rules: {
+        name: {
+          required: true,
+          minlength: 2,
+        },
+        email: {
+          required: true,
+          email: true,
+        },
+        role_id: {
+          required: true,
+        },
+        password: {
+          required: true,
+          minlength: 6,
+        },
+        confirmed_password: {
+        required: true,
+        passwordMatch: true, // Custom rule for password confirmation
+      },
+      },
+      messages: {
+        name: {
+          required: "Please enter the User Name",
+          minlength: "User Name must be at least 2 characters long",
+        },
+        email: {
+          required: "Please enter the Email",
+          email: "Enter a valid email address",
+        },
+        role_id: {
+          required: "Please select a Role",
+        },
+        password: {
+        required: "Please enter a password",
+        minlength: "Password must be at least 6 characters long",
+      },
+      confirmed_password: {
+        required: "Please confirm your password",
+        passwordMatch: "Passwords do not match",
+      },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+        $.ajax({
+          url: "/user/<%= user.uuid %>",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            Swal.fire({
+              icon: "success",
+              title: "Success",
+              text: "User updated successfully!",
+            }).then(() => {
+              window.location.href = "/user";
+            });
+          },
+          error: function (xhr) {
+            const errorMessage =
+              xhr.responseJSON && xhr.responseJSON.message
+                ? xhr.responseJSON.message
+                : "An error occurred while updating the User";
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+  });
+</script>

@@ -1,0 +1,183 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="specificationForm" enctype="multipart/form-data">
+        <div class="card-header w-100 justify-content-between border-0 pt-6">
+          <a
+            class="btn btn-sm btn-primary mt-4"
+            style="margin-left: auto"
+            href="/spec"
+          >
+            view Specification
+          </a>
+          <div class="card-title w-100 justify-content-between">
+            <h2 class="card-title fs-2 fw-6">Specification</h2>
+
+            <div
+              class="
+                form-check
+                form-switch
+                form-check-custom
+                form-check-success
+                form-check-solid
+              "
+            >
+              <label
+                class="form-check-label text-black mt-4"
+                for="kt_flexSwitchCustomDefault_1_1"
+              >
+                <b>Visibility:</b>
+              </label>
+              <input
+                class="form-check-input mt-4 ms-5 cursor-pointer"
+                name="status"
+                type="checkbox"
+                checked
+                id="status"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0 col-md-6">
+          <div class="form-group">
+            <label for="spec_name" class="required mb-2"
+              >Specification Name:
+            </label>
+            <input
+              type="text"
+              id="SpecificationName"
+              class="form-control"
+              name="spec_name"
+              placeholder="Enter Specification Name"
+            />
+          </div>
+
+          <div class="form-group mt-4" data-select2-id="select2-data-142-f275">
+            <label for="carStageName1" class="required"
+              >Select Specification Category:</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select Specification Category"
+              id="sc_id"
+              name="sc_id"
+              data-control="select2"
+            >
+              <option selected="" disabled="" value="">
+                Select Specification Category
+              </option>
+              <% specCategories.forEach(function(data) { %>
+              <option value="<%= data.sc_id  %>"><%= data.sc_name %></option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="spec_image" class="required mb-2"
+              >Specification Image::
+            </label>
+            <input
+              type="file"
+              id="specImage"
+              class="form-control"
+              name="spec_image"
+            />
+          </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a class="btn btn-sm btn-danger mt-4" href="/spec" >
+            Cancel
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#specificationForm").validate({
+      rules: {
+        Specification_name: {
+          required: true,
+          minlength: 2,
+        },
+        sc_id: {
+          required: true,
+        },
+        spec_image: {
+          required: true,
+        },
+      },
+      messages: {
+        Specification_name: {
+          required: "Please enter the specification name",
+          minlength: "Specification name must be at least 2 characters long",
+        },
+        sc_id: {
+          required: "Please select a specification category",
+        },
+        spec_image: {
+          required: "Please upload the specification image",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        const $submitButton = $("#submitBtn");
+        $submitButton.prop("disabled", true);
+
+        const formData = new FormData(form);
+        formData.set("status", $("input[name='status']").is(":checked"));
+        $.ajax({
+          url: "/spec/create",
+          method: "POST",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            window.location.href = "/spec";
+          },
+          error: function (xhr, status, error) {
+            let errorMessage =
+              "An error occurred while creating the specification";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: errorMessage,
+            });
+          },
+          complete: function () {
+            $submitButton.prop("disabled", false);
+          },
+        });
+      },
+    });
+
+    // Handle file input changes
+    $("#specImage").on("change", function () {
+      if ($(this).val()) {
+        $(this).removeClass("is-invalid");
+        $(this).next("label.error").remove();
+      }
+    });
+  });
+</script>

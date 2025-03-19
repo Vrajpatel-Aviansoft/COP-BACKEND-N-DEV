@@ -1,0 +1,162 @@
+<!-- Include SweetAlert CSS and JS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div
+      id="kt_app_toolbar_container"
+      class="app-container container-xxl d-flex flex-stack"
+    >
+      <div
+        class="
+          page-title
+          d-flex
+          flex-column
+          justify-content-center
+          flex-wrap
+          me-3
+        "
+      >
+        <h1
+          class="
+            page-heading
+            d-flex
+            text-gray-900
+            fw-bold
+            fs-3
+            flex-column
+            justify-content-center
+            my-0
+          "
+        >
+          Add Category
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="card pt-6">
+      <form id="carStageForm">
+        <div class="card-body pt-0">
+          <div class="form-group">
+            <label for="csName" class="required mb-2">Car Stage Name: </label>
+            <input
+              type="text"
+              id="csName"
+              class="form-control"
+              name="csName"
+              placeholder="Enter Car Stage Name"
+              value="<%= carStage.cs_name %>"
+            />
+            <div
+              id="csNameError"
+              class="invalid-feedback"
+              style="display: none"
+            >
+              <span id="csNameErrorText"></span>
+            </div>
+          </div>
+          <button
+            class="btn btn-sm btn-primary mt-6"
+            name="submit"
+            type="submit"
+            id="submitBtn"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    const csNameInput = $("#csName");
+    const carStageForm = $("#carStageForm");
+    const csNameError = $("#csNameError");
+
+    function validateCsName(csName) {
+      const re = /^[^\s@]+$/;
+      return re.test(csName);
+    }
+
+    function showError(element, message) {
+      element.find("#csNameErrorText").text(message);
+      element.show();
+      element.prev("input").addClass("is-invalid");
+    }
+
+    function clearError(element) {
+      element.find("#csNameErrorText").text("");
+      element.hide();
+      element.prev("input").removeClass("is-invalid");
+    }
+
+    function validateInputs() {
+      let isValid = true;
+
+      if (!validateCsName(csNameInput.val())) {
+        showError(csNameError, "Please enter a valid car stage name");
+        isValid = false;
+      } else {
+        clearError(csNameError);
+      }
+
+      return isValid;
+    }
+
+    carStageForm.submit(function (e) {
+      e.preventDefault();
+      clearError(csNameError);
+
+      if (!validateInputs()) {
+        return;
+      }
+
+      var csName = csNameInput.val().trim();
+      var $submitButton = $("#submitBtn");
+      $submitButton.prop("disabled", true);
+      const uuid = window.location.href.split("/")[5];
+
+      $.ajax({
+        url: `/master/car-stage/${uuid}`,
+        method: "PUT",
+        data: { cs_name: csName },
+        success: function (response) {
+          window.location.href = "/master/car-stage";
+          carStageForm[0].reset();
+        },
+        error: function (xhr, status, error) {
+          if (xhr.status === 403) {
+            showError(csNameError, "You are not authorized to access admin");
+          } else if (xhr.status === 401) {
+            showError(csNameError, "Invalid car stage name");
+          } else if (xhr.status === 400) {
+            showError(csNameError, "Car stage already exists");
+          } else {
+            showError(
+              csNameError,
+              "An unexpected error occurred. Please try again later."
+            );
+          }
+        },
+        complete: function () {
+          $submitButton.prop("disabled", false);
+        },
+      });
+    });
+
+    csNameInput.on("input", function () {
+      if (validateCsName($(this).val())) {
+        clearError(csNameError);
+      } else {
+        showError(csNameError, "Please enter a valid car stage name");
+      }
+    });
+  });
+</script>

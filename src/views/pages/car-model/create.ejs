@@ -1,0 +1,776 @@
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div
+      id="kt_app_toolbar_container"
+      class="app-container container-xxl d-flex flex-stack"
+    >
+      <div
+        class="
+          page-title
+          d-flex
+          flex-column
+          justify-content-center
+          flex-wrap
+          me-3
+        "
+      ></div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="carModelForm" enctype="multipart/form-data">
+        <div class="card-header border-0 pt-6">
+          <div class="card-title d-flex justify-content-between w-100">
+            <h2 class="card-title fs-2 fw-6">Model</h2>
+            <div
+              class="
+                form-check
+                form-switch
+                form-check-custom
+                form-check-success
+                form-check-solid
+              "
+            >
+              <label
+                class="form-check-label text-black mt-4"
+                for="kt_flexSwitchCustomDefault_1_1"
+              >
+                <b>Visibility:</b>
+              </label>
+              <input
+                class="form-check-input mt-4 ms-5"
+                name="status"
+                type="checkbox"
+                checked
+                id="status"
+              />
+            </div>
+          </div>
+          <div class="card-toolbar">
+            <div
+              class="d-flex justify-content-end"
+              data-kt-customer-table-toolbar="base"
+            ></div>
+            <div
+              class="d-flex justify-content-end align-items-center d-none"
+              data-kt-customer-table-toolbar="selected"
+            ></div>
+          </div>
+        </div>
+
+        <div class="card-body pt-0" data-select2-id="select2-data-129-x54o">
+          <div class="form-group col-lg-6 mb-6">
+            <label for="carStageName1" class="required mb-2"
+              >Select Car stage:</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select Car Stage"
+              id="cs_id"
+              name="cs_id"
+              data-control="select2"
+            >
+              <option selected="" disabled="" value="">Select Car Stage</option>
+              <% carStages.forEach(function(carStage) { %>
+              <option value="<%= carStage.cs_id %>">
+                <%= carStage.cs_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div
+            class="form-group col-lg-6 mb-6"
+            data-select2-id="select2-data-128-9ywp"
+          >
+            <label for="" class="form-label">Select Date:</label>
+            <input
+              class="form-control"
+              placeholder="Pick a date"
+              id="kt_datepicker_1"
+              name="launch_date"
+            />
+          </div>
+
+          <div
+            class="form-group col-lg-6 mb-6"
+            data-select2-id="select2-data-128-9ywp"
+          >
+            <label for="carStageName1" class="required mb-2"
+              >Select Car Type:</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select Car Type"
+              id="ct_id"
+              name="ct_id"
+              data-control="select2"
+            >
+              <option selected="" disabled="" value="">Select Car Type</option>
+              <% carTypes.forEach(function(carType) { %>
+              <option value="<%= carType.ct_id %>">
+                <%= carType.ct_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div
+            class="form-group col-lg-6 mb-6"
+            data-select2-id="select2-data-142-f275"
+          >
+            <label for="carStageName1" class="required mb-2"
+              >Select Brand:</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select Brand"
+              id="brand_id"
+              name="brand_id"
+              data-control="select2"
+            >
+              <option selected="" disabled="" value="">Select Brand</option>
+              <% brands.forEach(function(brand) { %>
+              <option value="<%= brand.brand_id %>">
+                <%= brand.brand_name %>
+              </option>
+              <% }); %>
+            </select>
+          </div>
+          <div class="form-group col-lg-6 mb-6">
+            <label for="carStageName1" class="required mb-2">Model Name:</label>
+            <input
+              type="text"
+              id="carStageName1"
+              class="form-control"
+              name="model_name"
+              placeholder="Enter Model Name"
+              value=""
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-6">
+            <label for="model_image" class="required mb-2">Model Image:</label>
+            <input
+              type="file"
+              id="model_image"
+              class="form-control"
+              name="model_image"
+              accept=".png, .jpg, .jpeg, .webp"
+            />
+            <img
+              id="model_image_preview"
+              src="#"
+              alt="Image Preview"
+              style="display: none; margin-top: 10px; max-width: 200px"
+            />
+          </div>
+
+          <div class="form-group col-lg-6 mb-6">
+            <label for="model_image_mob" class="required mb-2"
+              >Model Image Mobile:</label
+            >
+            <input
+              type="file"
+              id="model_image_mob"
+              class="form-control"
+              name="model_image_mob"
+              accept=".png, .jpg, .jpeg, .webp"
+            />
+            <img
+              id="model_image_mob_preview"
+              src="#"
+              alt="Image Preview"
+              style="display: none; margin-top: 10px; max-width: 200px"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <div class="row">
+              <div class="form-group col-lg-6 mb-6 col-md-6">
+                <label for="image_alt" class="mb-2">Image Alt Tag:</label>
+                <input
+                  type="text"
+                  id="image_alt"
+                  class="form-control"
+                  name="image_alt"
+                  placeholder="Enter Image Alt Tag"
+                  value=""
+                />
+              </div>
+              <div class="form-group col-lg-6 mb-6 col-md-6">
+                <label for="image_title" class="mb-2">Image Title Tag:</label>
+                <input
+                  type="text"
+                  id="image_title"
+                  class="form-control"
+                  name="image_title"
+                  placeholder="Enter Image Title Tag"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+          <div class="form-group col-lg-6 mb-6" id="divmin_price">
+            <label for="min_price" class="required mb-2">Minimum Price:</label>
+            <input
+              type="number"
+              class="form-control"
+              name="min_price"
+              placeholder="Enter Min Value"
+              value=""
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-6" id="divmax_price">
+            <label for="max_price" class="required mb-2">Maximum Price:</label>
+            <input
+              type="number"
+              class="form-control"
+              name="max_price"
+              placeholder="Enter Max Value"
+              value=""
+            />
+          </div>
+
+          <div
+            class="form-group col-lg-6 mb-6"
+            data-select2-id="select2-data-142-f275"
+          >
+            <label for="modelType" class="required mb-2"
+              >Select Model Type :</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select Model Type"
+              id="modelTypeSelect"
+              name="model_type"
+              data-control="select2"
+            >
+              <option selected="" disabled="">Select Model Type</option>
+              <option value="0">Non-EV</option>
+              <option value="1">EV</option>
+            </select>
+          </div>
+
+          <!-- MSD 5 Fields According Change Model Type  -->
+          <div class="form-group col-lg-6 mb-6" id="divmodel_engine">
+            <label for="model_engine" id="model_engine" class="required mb-2"
+              >Model Engine:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="model_engine"
+              placeholder="Enter Model Engine"
+              value=""
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-6" id="divmodel_bhp">
+            <label for="model_bhp" id="model_bhp" class="required mb-2"
+              >Model BHP:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="model_bhp"
+              placeholder="Enter Model Bhp"
+              value=""
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-6" id="divmodel_transmission">
+            <label
+              for="model_transmission"
+              id="model_transmission"
+              class="required mb-2"
+              >Model Transmission:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="model_transmission"
+              placeholder="Enter Model Transmission"
+              value=""
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-6" id="divmodel_mileage">
+            <label for="model_mileage" id="model_mileage" class="required mb-2"
+              >Model Mileage:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="model_mileage"
+              placeholder="Enter Model Mileage"
+              value=""
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-6" id="divmodel_fuel">
+            <label for="model_fuel" id="model_fuel" class="required mb-2"
+              >Model Fuel:</label
+            >
+            <input
+              type="text"
+              class="form-control"
+              name="model_fuel"
+              placeholder="Enter Model Fuel"
+              value=""
+            />
+          </div>
+          <!-- MSD 5 Fields According Change Model Type  -->
+
+          <div id="model_rating_and_type" style="display: none">
+            <label
+              for="model_rating_type"
+              class="required mb-2 ratingtype"
+              style="display: flex"
+              >Select Model Type Rating:</label
+            >
+            <div class="form-group d-flex gap-4 mb-6">
+              <div class="ratingtype" style="display: flex">
+                <label for="ncap" class="mb-2">NCAP : </label>
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  name="model_rating_type"
+                  id="ncap"
+                  value="NCAP"
+                  required
+                />
+              </div>
+              <div class="ratingtype" style="display: flex">
+                <label for="bcap" class="mb-2">BCAP : </label>
+                <input
+                  type="radio"
+                  class="form-check-input"
+                  name="model_rating_type"
+                  id="bcap"
+                  value="BCAP"
+                />
+              </div>
+            </div>
+
+            <div
+              id="model_ncap_rating"
+              class="ratingtype"
+              style="display: flex"
+            >
+              <div>
+                <label for="rating_value" class="required mb-2"
+                  >Select Rating:</label
+                >
+                <select
+                  class="form-select"
+                  aria-label="Select Rating"
+                  id="rating_value"
+                  name="rating_value"
+                  data-control="select2"
+                >
+                  <option
+                    selected=""
+                    disabled=""
+                    data-select2-id="select2-data-15-hmnz"
+                  >
+                    Select Model Rating
+                  </option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                  <option value="NA">NA</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <div
+            class="
+              form-check
+              form-switch
+              form-check-custom
+              form-check-success
+              form-check-duotone
+            "
+          >
+            <label
+              class="form-check-label mt-2"
+              for="kt_flexSwitchCustomDefault_11_1"
+            >
+              <b>CBU Status:</b>
+            </label>
+            <input
+              class="form-check-input mt-2 ms-5"
+              name="cbu_status"
+              type="checkbox"
+              id="cbu_status"
+            />
+          </div>
+          <button
+            type="submit"
+            id="submitBtn"
+            class="btn btn-sm btn-primary mt-6"
+          >
+            Submit
+          </button>
+          <a href="/car-model" class="btn btn-sm btn-danger mt-6">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<script>
+  $(document).ready(function () {
+    // Custom method to validate max price is greater than min price
+    $.validator.addMethod(
+      'greaterThanMinPrice',
+      function (value, element) {
+        var minPrice = parseFloat($('#min_price').val());
+        var maxPrice = parseFloat(value);
+
+        if (isNaN(minPrice) || isNaN(maxPrice)) {
+          return true; // Skip validation if the value is NaN
+        }
+
+        return maxPrice >= minPrice; // Validate if max price is greater than or equal to min price
+      },
+      'Maximum price cannot be less than minimum price' // This is the error message
+    );
+
+    $('#carModelForm').validate({
+      rules: {
+        cs_id: {
+          required: true,
+        },
+        ct_id: {
+          required: true,
+        },
+        brand_id: {
+          required: true,
+        },
+        model_name: {
+          required: true,
+        },
+        model_image: {
+          required: true,
+        },
+        model_image_mob: {
+          required: true,
+        },
+        min_price: {
+          required: true,
+          number: true, // Ensure the value is a number
+        },
+        max_price: {
+          required: true,
+          number: true, // Ensure the value is a number
+          greaterThanMinPrice: true, // Custom validation for max price being greater than min price
+        },
+        model_type: {
+          required: true,
+        },
+        model_engine: {
+          required: true,
+        },
+        model_bhp: {
+          required: true,
+        },
+        model_transmission: {
+          required: true,
+        },
+        model_mileage: {
+          required: true,
+        },
+        model_fuel: {
+          required: true,
+        },
+        rating_value: {
+          required: false,
+        },
+        model_rating_type: {
+          required: false,
+        },
+      },
+      messages: {
+        cs_id: {
+          required: 'Please select the car stage',
+        },
+        ct_id: {
+          required: 'Please select the car type',
+        },
+        brand_id: {
+          required: 'Please select the brand',
+        },
+        model_name: {
+          required: 'Please enter the model name',
+        },
+        model_image: {
+          required: 'Please upload the model image',
+        },
+        model_image_mob: {
+          required: 'Please upload the model image mobile',
+        },
+        min_price: {
+          required: 'Please enter the minimum price',
+          number: 'Please enter a valid number for minimum price',
+        },
+        max_price: {
+          required: 'Please enter the maximum price',
+          number: 'Please enter a valid number for maximum price',
+          greaterThanMinPrice:
+            'Maximum price cannot be less than minimum price',
+        },
+        model_type: {
+          required: 'Please select the model type',
+        },
+        model_engine: {
+          required: 'Please enter the model engine',
+        },
+        model_bhp: {
+          required: 'Please enter the model bhp',
+        },
+        model_transmission: {
+          required: 'Please enter the model transmission',
+        },
+        model_mileage: {
+          required: 'Please enter the model mileage',
+        },
+        model_fuel: {
+          required: 'Please enter the model fuel',
+        },
+        rating_value: {
+          required: 'Please select the model rating',
+        },
+        model_rating_type: {
+          required: 'Please select a rating type',
+        },
+      },
+
+      errorPlacement: function (error, element) {
+        if (element.attr('type') === 'radio' || element.is(':checkbox')) {
+          error.addClass('invalid-feedback');
+          error.insertAfter(element.closest('.form-check'));
+        } else {
+          error.addClass('invalid-feedback');
+          error.insertAfter(element);
+        }
+      },
+
+      highlight: function (element) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+      },
+      submitHandler: function (form) {
+        const $submitButton = $('#submitBtn');
+        $submitButton.prop('disabled', true);
+
+        const formData = new FormData(form);
+        // Get the status and cbu_status checkbox values (1 for checked, 0 for unchecked)
+        const status = $("input[name='status']").is(':checked') ? 1 : 0;
+        const cbuStatus = $("input[name='cbu_status']").is(':checked') ? 1 : 0;
+
+        // Remove the "status" and "cbu_status" from the FormData before appending new values
+        formData.delete('status');
+        formData.delete('cbu_status');
+
+        // Append the new status and cbu_status values (1 for checked, 0 for unchecked)
+        formData.append('status', status);
+        formData.append('cbu_status', cbuStatus);
+        $('#loader').removeClass('d-none');
+
+        $.ajax({
+          url: '/car-model/create',
+          method: 'POST',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            window.location.href = '/car-model';
+          },
+          error: function (xhr, status, error) {
+            let errorMessage = 'An error occurred while creating the brand';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: errorMessage,
+            });
+            $('#loader').addClass('d-none');
+          },
+          complete: function () {
+            $submitButton.prop('disabled', false);
+          },
+        });
+      },
+    });
+
+    // Handle file input changes and display image preview
+    $('#model_image, #model_image_mob').on('change', function () {
+      var input = $(this)[0];
+      var previewId =
+        this.id === 'model_image'
+          ? '#model_image_preview'
+          : '#model_image_mob_preview';
+
+      // Check if a file is selected
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          $(previewId).attr('src', e.target.result).show();
+        };
+        reader.readAsDataURL(input.files[0]);
+      } else {
+        $(previewId).hide();
+      }
+    });
+
+    // Initialize the flatpickr
+    var datepicker = $('#kt_datepicker_1').flatpickr({
+      onChange: function (selectedDates, dateStr, instance) {},
+    });
+
+    function updateDatepickerBasedOnCS() {
+      var cs_name = $('#cs_id').val();
+      var today = new Date();
+
+      if (cs_name == '1') {
+        datepicker.set({
+          minDate: today.setDate(today.getDate() + 1),
+          maxDate: null,
+        });
+      } else if (cs_name == '2') {
+        datepicker.set({
+          minDate: null,
+          maxDate: today,
+        });
+      }
+    }
+
+    updateDatepickerBasedOnCS();
+
+    $('#cs_id').on('change', function () {
+      updateDatepickerBasedOnCS();
+    });
+
+    // Initialize the flatpickr
+
+    // Rating visibility based on car stage selection
+    function updateRatingVisibility() {
+      var cs_name = $('#cs_id').val();
+
+      if (cs_name === '1') {
+        $('#model_rating_and_type').hide();
+        $('#carModelForm').validate().resetForm();
+        $('#model_rating_type').prop('required', false);
+        $('#rating_value').prop('required', false);
+      } else if (cs_name === '2') {
+        $('#model_rating_and_type').show();
+        $(
+          '#carModelForm'
+        ).validate().settings.rules.model_rating_type.required = true;
+        $(
+          '#carModelForm'
+        ).validate().settings.rules.rating_value.required = true;
+        $('#rating_value').prop('required', true);
+        $('#model_rating_type').prop('required', true);
+      }
+    }
+
+    // Initialize the rating visibility on page load
+    updateRatingVisibility();
+
+    // Bind the change event to the car stage dropdown
+    $('#cs_id').change(function () {
+      updateRatingVisibility();
+    });
+
+    // MSD Fields Change According Model Type
+    function toggleFieldsBasedOnModelType() {
+      var modelType = $('#modelTypeSelect').val();
+
+      // Select the input fields and labels
+      var modelEngineInput = $("input[name='model_engine']");
+      var modelBhpInput = $("input[name='model_bhp']");
+      var modelTransmissionInput = $("input[name='model_transmission']");
+      var modelMileageInput = $("input[name='model_mileage']");
+      var modelFuelInput = $("input[name='model_fuel']");
+
+      var model_engine = $('#model_engine');
+      var model_bhp = $('#model_bhp');
+      var model_transmission = $('#model_transmission');
+      var model_mileage = $('#model_mileage');
+      var model_fuel = $('#model_fuel');
+
+      // If EV is selected
+      if (modelType === '1') {
+        // Show fields specific to EV
+        $('#divmodel_engine').show();
+        $('#divmodel_bhp').show();
+        $('#divmodel_transmission').show();
+        $('#divmodel_mileage').show();
+        $('#divmodel_fuel').show();
+
+        // Update placeholders for EV
+        modelEngineInput.attr('placeholder', 'Enter Model Battery Capacity EV');
+        modelBhpInput.attr('placeholder', 'Enter Model Power EV');
+        modelTransmissionInput.attr(
+          'placeholder',
+          'Enter Model Transmission EV'
+        );
+        modelMileageInput.attr('placeholder', 'Enter Driving Range EV');
+        modelFuelInput.attr('placeholder', 'Enter Model Charging Time EV');
+
+        // Update labels for EV
+        model_engine.text('Model Battery Capacity EV');
+        model_bhp.text('Model Power EV');
+        model_transmission.text('Model Transmission EV');
+        model_mileage.text('Driving Range EV');
+        model_fuel.text('Model Charging Time EV');
+      }
+      // If Non-EV is selected
+      else if (modelType === '0') {
+        // Show fields specific to Non-EV
+        $('#divmodel_engine').show();
+        $('#divmodel_bhp').show();
+        $('#divmodel_transmission').show();
+        $('#divmodel_mileage').show();
+        $('#divmodel_fuel').show();
+
+        // Update placeholders for Non-EV
+        modelEngineInput.attr('placeholder', 'Enter Model Engine Non-EV');
+        modelBhpInput.attr('placeholder', 'Enter Model Bhp Non-EV');
+        modelTransmissionInput.attr(
+          'placeholder',
+          'Enter Model Transmission Non-EV'
+        );
+        modelMileageInput.attr('placeholder', 'Enter Model Mileage Non-EV');
+        modelFuelInput.attr('placeholder', 'Enter Model Fuel Non-EV');
+
+        // Update labels for Non-EV
+        model_engine.text('Model Engine Non-EV');
+        model_bhp.text('Model Bhp Non-EV');
+        model_transmission.text('Model Transmission Non-EV');
+        model_mileage.text('Model Mileage Non-EV');
+        model_fuel.text('Model Fuel Non-EV');
+      }
+      // If no valid selection is made (or invalid value)
+      else {
+        // Hide all fields if no selection
+        $('#divmodel_engine').hide();
+        $('#divmodel_bhp').hide();
+        $('#divmodel_transmission').hide();
+        $('#divmodel_mileage').hide();
+        $('#divmodel_fuel').hide();
+      }
+    }
+
+    // Initialize on page load
+    toggleFieldsBasedOnModelType();
+
+    // Bind change event for model type select
+    $('#modelTypeSelect').change(function () {
+      toggleFieldsBasedOnModelType();
+    });
+  });
+</script>

@@ -1,0 +1,46 @@
+<div class="col-md-4">
+  <div class="card pt-6">
+    <form id="carTypeForm" enctype="multipart/form-data">
+      <div class="card-body pt-0">
+        <div class="form-group">
+          <label for="ctName" class="required mb-2">Car Type Name: </label>
+          <input
+            type="text"
+            id="ctName"
+            class="form-control"
+            name="ctName"
+            placeholder="Enter Car Type Name"
+          />
+          <div id="ctNameError" class="invalid-feedback" style="display: none">
+            <span id="ctNameErrorText"></span>
+          </div>
+        </div>
+
+        <div class="form-group mt-4">
+          <label for="ctImage" class="required mb-2">Car Type Image: </label>
+          <input
+            type="file"
+            id="ctImage"
+            class="form-control"
+            name="ctImage"
+          />
+          <div
+            id="ctImageError"
+            class="invalid-feedback"
+            style="display: none"
+          >
+            <span id="ctImageErrorText"></span>
+          </div>
+        </div>
+        <button
+          class="btn btn-sm btn-primary mt-6"
+          name="submit"
+          type="submit"
+          id="submitBtn"
+        >
+          Submit
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

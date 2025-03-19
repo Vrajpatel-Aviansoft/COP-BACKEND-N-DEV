@@ -1,0 +1,91 @@
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header border-0 pt-6">
+      <div
+        class="
+          card-title
+          d-flex
+          justify-content-between
+          align-items-center
+          w-100
+        "
+      >
+        <h2 class="card-title fs-3 fw-bold text-gray-900">
+          Banner Category View
+        </h2>
+        <a
+          href="/master/banner-cat/create"
+          class="btn btn-sm fw-bold btn-primary"
+          >Add Banner Category</a
+        >
+      </div>
+    </div>
+    <div class="card-body pt-0">
+      <table
+        id="kt_datatable_dom_positioning_banner_cat"
+        class="table table-striped table-row-bordered gy-5 gs-7 border rounded"
+      >
+        <thead>
+          <tr class="fw-bold fs-6 text-gray-800 px-7">
+            <th>Sr No</th>
+            <th>Banner Category Name</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- DataTables will populate this -->
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script src="/js/datatable/datatable.js"></script>
+<script>
+  $(document).ready(function () {
+    const table = initializeDataTable(
+      "#kt_datatable_dom_positioning_banner_cat",
+      "/master/banner-cat/all",
+      [
+        {
+          data: null, 
+          name: "sr_no",
+          render: function (data, type, row, meta) {
+            return `<span style="font-size: 1rem;">${meta.row + 1}</span>`;
+          },
+        },
+        {
+          data: "bc_name",
+          name: "Banner Category Name",
+          render: function (data) {
+            return `<span style="font-size: 1rem;">${data}</span>`;
+          },
+        },
+        {
+          data: "uuid",
+          name: "Actions",
+          orderable: false,
+          searchable: false,
+          render: function (data) {
+            const editRoute = `/master/banner-cat/${data}/edit`;
+            const deleteRoute = `/master/banner-cat/${data}/destroy`;
+
+            return `
+              <a href="${editRoute}" class="btn-primary" style="padding: 0;">
+                <i class="fas fa-pen fs-4 text-primary"></i>
+              </a>
+              <a href="javascript:void(0);"
+                data-href="${deleteRoute}"
+                class="delete_record btn-danger" style="padding: 0;">
+                <i class="fas fa-trash fs-4 text-danger"></i>
+              </a>
+            `;
+          },
+        },
+      ]
+    );
+
+    // Apply delete handler for delete buttons
+    setupDeleteHandler(".delete_record", table);
+  });
+</script>

@@ -1,0 +1,658 @@
+
+
+  <div class="col-md-12">
+    <div id="loader" class="d-none">
+        <div class="page-loader flex-column">
+            <span class="spinner-border text-primary" role="status"></span>
+            <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+        </div>
+    </div>
+    <div class="card pt-6">
+      <form id="variantForm" enctype="multipart/form-data">
+        <div class="row">
+          <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+            <div class="app-container container-xxl d-flex flex-stack">
+              <div
+                class="
+                  page-title
+                  d-flex
+                  flex-column
+                  justify-content-center
+                  flex-wrap
+                  me-3
+                "
+              >
+                <h1
+                  class="
+                    page-heading
+                    d-flex
+                    text-gray-900
+                    fw-bold
+                    fs-3
+                    flex-column
+                    justify-content-center
+                    my-0
+                  "
+                >
+                  Add Variant
+                </h1>
+              </div>
+              <div
+                class="
+                  form-check
+                  form-switch
+                  form-check-custom
+                  form-check-success
+                  form-check-solid
+                "
+              >
+                <input class="form-check-input" type="checkbox" checked name="status" />
+              </div>
+            </div>
+          </div>
+        <div class="card-body pt-0">
+          <div class="form-group col-lg-6 mb-6">
+            <label for="brand_id" class="required mb-2">Select Brand:</label>
+            <select
+              class="form-select"
+              aria-label="Select example"
+              name="brand_id"
+              id="brand_id"
+              data-control="select2"
+              required
+            >
+              <% brands.forEach(function(data) { %>
+                <option value="<%= data.brand_id %>" <%= data.brand_id == variant.brand_id ? 'selected' : '' %>> <%= data.brand_name %> </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group col-lg-6 mb-6">
+            <label for="model_id" class="required mb-2">Select Model:</label>
+            <select
+              class="form-select"
+              aria-label="Select example"
+              id="model_id"
+              name="model_id"
+              data-control="select2"
+              required
+            >
+              <% models.forEach(function(data) { %>
+                <option value="<%= data.model_id %>" <%= data.model_id == variant.model_id ? 'selected' : '' %>> <%= data.model_name %> </option>
+              <% }); %>
+            </select>
+          </div>
+
+          <div class="form-group col-lg-6 mb-6">
+            <label for="seating_capacity" class="required mb-2"
+              >Select Seating Capacity:</label
+            >
+            <select
+              class="form-select"
+              aria-label="Select example"
+              id="seating_capacity"
+              name="seating_capacity"
+              data-control="select2"
+              required
+            >
+              <% for (let i = 2; i <= 13; i++) { %>
+                <option value="<%= i %>" <%= i == variant.seating_capacity ? 'selected' : '' %>> <%= i %> </option>
+              <% } %>
+            </select>
+          </div>
+
+          <div class="form-group col-lg-6 mb-6">
+            <label for="variant_name" class="required mb-2"
+              >Variant Name:</label
+            >
+            <input
+              type="text"
+              id="variant_name"
+              class="form-control"
+              name="variant_name"
+              placeholder="Enter Variant Name"
+              value="<%= variant.variant_name %>"
+              required
+            />
+          </div>
+          <img src="http://minio.aviansoft.work/copv2/brand/<%= variant.brand_id %>/<%= variant.model_id %>/<%= variant.variant_image %>" alt="Variant Image" class="img-fluid mb-3"> 
+          <div class="form-group col-lg-6 mb-6">
+            <label for="variant_image" class="required mb-2"
+              >Variant Image:</label
+            >
+            <input
+              type="file"
+              id="variant_image"
+              class="form-control"
+              name="variant_image"
+              accept=".png, .jpg, .jpeg, .webp"
+            />
+          </div>
+          <img src="http://minio.aviansoft.work/copv2/brand/<%= variant.brand_id %>/<%= variant.model_id %>/<%= variant.variant_image_mob %>" alt="Variant Image" class="img-fluid mb-3">
+          <div class="form-group col-lg-6 mb-6">
+            <label for="variant_image_mob" class="required mb-2"
+              >Variant Image Mobile:</label
+            >
+            <input
+              type="file"
+              id="variant_image_mob"
+              class="form-control"
+              name="variant_image_mob"
+              accept=".png, .jpg, .jpeg, .webp"
+            />
+          </div>
+          <div class="form-group col-lg-6 mb-6">
+            <label for="variant_type" class="mb-2">Select Variant Type:</label>
+            <select
+              class="form-select"
+              aria-label="Select example"
+              id="variant_type"
+              name="variant_type"
+              data-control="select2"
+            >
+              <option selected value="" disabled>Select Variant Type</option>
+              <option value="1" <%= variant.variant_type === "1" ? 'selected' : '' %>>Base</option>
+              <option value="2" <%= variant.variant_type === "2" ? 'selected' : '' %>>Top</option>
+            </select>
+          </div>
+
+          <br /><br /><br />
+          <div id="kt_docs_repeater_basic">
+            <div class="form-group">
+              <div data-repeater-list="kt_docs_repeater_basic">
+                <% variant.colors.forEach(function(data) { %> 
+                <div data-repeater-item>
+                  <div class="form-group row flex flex-row mb-3">
+                    <div class="col-md-2">
+                      <div
+                        class="d-flex flex-row align-items-stretch"
+                        style="column-gap: 6px"
+                      >
+                        <input 
+                          type="hidden"
+                          id="color_id"
+                          name="color_id"
+                          value="<%= data.color_id %>"
+                        />
+                        <input
+                          type="color"
+                          class="
+                            form-control form-control-color
+                            mb-2 mb-md-0
+                            color-picker
+                          "
+                          id="color_code"
+                          name="color_code"
+                          value="<%= data.color_code %>"
+                          style="width: 4rem"
+                        />
+                        <input
+                          type="text"
+                          class="form-control mb-2 mb-md-0 color-code"
+                          placeholder="Color code"
+                          value="<%= data.color_code %>"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <div class="d-flex flex-row" style="column-gap: 6px">
+                        <input
+                          type="color"
+                          class="
+                            form-control form-control-color
+                            mb-2 mb-md-0
+                            color-picker
+                          "
+                          name="dual_color_code"
+                          id="dual_color_code"
+                          value="<%= data.dual_color_code %>"
+                          style="width: 4rem"
+                        />
+                        <input
+                          type="text"
+                          class="form-control mb-2 mb-md-0 color-code"
+                          placeholder="Color code"
+                          value="<%= data.dual_color_code %>"
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <input
+                        type="text"
+                        class="form-control mb-2 mb-md-0 color-name"
+                        placeholder="Color name"
+                        name="color_name"
+                        value="<%= data.color_name %>"
+                      />
+                    </div>
+
+                    <div class="col-md-2 d-flex flex-column">
+                      <div class="d-flex flex-nowrap align-items-center">
+                        <input
+                          type="file"
+                          class="
+                            form-control
+                            mb-2 mb-md-0
+                            image-upload
+                            variant_color_image
+                          "
+                          name="variant_color_image"
+                          id="variant_color_image"
+                          accept="image/*"
+                        />
+                        <input 
+                          type="hidden"
+                          name="variant_color_image_name"
+                          id="variant_color_image_name"
+                          value="<%= data.variant_color_image %>"
+                        />
+                        <input 
+                          type="hidden"
+                          name="variant_color_image_updated"
+                          id="variant_color_image_updated"
+                          value="0"
+                        />
+                        <img
+                          src="http://minio.aviansoft.work/copv2/brand/<%= variant.brand_id %>/<%= variant.model_id %>/<%= data.variant_color_image %>"
+                          alt="Image Preview"
+                          class="img-preview"
+                          style="
+                            width: 60%;
+                            max-height: 150px;
+                            display: block;
+                            flex-grow: 1;
+                          "
+                        />
+                      </div>
+                    </div>
+
+                    <div class="col-md-2 d-flex flex-column">
+                      <div class="d-flex flex-nowrap align-items-center">
+                        <input
+                          type="file"
+                          class="
+                            form-control
+                            mb-2 mb-md-0
+                            image-upload
+                            variant_color_image_mob
+                          "
+                          name="variant_color_image_mob"
+                          id="variant_color_image_mob"
+                          accept="image/*"
+                        />
+                        <input 
+                        type="hidden"
+                          name="variant_color_image_mob_name"
+                          id="variant_color_image_mob_name"
+                          value="<%= data.variant_color_image_mob %>"
+                        />
+                        <input 
+                        type="hidden"
+                          name="variant_color_image_mob_updated"
+                          id="variant_color_image_mob_updated"
+                          value="0"
+                        />
+                        <img
+                          src="http://minio.aviansoft.work/copv2/brand/<%= variant.brand_id %>/<%= variant.model_id %>/<%= data.variant_color_image_mob %>"
+                          alt="Image Preview"
+                          class="img-preview"
+                          style="
+                            width: 60%;
+                            max-height: 150px;
+                            display: block;
+                            flex-grow: 1;
+                          "
+                        />
+                      </div>
+                    </div>
+
+                    <div
+                      class="
+                        col-md-2
+                        d-flex
+                        flex-column
+                        justify-content-end
+                        align-items-start
+                      "
+                    >
+                      <a
+                        href="javascript:;"
+                        data-repeater-delete
+                        class="
+                          btn btn-sm btn-light-danger
+                          d-flex
+                          justify-content-center
+                          align-items-center
+                        "
+                        style="width: 44px; height: 44px"
+                      >
+                        <i
+                          class="ki-duotone ki-trash fs-2"
+                          style="padding-right: 0px"
+                          ><span class="path1"></span><span class="path2"></span
+                          ><span class="path3"></span><span class="path4"></span
+                          ><span class="path5"></span
+                        ></i>
+                      </a>
+                    </div>
+                  </div>
+                  </div>
+                <% }); %>
+              </div>
+            </div>
+
+            <div class="form-group mt-5">
+              <a
+                href="javascript:;"
+                data-repeater-create
+                class="btn btn-light-primary btn-sm"
+              >
+                <i class="ki-duotone ki-plus fs-3"></i> Add
+              </a>
+            </div>
+          </div>
+
+          <button
+            id="submitBtn"
+            class="btn btn-sm btn-primary mt-6"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a href="/master/banner-cat/view" class="btn btn-sm btn-danger mt-6"
+            >Cancel</a
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $("#brand_id, #model_id").on("change", function () {
+      $(this).removeClass("is-invalid").next(".invalid-feedback").hide();
+    });
+
+    $("#brand_id").on("change", function () {
+      var brandId = $(this).val();
+      $("#model_id")
+        .empty()
+        .append(
+          '<option value="" selected disabled>Loading models...</option>'
+        );
+      $.ajax({
+        url: `/variant/model/${brandId}/brand`,
+        method: "GET",
+        success: function (response) {
+          $("#model_id")
+            .empty()
+            .append('<option value="" selected disabled>Select Model</option>');
+          if (response && response.models && response.models.length > 0) {
+            response.models.forEach(function (model) {
+              $("#model_id").append(
+                '<option value="' +
+                  model.model_id +
+                  '">' +
+                  model.model_name +
+                  "</option>"
+              );
+            });
+          } else {
+            $("#model_id").append(
+              '<option value="" disabled>No models available</option>'
+            );
+          }
+        },
+        error: function () {
+          alert("Failed to fetch models. Please try again.");
+          $("#model_id")
+            .empty()
+            .append('<option value="" disabled>Select Model</option>');
+        },
+      });
+    });
+
+    var repeater = $("#kt_docs_repeater_basic").repeater({
+      initEmpty: false,
+      defaultValues: {
+        "text-input": "foo",
+      },
+      show: function () {
+        var $newRow = $(this);
+      
+      $newRow.find(".color-picker").val('#000000');
+      $newRow.find(".color-code").val('#000000');
+      $newRow.find(".color-name").val('');
+      $newRow.find("#variant_color_image_updated").val('1');
+      $newRow.find("#variant_color_image_mob_updated").val('1');
+      $newRow.find(".image-upload").val('');
+    
+      $newRow.find(".img-preview").attr('src', '').hide();
+      
+      $newRow.find("input[type='hidden']").val('');
+      
+      $newRow.find("#variant_color_image_updated, #variant_color_image_mob_updated").val('0');
+
+        $(this).slideDown();
+      },
+      hide: function (deleteElement) {
+        $(this).slideUp(deleteElement);
+      },
+    });
+
+    if ($("#kt_docs_repeater_basic [data-repeater-item]").length === 0) {
+      repeater.addItem();
+    }
+
+    $("#kt_docs_repeater_basic").on("input", ".color-picker", function () {
+      if ($(this).next().hasClass("is-invalid")) {
+        $(this).next().removeClass("is-invalid");
+      }
+      var colorCode = $(this).val();
+      $(this).siblings(".color-code").val(colorCode);
+    });
+
+    $("#kt_docs_repeater_basic").on("input", ".color-name", function () {
+      if ($(this).hasClass("is-invalid")) {
+        $(this).removeClass("is-invalid");
+      }
+    });
+
+    $("#kt_docs_repeater_basic").on("input", ".color-code", function () {
+      var colorCode = $(this).val();
+      $(this).siblings(".color-picker").val(colorCode);
+    });
+
+    $("#kt_docs_repeater_basic").on("click", ".image-upload-btn", function () {
+      $(this).siblings(".image-upload").click();
+    });
+
+    $("#kt_docs_repeater_basic").on(
+      "change",
+      ".image-upload",
+      function (event) {
+        var fileInput = $(this);
+        $(this)
+          .removeClass("is-invalid")
+          .closest(".d-flex")
+          .siblings(".text-danger")
+          .hide();
+
+        if (fileInput[0].files && fileInput[0].files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+            $(event.target)
+              .siblings(".img-preview")
+              .attr("src", e.target.result)
+              .show();
+          };
+          reader.readAsDataURL(fileInput[0].files[0]);
+        }
+      }
+    );
+
+    $("#variant_image, #variant_image_mob").on("change", function () {
+      $(this).removeClass("is-invalid").next(".invalid-feedback").hide();
+    });
+
+    $("#variant_color_image").on("change", function () {
+      if ($(this).val()) {
+        $(this).siblings("#variant_color_image_updated").val("1");
+      }
+    });
+
+    $("#variant_color_image_mob").on("change", function () {
+      if ($(this).val()) {
+        $(this).siblings("#variant_color_image_mob_updated").val("1");
+      }
+    });
+
+    $("#variantForm").validate({
+      rules: {
+        brand_id: {
+          required: true,
+        },
+        model_id: {
+          required: true,
+        },
+        variant_name: {
+          required: true,
+          minlength: 2,
+        },
+        seating_capacity: {
+          required: true,
+        },
+      },
+      messages: {
+        brand_id: {
+          required: "Please select the brand",
+        },
+        model_id: {
+          required: "Please select the model",
+        },
+        variant_name: {
+          required: "Please enter the variant name",
+        },
+        seating_capacity: {
+          required: "Please select the seating capacity",
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass("invalid-feedback");
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass("is-invalid");
+      },
+      unhighlight: function (element) {
+        $(element).removeClass("is-invalid");
+      },
+      submitHandler: function (form) {
+        try {
+          // Show loader
+          
+          const formData = new FormData(form);
+          let isValid = true;
+          $("#kt_docs_repeater_basic [data-repeater-item]").each(function (
+            index,
+            element
+          ) {
+            // initialize all element inside repeate element
+            const color1 = $(this).find(".color-code").first();
+            const color2 = $(this).find(".color-code").last();
+            const colorName = $(this).find(".color-name");
+            const colorImage1 = $(this).find(".variant_color_image");
+            const colorImage2 = $(this).find(".variant_color_image_mob");
+            const colorId = $(this).find("#color_id");
+            const colorImage1Name = $(this).find("#variant_color_image_name");
+            const colorImage2Name = $(this).find("#variant_color_image_mob_name");
+            // validation rules for repeater element
+            if (!color1.val()) {
+              isValid = false;
+              color1.addClass("is-invalid");
+            }
+            // if (!color2.val()) {
+            //   isValid = false;
+            //   color2.addClass("is-invalid");
+            // }
+            if (!colorName.val()) {
+              isValid = false;
+              colorName.addClass("is-invalid");
+            }
+          });
+          if (!isValid) {
+            return;
+          }
+          $("#loader").removeClass("d-none");
+
+          $.ajax({
+            url: "/variant/<%= variant.uuid %>",
+            method: "PUT",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (response) {
+              // Hide loader
+              $("#loader").addClass("d-none");
+              
+              // Show success message
+              Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: "Variant updated successfully!",
+              }).then(() => {
+                  window.location.href = "/variant";
+              });
+            },
+            error: function (xhr, status, error) {
+              // Hide loader
+              $("#loader").addClass("d-none");
+              
+              let errorMessage = "An error occurred while creating the variant";
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                  errorMessage = xhr.responseJSON.message;
+              }
+
+              Swal.fire({
+                  icon: "error",
+                  title: "Error",
+                  text: errorMessage,
+              });
+            },
+          });
+        } catch (error) {
+          // Hide loader
+          $("#loader").addClass("d-none");          
+          Swal.fire({
+              icon: "error",
+              title: "Error",
+              text: "An unexpected error occurred",
+          });
+        }
+      },
+    });
+  });
+</script>
+
+<style>
+.page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+</style>

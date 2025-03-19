@@ -1,0 +1,198 @@
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div
+      id="kt_app_toolbar_container"
+      class="app-container container-xxl d-flex flex-stack"
+    >
+      <div
+        class="
+          page-title
+          d-flex
+          flex-column
+          justify-content-center
+          flex-wrap
+          me-3
+        "
+      >
+        <h1
+          class="
+            page-heading
+            d-flex
+            text-gray-900
+            fw-bold
+            fs-3
+            flex-column
+            justify-content-center
+            my-0
+          "
+        >
+          Add Car Listing
+        </h1>
+      </div>
+      <div class="d-flex align-items-center gap-2 gap-lg-3">
+        <a href="#" class="btn btn-sm fw-bold btn-primary">
+          View Car Listing
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card pt-6">
+      <form id="categoryForm" method="post">
+        <div class="card-body pt-0">
+          <div class="form-group">
+            <label for="cl_name" class="required mb-2">Listing Name: </label>
+            <input
+              type="text"
+              id="cl_name"
+              class="form-control"
+              name="cl_name"
+              placeholder="Enter Listing Name"
+            />
+          </div>
+          <button
+            class="btn btn-sm btn-primary mt-6"
+            name="submit"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a href="/category/view" class="btn btn-sm btn-danger mt-6">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header border-0 pt-6">
+        <div
+          class="
+            card-title
+            d-flex
+            justify-content-between
+            align-items-center
+            w-100
+          "
+        >
+          <h2 class="card-title fs-3 fw-bold text-gray-900">Car Stage View</h2>
+        </div>
+      </div>
+      <div class="card-body pt-0">
+        <table
+          id="kt_datatable_dom_positioning_carStage"
+          class="
+            table table-striped table-row-bordered
+            gy-5
+            gs-7
+            border
+            rounded
+          "
+        >
+          <thead>
+            <tr class="fw-bold fs-6 text-gray-800 px-7">
+              <th>Sr No</th>
+              <th>Listing Name</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <script>
+  $(document).ready(function () {
+    var dataTable = $("#kt_datatable_dom_positioning_carStage").DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: {
+        url: "/car-stage",
+        type: "GET",
+      },
+      columns: [
+        { data: "cs_id", name: "cs_id" },
+        { data: "cs_name", name: "cs_name" },
+        {
+          data: null,
+          name: "actions",
+          orderable: false,
+          searchable: false,
+          render: function (data, type, row) {
+            return `
+              <a href="/car-stage/edit/${row.cs_id}" class="btn btn-sm btn-light btn-active-light-primary">Edit</a>
+              <button class="btn btn-sm btn-light btn-active-light-danger delete-car-stage" data-id="${row.cs_id}">Delete</button>
+            `;
+          },
+        },
+      ],
+      order: [[0, "asc"]],
+      pageLength: 10,
+      dom:
+        "<'row'<'col-sm-12 col-md-6'l><'col-sm-12 col-md-6'f>>" +
+        "<'row'<'col-sm-12'tr>>" +
+        "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>",
+      language: {
+        search: "Search:",
+        lengthMenu: "Show _MENU_ entries per page",
+        info: "Showing page _PAGE_ of _PAGES_",
+        infoEmpty: "No records available",
+        infoFiltered: "(filtered from _MAX_ total records)",
+        zeroRecords: "No matching records found",
+        paginate: {
+          first: "First",
+          last: "Last",
+          next: "Next",
+          previous: "Previous",
+        },
+      },
+    });
+
+    // Handle form submission
+    $("#categoryForm").submit(function (e) {
+      e.preventDefault();
+      var formData = {
+        cs_name: $("#cs_name").val(),
+      };
+
+      $.ajax({
+        url: "/car-stage/store",
+        type: "POST",
+        data: formData,
+        success: function (response) {
+          toastr.success("Car stage added successfully!");
+          $("#categoryForm")[0].reset();
+          dataTable.ajax.reload();
+        },
+        error: function (xhr, status, error) {
+          toastr.error("Error adding car stage: " + xhr.responseText);
+        },
+      });
+    });
+
+    // Handle delete button click
+    $("#kt_datatable_dom_positioning_carStage").on(
+      "click",
+      ".delete-car-stage",
+      function () {
+        var id = $(this).data("id");
+        if (confirm("Are you sure you want to delete this car stage?")) {
+          $.ajax({
+            url: "/car-stage/delete/" + id,
+            type: "DELETE",
+            success: function (response) {
+              toastr.success("Car stage deleted successfully!");
+              dataTable.ajax.reload();
+            },
+            error: function (xhr, status, error) {
+              toastr.error("Error deleting car stage: " + xhr.responseText);
+            },
+          });
+        }
+      }
+    );
+  });
+</script> -->

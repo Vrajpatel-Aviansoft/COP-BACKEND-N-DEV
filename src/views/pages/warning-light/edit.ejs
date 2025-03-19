@@ -1,0 +1,382 @@
+
+
+<div class="col-md-12">
+  <div id="loader" class="d-none">
+      <div class="page-loader flex-column">
+          <span class="spinner-border text-primary" role="status"></span>
+          <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+      </div>
+  </div>
+  <div class="card pt-6">
+    <form id="warningLightForm" enctype="multipart/form-data">
+      <div class="row">
+        <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+          <div class="app-container container-xxl d-flex flex-stack">
+            <div
+              class="
+                page-title
+                d-flex
+                flex-column
+                justify-content-center
+                flex-wrap
+                me-3
+              "
+            >
+              <h1
+                class="
+                  page-heading
+                  d-flex
+                  text-gray-900
+                  fw-bold
+                  fs-3
+                  flex-column
+                  justify-content-center
+                  my-0
+                "
+              >
+                Warning light
+              </h1>
+            </div>
+            <div
+              class="
+                form-check
+                form-switch
+                form-check-custom
+                form-check-success
+                form-check-solid
+              "
+            >
+              <input class="form-check-input" type="checkbox" checked name="status" />
+            </div>
+          </div>
+        </div>
+        <div class="card-body pt-0">
+          <!-- warning light name input start --> 
+          <div class="form-group col-lg-12 mb-6">
+            <label for="wl_name" class="required mb-2">Warning light Name:</label>
+            <input type="text" class="form-control" id="wl_name" name="wl_name" required value="<%= warningLight.wl_name %>">
+          </div>
+          <!-- warning light name input end -->
+
+          <!-- warning light icon start -->
+          <div class="form-group col-lg-12 mb-6">
+            <label for="warning_light_icon" class="required mb-2">Warning light Icon:</label>
+            <div class="d-flex flex-column gap-2"> 
+              <img src="http://minio.aviansoft.work/copv2/warning_light/<%= warningLight.wl_id %>/<%= warningLight.wl_icon %>" alt="Warning light icon" style="width: 50px; height: 50px;">
+              <input type="file" accept="image/svg+xml" class="form-control" id="warning_light_icon" name="warning_light_icon">
+            </div>
+          </div>
+          <!-- warning light icon end -->
+
+          <!-- warning light video start -->
+          <div class="form-group col-lg-12 mb-6">
+            <label for="warning_light_video" class="required mb-2">Warning light Video:</label>
+            <div class="d-flex flex-column gap-2"> 
+              <video src="http://minio.aviansoft.work/copv2/warning_light/<%= warningLight.wl_id %>/<%= warningLight.wl_video %>" alt="Warning light video" style="width: 50px; height: 50px;"></video>
+              <input type="file" accept="video/*" class="form-control" id="warning_light_video" name="warning_light_video">
+            </div>
+          </div>
+          <!-- warning light video end -->
+
+          <!-- icon display position start -->
+          <div class="form-group col-lg-12 mb-6">
+            <label for="wl_display_position" class="required mb-2">Icon Display Position:</label>
+            <select class="form-select" id="wl_display_position" name="wl_display_position" required data-control="select2">
+              <option value="" selected disabled>Select Icon Display Position</option>
+              <option value="1" <%= warningLight.wl_display_position === "1" ? "selected" : "" %>>Top</option>
+              <option value="2" <%= warningLight.wl_display_position === "2" ? "selected" : "" %>>Bottom</option>
+            </select>
+          </div>
+          <!-- icon display position end -->
+
+          <!-- warning light heading start -->
+          <div class="form-group col-lg-12 mb-6">
+            <label for="wl_heading" class="required mb-2">Warning light Heading:</label>
+            <input type="text" class="form-control" id="wl_heading" name="wl_heading" required value="<%= warningLight.wl_heading %>">
+          </div>
+          <!-- warning light heading end -->
+
+          <div class="row">
+            <div class="col-md-12 mb-4">
+                <div id="subHeadingContainer" class="form-control mt-4 p-4">
+                    <button class="btn btn-sm btn-primary" type="button" id="addSubHeadingButton">
+                        Add SubHeading
+                    </button>
+
+                    <% if (warningLight.wl_subheading && JSON.parse(warningLight.wl_subheading).length > 0) { %>
+                      <% JSON.parse(warningLight.wl_subheading).forEach((subheading, index) => { %>
+                        <div class="flex row mt-4 sub-head-box">
+                          <input 
+                            class="form-control my-3 w-75 sub-head-input" 
+                            name="subheadings[<%= index %>][heading]" 
+                            key="<%= index %>"
+                            value="<%= subheading %>"
+                            style="margin-left: 10px" 
+                            placeholder="Enter Sub-Heading"
+                          >
+                          <button class="btn btn-sm btn-danger col-md-2 my-3 w-90 remove-sub-head" style="margin-left : 20px; width:auto;" type="button">
+                            Remove
+                          </button>
+                          <button 
+                            id="addInfoContainer" 
+                            type="button" 
+                            style="width:auto;margin-left: 10px;" 
+                            class="btn btn-sm btn-success col-md-2 my-3 add_info"
+                          >
+                            Add Info
+                          </button>
+                          <span class="text-danger"></span>
+                          <% if (warningLight.wl_info && JSON.parse(warningLight.wl_info)[index].length > 0) { %>
+                            <% JSON.parse(warningLight.wl_info)[index].forEach((info, _index) => { %>
+                              <div id="infoContainer">
+                                  <div class="flex row mt-4">
+                                  <input 
+                                    class="form-control subhead-info" 
+                                    style="width :60%;margin-left: 30px;margin-right: 20px;" 
+                                    name="subheadings[<%= index %>][info][]" 
+                                    value="<%= info %>"
+                                    placeholder="Enter Info"
+                                  >
+                                  <button class="btn btn-sm btn-danger remove-info" style="width:auto">Remove</button>
+                                  </div>
+                              </div>
+                            <% }); %>
+                          <% } %>
+
+                      </div>
+                      <% }); %>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+
+          
+          <button class="btn btn-primary mt-6" name="submit" type="submit">Submit</button>
+          <a href="/car-graphics" class="btn btn-danger mt-6">Cancel</a>
+
+      </div>
+    </form>
+  </div>
+</div>
+</div>
+
+<script>
+$(document).ready(function () {
+    $(document).on("click", ".add_info", function () {
+        let _this = $(this);
+        const subHeadingIndex = _this.closest(".sub-head-box").find(".sub-head-input").attr("key");
+        let inputHtml = `<div class="flex row mt-4">
+                                <input 
+                                  class="form-control subhead-info" 
+                                  style="width :60%;margin-left: 30px;margin-right: 20px;" 
+                                  placeholder="Enter Info"
+                                  name="subheadings[${subHeadingIndex}][info][]"
+                                >
+                              <button class="btn btn-sm btn-danger remove-info" style="width:auto">Remove</button>
+                            </div>`;
+        _this.closest(".sub-head-box").find("#infoContainer").append(inputHtml);
+    });
+
+    $(document).on("click", ".remove-info", function () {
+        let _this = $(this);
+        _this.parent().parent().remove();
+    });
+
+    $(document).on("click", ".remove-sub-head", function () {
+        let _this = $(this);
+        _this.parent().remove();
+    });
+
+    $(document).on('click', '#addSubHeadingButton', function () {
+        const subHeadingIndex = $("#subHeadingContainer .sub-head-box").length;
+        let subheadHtml = `<div class="flex row mt-4 sub-head-box">
+                        <input
+                          class="form-control my-3 w-75 sub-head-input" 
+                          style="margin-left: 10px" 
+                          placeholder="Enter Sub-Heading"
+                          key="${subHeadingIndex}"
+                          name="subheadings[${subHeadingIndex}][heading]"
+                        >
+                        <button 
+                          class="btn btn-sm btn-danger col-md-2 my-3 w-90 remove-sub-head" 
+                          style="margin-left : 20px; width:auto;" 
+                          type="button"
+                        >
+                          Remove
+                        </button>
+                        <button 
+                          id="addInfoContainer" 
+                          type="button" 
+                          style="width:auto;margin-left: 10px;" 
+                          class="btn btn-sm btn-success col-md-2 my-3 add_info"
+                        >
+                          Add Info
+                        </button>
+
+                        <div id="infoContainer">
+                            <div class="flex row mt-4">
+                                <input 
+                                  class="form-control subhead-info" 
+                                  style="width :60%;margin-left: 30px;margin-right: 20px;" 
+                                  placeholder="Enter Info"
+                                  name="subheadings[${subHeadingIndex}][info][]"
+                                >
+                            </div>
+                        </div>
+
+                    </div>`;
+        $("#subHeadingContainer").append(subheadHtml);
+    });
+});
+</script>
+
+<script>
+$(document).on("change", "#warning_light_icon, #warning_light_video", function () {
+  $(this).removeClass("is-invalid").next(".invalid-feedback").hide();
+});
+
+$(document).on("change", "#icon_display_position", function () {
+  $(this).removeClass("is-invalid").next(".invalid-feedback").hide();
+});
+
+$(document).on("input", ".sub-head-input", function () {
+    if ($(this).hasClass("is-invalid")) {
+      $(this).removeClass("is-invalid");
+  }
+});
+$(document).on("input", ".subhead-info", function () {
+    if ($(this).hasClass("is-invalid")) {
+      $(this).removeClass("is-invalid");
+  }
+});
+</script>
+
+<script>
+$(document).ready(function () {
+  $("#warningLightForm").validate({
+    rules: {
+      warning_light_name: {
+        required: true,
+      },
+      icon_display_position: {
+        required: true,
+      },
+      warning_light_heading: {
+        required: true,
+      },
+      button_text: {
+        required: true,
+      },
+      button_link: {
+        required: true,
+      },
+    },
+    messages: {
+      warning_light_name: {
+        required: "Please enter the warning light name",
+      },
+      icon_display_position: {
+        required: "Please select the icon display position",
+      },
+      warning_light_heading: {
+        required: "Please enter the warning light heading",
+      },
+    },
+    errorPlacement: function (error, element) {
+      error.addClass("invalid-feedback");
+      error.insertAfter(element);
+    },
+    highlight: function (element) {
+      $(element).addClass("is-invalid");
+    },
+    unhighlight: function (element) {
+      $(element).removeClass("is-invalid");
+    },
+    submitHandler: function (form) {
+      try {
+        const formData = new FormData(form);
+        let isValid = true;
+        $(".sub-head-box").each(function (index, element) {
+          const subheading = $(this).find(".sub-head-input");
+          const subHeadingInfo = $(this).find(".subhead-info");
+          if (!subheading.val()) {
+            isValid = false;
+            subheading.addClass("is-invalid");
+          }
+          if (!subHeadingInfo.val()) {
+            isValid = false;
+            subHeadingInfo.addClass("is-invalid");
+          }
+        });
+        // if (!isValid) {
+        //   return;
+        // }
+        $("#loader").removeClass("d-none");
+        $.ajax({
+          url: `/warning-light/<%= warningLight.uuid %>`,
+          method: "PUT",
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            // Hide loader
+            $("#loader").addClass("d-none");
+            // Show success message
+            Swal.fire({
+                icon: "success",
+                title: "Success",
+                text: "Warning light updated successfully!",
+            }).then(() => {
+                // window.location.href = "/warning-light";
+            });
+          },
+          error: function (xhr, status, error) {
+            // Hide loader
+            $("#loader").addClass("d-none");
+            
+            let errorMessage = "An error occurred while creating the warning light";
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+                icon: "error",
+                title: "Error",
+                text: errorMessage,
+            });
+          },
+        });
+      } catch (error) {
+        // Hide loader
+        $("#loader").addClass("d-none");
+        
+        Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "An unexpected error occurred",
+        });
+      }
+    },
+  });
+});
+</script>
+
+<style>
+.page-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}
+</style>

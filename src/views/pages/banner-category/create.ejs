@@ -1,0 +1,107 @@
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div class="app-container container-xxl d-flex flex-stack">
+      <div
+        class="page-title d-flex flex-column justify-content-center flex-wrap me-3"
+      >
+        <h1
+          class="page-heading d-flex text-gray-900 fw-bold fs-3 flex-column justify-content-center my-0"
+        >
+          Add Banner Category
+        </h1>
+      </div>
+      <div class="d-flex align-items-center gap-2 gap-lg-3">
+        <a href="/master/banner-cat/view" class="btn btn-sm fw-bold btn-primary"
+          >View Banner Category</a
+        >
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="card pt-6">
+      <form id="bannerCategoryForm" method="post">
+        <div class="card-body pt-0">
+          <div class="form-group">
+            <label for="bc_name" class="required mb-2">Category Name:</label>
+            <input
+              type="text"
+              id="bc_name"
+              class="form-control"
+              name="bc_name"
+              placeholder="Enter Category Name"
+            />
+          </div>
+          <button
+            id="submitBtn"
+            class="btn btn-sm btn-primary mt-6"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a href="/master/banner-cat/view" class="btn btn-sm btn-danger mt-6"
+            >Cancel</a
+          >
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  var $jq = jQuery.noConflict();
+  $jq(document).ready(function () {
+    $jq('#bannerCategoryForm').validate({
+      rules: {
+        bc_name: {
+          required: true,
+          minlength: 3,
+          maxlength: 50,
+        },
+      },
+      messages: {
+        bc_name: {
+          required: 'Category name is required',
+          minlength: 'Must be at least 3 characters',
+          maxlength: 'Cannot exceed 50 characters',
+        },
+      },
+
+      errorElement: 'div',
+      errorClass: 'invalid-feedback',
+      highlight: function (element) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+      },
+
+      submitHandler: function (form) {
+        const $submitButton = $('#submitBtn');
+        $submitButton.prop('disabled', true);
+
+        $.ajax({
+          url: '/master/banner-cat',
+          method: 'POST',
+          data: $(form).serialize(),
+          success: function () {
+            window.location.href = '/master/banner-cat/view';
+            form.reset();
+          },
+          error: function (xhr) {
+            const errorMsg =
+              xhr.status === 400
+                ? 'Banner category already exists'
+                : 'An unexpected error occurred';
+            $('#bc_name').after(
+              `<div class="invalid-feedback d-block">${errorMsg}</div>`
+            );
+          },
+          complete: function () {
+            $submitButton.prop('disabled', false);
+          },
+        });
+      },
+    });
+  });
+</script>

@@ -1,0 +1,247 @@
+<div class="col-md-12">
+  <div id="loader" class="d-none">
+    <div class="page-loader flex-column">
+      <span class="spinner-border text-primary" role="status"></span>
+      <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+    </div>
+  </div>
+
+  <div class="card-body pt-0">
+    <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+      <div class="card">
+        <!-- Card Header -->
+        <div class="card-header border-0 pt-6">
+          <!-- Card Title -->
+          <div class="card-title d-flex justify-content-between w-100">
+            <h2 class="card-title fs-2 fw-6">Variant Color Import</h2>
+          </div>
+          <!-- Card Toolbar -->
+          <div class="card-toolbar">
+            <div
+              class="d-flex justify-content-end"
+              data-kt-customer-table-toolbar="base"
+            ></div>
+          </div>
+        </div>
+
+        <!-- Card Body -->
+        <div class="card-body pt-0">
+          <form id="importForm" enctype="multipart/form-data" name="importForm">
+            <div class="row">
+              <div class="form-group col-lg-6 mb-6">
+                <input
+                  class="form-control"
+                  type="file"
+                  name="file"
+                  accept=".xlsx, .xls, .csv"
+                />
+              </div>
+              <div class="form-group col-lg-6 mb-6">
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </div>
+            </div>
+          </form>
+
+          <!-- Error Message -->
+          <div
+            id="import-errors"
+            class="alert alert-danger"
+            style="display: none"
+          >
+            <ul class="mb-0"></ul>
+          </div>
+
+          <!-- Template Download Link -->
+          <div class="form-group col-lg-6 mb-6">
+            <a
+              href="/imports/variant_color_import.xlsx"
+              class="btn btn-success"
+              download="variant_color_import.xlsx"
+            >
+              <i class="fa fa-download"></i> Download Template File
+            </a>
+          </div>
+
+          <!-- Instructions Section -->
+          <div class="box box-primary">
+            <div class="box-header">
+              <h3 class="box-title">Instructions</h3>
+            </div>
+
+            <div class="box-body">
+              <strong
+                >Follow the instructions carefully before importing the
+                file.</strong
+              ><br />
+              The columns of the file should be in the following order.
+              <br /><br />
+              <div class="table-responsive">
+                <table class="table table-striped">
+                  <tbody>
+                    <tr>
+                      <th>Column Number</th>
+                      <th>Column Name</th>
+                      <th>Instruction</th>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>
+                        Brand Name <small class="text-muted">(Required)</small>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>
+                        Model Name <small class="text-muted">(Required)</small>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>
+                        Variant Name
+                        <small class="text-muted">(Required)</small>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>
+                        Color Name <small class="text-muted">(Required)</small>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>
+                        Color Code <small class="text-muted">(Required)</small>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>6</td>
+                      <td>
+                        Dual Color Code
+                        <small class="text-muted">(Optional)</small>
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                    <tr>
+                      <td>7</td>
+                      <td>
+                        Variant Color Image<small class="text-muted"
+                          >(Required)</small
+                        >
+                      </td>
+                      <td>&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#importForm').validate({
+      rules: {
+        file: {
+          required: true,
+        },
+      },
+      messages: {
+        file: {
+          required: 'Please upload the file',
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+      },
+      submitHandler: function (form) {
+        try {
+          const formData = new FormData(form);
+          $('#loader').removeClass('d-none');
+          $.ajax({
+            url: '/variant/import/color',
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            timeout: 600000,
+            success: function (response) {
+              $('#loader').addClass('d-none');
+              Swal.fire({
+                icon: 'success',
+                title: 'Success',
+                text: 'Variant data imported successfully!',
+              }).then(() => {
+                window.location.href = '/variant';
+              });
+            },
+            error: function (xhr, status, error) {
+              $('#loader').addClass('d-none');
+              const errorList = $('#import-errors ul');
+              if (xhr.responseJSON && xhr.responseJSON.message) {
+                errorList.append(`<li>${xhr.responseJSON.message}</li>`);
+                $('#import-errors').show();
+              }
+              let errorMessage =
+                'An error occurred while importing the brand data';
+              if (xhr.responseJSON && xhr.responseJSON.errors) {
+                errorList.empty(); // Clear previous errors
+
+                xhr.responseJSON.errors.forEach(function (errorMsg) {
+                  errorList.append(`<li>${errorMsg}</li>`);
+                });
+
+                $('#import-errors').show();
+              }
+            },
+          });
+        } catch (error) {
+          $('#loader').addClass('d-none');
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'An unexpected error occurred',
+          });
+        }
+      },
+    });
+  });
+</script>
+
+<style>
+  .page-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+
+  .spinner-border {
+    width: 3rem;
+    height: 3rem;
+  }
+</style>

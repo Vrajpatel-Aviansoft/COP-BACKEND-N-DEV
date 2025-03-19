@@ -1,0 +1,244 @@
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div
+      id="kt_app_toolbar_container"
+      class="app-container container-xxl d-flex flex-stack"
+    >
+      <div
+        class="
+          page-title
+          d-flex
+          flex-column
+          justify-content-center
+          flex-wrap
+          me-3
+        "
+      >
+        <h1
+          class="
+            page-heading
+            d-flex
+            text-gray-900
+            fw-bold
+            fs-3
+            flex-column
+            justify-content-center
+            my-0
+          "
+        >
+          Edit Brand
+        </h1>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-12">
+    <div class="card pt-4">
+      <form id="brandForm" enctype="multipart/form-data">
+        <div class="card-body pt-0 col-lg-6">
+          <div class="form-group">
+            <label for="brand_name" class="required mb-2">Brand Name: </label>
+            <input
+              type="text"
+              id="brandName"
+              class="form-control"
+              name="brand_name"
+              placeholder="Enter Brand Name"
+              value="<%= brand.brand_name %>"
+            />
+          </div>
+
+          <!-- Brand Logo Section -->
+          <div class="form-group mt-4">
+            <label for="brand_logo" class="required mb-2">Brand Logo: </label>
+            <input
+              type="file"
+              id="brandLogo"
+              class="form-control"
+              name="brand_logo"
+              placeholder="Upload Brand Logo"
+            />
+            <!-- Display current logo if available -->
+            <div id="currentLogoContainer" class="mt-2">
+              <img
+                src="http://minio.aviansoft.work/copv2/brand/<%= brand.brand_id %>/<%= brand.brand_logo %>"
+                alt="Current Brand Logo"
+                class="img-fluid"
+                style="width: 200px; height: 100px"
+              />
+            </div>
+            <!-- Preview the new logo -->
+            <div id="logoPreviewContainer" class="mt-2" style="display: none">
+              <img
+                id="brandLogoPreview"
+                src=""
+                alt="Brand Logo Preview"
+                class="img-fluid"
+                style="width: 200px; height: 100px"
+              />
+            </div>
+          </div>
+
+          <!-- Brand Banner Section -->
+          <div class="form-group mt-4">
+            <label for="brand_banner" class="required mb-2"
+              >Brand Banner:</label
+            >
+            <input
+              type="file"
+              id="brandBanner"
+              class="form-control"
+              name="brand_banner"
+              placeholder="Upload Brand Banner"
+            />
+            <!-- Display current banner if available -->
+            <div id="currentBannerContainer" class="mt-2">
+              <img
+                src="http://minio.aviansoft.work/copv2/brand/<%= brand.brand_id %>/<%= brand.brand_banner %>"
+                alt="Current Brand Banner"
+                class="img-fluid"
+                style="width: 200px; height: 100px"
+              />
+            </div>
+            <!-- Preview the new banner -->
+            <div id="bannerPreviewContainer" class="mt-2" style="display: none">
+              <img
+                id="brandBannerPreview"
+                src=""
+                alt="Brand Banner Preview"
+                class="img-fluid"
+                style="width: 200px; height: 100px"
+              />
+            </div>
+          </div>
+
+          <!-- Brand Description Section -->
+          <div class="form-group mt-4">
+            <label for="brand_description" class="required mb-2"
+              >Brand Description:</label
+            >
+            <textarea
+              id="brandDescription"
+              class="form-control"
+              name="brand_description"
+              placeholder="Enter Brand Description"
+            >
+              <%= brand.brand_description %>
+            </textarea>
+          </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-4"
+            id="submitBtn"
+            type="submit"
+          >
+            Update
+          </button>
+          <a href="/brand" class="btn btn-sm btn-danger mt-4">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    $('#brandForm').validate({
+      rules: {
+        brand_name: {
+          required: true,
+          minlength: 2,
+        },
+        brand_description: {
+          required: true,
+          minlength: 10,
+        },
+      },
+      messages: {
+        brand_name: {
+          required: 'Please enter the brand name',
+          minlength: 'Brand name must be at least 2 characters long',
+        },
+        brand_description: {
+          required: 'Please enter the brand description',
+          minlength: 'Description must be at least 10 characters long',
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.addClass('invalid-feedback');
+        error.insertAfter(element);
+      },
+      highlight: function (element) {
+        $(element).addClass('is-invalid');
+      },
+      unhighlight: function (element) {
+        $(element).removeClass('is-invalid');
+      },
+      submitHandler: function (form) {
+        const $submitButton = $('#submitBtn');
+        $submitButton.prop('disabled', true);
+
+        const formData = new FormData(form);
+        $('#loader').removeClass('d-none');
+        $.ajax({
+          url: `/brand/<%= brand.uuid %>`,
+          method: 'PUT',
+          data: formData,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            $('#loader').addClass('d-none');
+            window.location.href = '/brand';
+          },
+          error: function (xhr, status, error) {
+            let errorMessage = 'An error occurred while updating the brand';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMessage = xhr.responseJSON.message;
+            }
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: errorMessage,
+            });
+            $('#loader').addClass('d-none');
+          },
+          complete: function () {
+            $('#loader').addClass('d-none');
+            $submitButton.prop('disabled', false);
+          },
+        });
+      },
+    });
+
+    // Handle file input changes for logo and banner
+    $('#brandLogo').on('change', function () {
+      if ($(this).val()) {
+        $('#currentLogoContainer').hide(); // Hide the current logo
+        $('#logoPreviewContainer').show(); // Show the new logo preview
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          $('#brandLogoPreview').attr('src', e.target.result); // Set preview image source
+        };
+        reader.readAsDataURL(this.files[0]);
+      } else {
+        $('#currentLogoContainer').show(); // Keep current logo visible if no new file is selected
+        $('#logoPreviewContainer').hide(); // Hide the preview
+      }
+    });
+
+    $('#brandBanner').on('change', function () {
+      if ($(this).val()) {
+        $('#currentBannerContainer').hide(); // Hide the current banner
+        $('#bannerPreviewContainer').show(); // Show the new banner preview
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          $('#brandBannerPreview').attr('src', e.target.result); // Set preview image source
+        };
+        reader.readAsDataURL(this.files[0]);
+      } else {
+        $('#currentBannerContainer').show(); // Keep current banner visible if no new file is selected
+        $('#bannerPreviewContainer').hide(); // Hide the preview
+      }
+    });
+  });
+</script>

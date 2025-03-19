@@ -1,0 +1,92 @@
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: GET / 302 - 25.321 ms
+[32minfo[39m: GET /dashboard 302 - 2.504 ms
+[32minfo[39m: GET /auth/login 200 - 22.303 ms
+[32minfo[39m: GET /assets/images/cop.png 200 - 7.200 ms
+[32minfo[39m: GET /assets/images/demo-6.png 200 - 8.511 ms
+[32minfo[39m: GET /assets/plugins/global/plugins.bundle.css 200 - 13.358 ms
+[32minfo[39m: GET /assets/css/style.bundle.css 200 - 8.541 ms
+[32minfo[39m: GET /assets/media/misc/pattern-2.png 200 - 11.903 ms
+[31merror[39m: Error: Internal server error
+    at Object.loginUserWithEmailAndPassword (C:\Vraj Patel\Development\COP-BACKEND-N\src\services\auth.service.js:31:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Vraj Patel\Development\COP-BACKEND-N\src\controllers\auth.controller.js:18:16
+[31merror[39m: POST /auth/login 500 - 258.190 ms - message: Internal server error
+[32minfo[39m: Listening to port 5000
+[31merror[39m: Error: Internal server error
+    at Object.loginUserWithEmailAndPassword (C:\Vraj Patel\Development\COP-BACKEND-N\src\services\auth.service.js:31:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async C:\Vraj Patel\Development\COP-BACKEND-N\src\controllers\auth.controller.js:18:16
+[31merror[39m: POST /auth/login 500 - 179.368 ms - message: Internal server error
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000
+[32minfo[39m: Listening to port 5000

@@ -1,0 +1,221 @@
+<div class="col-md-12">
+    <div id="loader" class="d-none">
+        <div class="page-loader flex-column">
+            <span class="spinner-border text-primary" role="status"></span>
+            <span class="text-muted fs-6 fw-semibold mt-5">Loading...</span>
+        </div>
+    </div>
+ 
+          <div class="card-body pt-0">
+            <div class="app-main flex-column flex-row-fluid" id="kt_app_main">
+                <div class="card">
+                    <!--begin::Card header-->
+        
+                    <div class="card-header border-0 pt-6">
+        
+                        <!--begin::Card title-->
+                        <div class="card-title d-flex justify-content-between w-100">
+                            <!--begin::Search-->
+                            <h2 class="card-title fs-2 fw-6">Fuel Station Import</h2>
+        
+                            <!--end::Search-->
+                        </div>
+                        <!--begin::Card title-->
+                        <!--begin::Card toolbar-->
+                        <div class="card-toolbar">
+                            <!--begin::Toolbar-->
+                            <div class="d-flex justify-content-end" data-kt-customer-table-toolbar="base">
+                            </div>
+                            <!--end::Toolbar-->
+                            <!--begin::Group actions-->
+                            <div class="d-flex justify-content-end align-items-center d-none" data-kt-customer-table-toolbar="selected">
+                            </div>
+                            <!--end::Group actions-->
+                        </div>
+                        <!--end::Card toolbar-->
+                    </div>
+                    <!--end::Card header-->
+                    <!--begin::Card body-->
+                    <div class="card-body pt-0">
+                        <form id="importForm" enctype="multipart/form-data" name="importForm">
+                            <div class="row">
+                                <div class="form-group col-lg-6 mb-6">
+                                    <input class="form-control" type="file" name="file" accept=".xlsx, .xls, .csv">
+                                </div>
+                                <div class="form-group col-lg-6 mb-6">
+        
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                        <div id="import-errors" class="alert alert-danger" style="display: none;">
+                          <ul class="mb-0">                        
+                          </ul>
+                        </div>
+                        <div class="form-group col-lg-6 mb-6">
+        
+                            <a href="/imports/fuel_station_import.xlsx" class="btn btn-success" download="fuel_station_import.xlsx">
+                                <i class="fa fa-download"></i> Download Template File
+                            </a>
+                        </div>
+    
+                        <div class="box box-primary">
+                          <div class="box-header">
+      
+                              <h3 class="box-title">Instructions</h3>
+      
+      
+                          </div>
+      
+                          <div class="box-body">
+                              <strong>Follow the instructions carefully before importing the file.</strong><br>
+                              The columns of the file should be in the following order. <br><br>
+                              <div class="table-responsive">
+                                  <table class="table table-striped">
+                                  <tbody>
+                                          <tr>
+                                              <th>Column Number</th>
+                                              <th>Column Name</th>
+                                              <th>Instruction</th>
+                                          </tr>
+                                          <tr>
+                                              <td>1</td>
+                                              <td>Fuel Station Name <small class="text-muted">(Required)</small></td>
+                                              <td>- Enter fuel station name between 2 to 30 characters</td>
+                                          </tr>
+                                          <tr>
+                                              <td>2</td>
+                                              <td>Address <small class="text-muted">(Required)</small></td>
+                                              <td>- Enter fuel station address between 15 to 700 characters</td>
+                                          </tr>
+                                          <tr>
+                                              <td>3</td>
+                                              <td>Location <small class="text-muted">(Required)</small></td>
+                                              <td>- Enter google map URL of fuel station <br>- Only google map URL has been allowed hence do not update any other URL or any other Text in this field</td>
+                                          </tr>
+                                          <tr>
+                                              <td>4</td>
+                                              <td>State <small class="text-muted">(Required)</small></td>
+                                              <td>- Enter state name which is already entered in State table</td>
+                                          </tr>
+                                          <tr>
+                                              <td>5</td>
+                                              <td>City <small class="text-muted">(Required)</small></td>
+                                              <td>- Enter city name which is already entered in City table</td>
+                                          </tr>
+                                          <tr>
+                                              <td>6</td>
+                                              <td>Contact No. <small class="text-muted">(Required)</small></td>
+                                              <td>- Enter 10 digit contact number of fuel station<br>- Allow only numbers hence do not enter any Text value in this field</td>
+                                          </tr>
+                                          
+                                      </tbody>
+                                  </table>
+                              </div>
+                          </div>
+                          <!-- /.box-body -->
+                      </div>
+                    </div>
+        
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+      $("#importForm").validate({
+        rules: {
+          file: {
+            required: true,
+          },
+        },
+        messages: {
+          file: {
+            required: "Please upload the file",
+          },
+        },
+        errorPlacement: function (error, element) {
+          error.addClass("invalid-feedback");
+          error.insertAfter(element);
+        },
+        highlight: function (element) {
+          $(element).addClass("is-invalid");
+        },
+        unhighlight: function (element) {
+          $(element).removeClass("is-invalid");
+        },
+        submitHandler: function (form) {
+          try {
+            const formData = new FormData(form);
+            $("#loader").removeClass("d-none");
+            $.ajax({
+              url: "/fuel-station/import",
+              method: "POST",
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function (response) {
+                $("#loader").addClass("d-none");
+                Swal.fire({
+                  icon: "success",
+                  title: "Success",
+                  text: "Brand data imported successfully!",
+                }).then(() => {
+                  window.location.href = "/fuel-station"
+                });
+              },
+              error: function (xhr, status, error) {
+                $("#loader").addClass("d-none");
+                
+                let errorMessage = "An error occurred while importing the brand data";
+                if (xhr.responseJSON && xhr.responseJSON.errors) {
+                  const errorList = $("#import-errors ul");
+                  errorList.empty(); // Clear previous errors
+                  
+                  xhr.responseJSON.errors.forEach(function(errorMsg) {
+                    errorList.append(`<li>${errorMsg}</li>`);
+                  });
+                  
+                  $("#import-errors").show();
+                }
+              },
+            });
+          } catch (error) {
+            $("#loader").addClass("d-none");
+            
+            Swal.fire({
+              icon: "error",
+              title: "Error", 
+              text: "An unexpected error occurred",
+            });
+          }
+        }
+      });
+    });
+  </script>
+
+
+
+<style>
+  .page-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(255, 255, 255, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+  }
+  
+  .spinner-border {
+      width: 3rem;
+      height: 3rem;
+  }
+  </style>

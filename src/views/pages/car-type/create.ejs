@@ -1,0 +1,95 @@
+<!-- Include SweetAlert CSS and JS -->
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<div class="row">
+  <div id="kt_app_toolbar" class="app-toolbar py-3 py-lg-6">
+    <div
+      id="kt_app_toolbar_container"
+      class="app-container container-xxl d-flex flex-stack"
+    >
+      <div
+        class="
+          page-title
+          d-flex
+          flex-column
+          justify-content-center
+          flex-wrap
+          me-3
+        "
+      >
+        <h1
+          class="
+            page-heading
+            d-flex
+            text-gray-900
+            fw-bold
+            fs-3
+            flex-column
+            justify-content-center
+            my-0
+          "
+        >
+          Add Category
+        </h1>
+      </div>
+      <div class="d-flex align-items-center gap-2 gap-lg-3">
+        <a href="/master/car-type" class="btn btn-sm fw-bold btn-primary">
+          View Car Type
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-12">
+    <div class="card pt-6">
+      <form id="carTypeForm" method="post">
+        <div class="card-body pt-0">
+          <div class="form-group">
+            <label for="ct_name" class="required mb-2">Car Type Name: </label>
+            <input
+              type="text"
+              id="ct_name"
+              class="form-control"
+              name="ct_name"
+              placeholder="Enter Car Type Name:"
+            />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="priority" class="required mb-2">Priority: </label>
+            <input
+              type="number"
+              id="priority"
+              class="form-control"
+              name="priority"
+              placeholder="Enter Priority:"
+            />
+          </div>
+
+          <div class="form-group mt-4">
+            <label for="ct_image" class="required mb-2">Car Type Image: </label>
+            <input
+              type="file"
+              id="ct_image"
+              class="form-control"
+              name="ct_image"
+            />
+          </div>
+
+          <button
+            class="btn btn-sm btn-primary mt-6"
+            name="submit"
+            type="submit"
+          >
+            Submit
+          </button>
+          <a href="/category/view" class="btn btn-sm btn-danger mt-6">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

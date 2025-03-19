@@ -1,0 +1,25 @@
+const carModelCols = {
+  LAUNCH_DATE: "Launch Date",
+  CAR_TYPE: "Car Type",
+  BRAND_NAME: "Brand Name",
+  MODEL_NAME: "Model Name",
+  MODEL_IMAGE: "Model Image",
+  MODEL_MOB_IMAGE: "Model Image Mob",
+  MODEL_DESCRIPTION: "Model Description",
+  MIN_PRICE: "Min Price",
+  MAX_PRICE: "Max Price",
+  ENGINE: "Model Engine",
+  MODEL_BHP: "Model BHP",
+  MODEL_TRANSMISSION: "Model Transmission",
+  MODEL_MILEAGE: "Model Mileage",
+  MODEL_FUEL: "Model Fuel",
+  BATTERY_CAPACITY: "Battery Capacity",
+  MODEL_POWER: "Model Power",
+  MODEL_TRANSMISSION: "Model Transmission",
+  DRIVING_RANGE: "Driving Range",
+  CHARGING_TIME: "Charging Time",
+  NCAP_BCAP: "NCAP/BCAP",
+  RATINGS: "Ratings",
+};
+
+module.exports = { carModelCols };
