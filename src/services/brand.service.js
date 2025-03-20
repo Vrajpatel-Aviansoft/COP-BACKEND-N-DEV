@@ -48,8 +48,6 @@ const createBrand = async (user, brandBody, brandFiles) => {
     },
   ];
   const image_urls= await uploadFiles(brandFileConfig);
-  console.log("TEst dtaa1243-",image_urls[0])
-  console.log("TEst temp-",image_urls[1])       
   // await brand
   //   .set({
   //     brand_logo: `${brand.brand_id}.webp`,
