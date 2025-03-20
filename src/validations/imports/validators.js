@@ -56,10 +56,19 @@ const validators = {
     const trimmedValue = value?.trim() || '';
     const lowercaseUrl = trimmedValue.toLowerCase();
 
-    const validUrlPattern = /^https:\/\/cloud\.aviansoft\.in/;
+    //const validUrlPattern = /^https:\/\/cloud\.aviansoft\.in/;
 
-    if (!validUrlPattern.test(lowercaseUrl)) {
-      return `Row ${rowNumber}: ${fieldName} must match the format https://cloud.aviansoft.in/<filename>`;
+    // if (!validUrlPattern.test(lowercaseUrl)) {
+    //   return `Row ${rowNumber}: ${fieldName} must match the format https://cloud.aviansoft.in/<filename>`;
+    // }
+
+    //   const validUrlPattern = /^https:\/\/static\.caronphone\.com/;
+    // if (!validUrlPattern.test(lowercaseUrl)) {
+    //     return `Row ${rowNumber}: ${fieldName} must match the format https://static.caronphone.com/<filename>`;
+    //   }
+    const validImageExtensionPattern = /\.(png|jpg|jpeg|webp)$/;
+    if ( !validImageExtensionPattern.test(lowercaseUrl)) {
+      return `Row ${rowNumber}: ${fieldName} must contain a valid image extension (.png, .jpg, .jpeg, .webp)`;
     }
 
     return null;
