@@ -147,34 +147,37 @@ const toggleBrandStatus = async (uuid) => {
 };
 
 const updateBrand = async (uuid, brandBody, brandFiles) => {
+  const updateData = {
+    ...brandBody,
+  };
+
   const brand = await Brand.findOne({ where: { uuid } });
   if (!brand) {
     throw new ApiError(httpStatus.NOT_FOUND, 'Brand not found');
   }
   if (brandFiles.brand_logo) {
-    await uploadFiles([
+    const image_logo = await uploadFiles([
       {
         buffer: brandFiles.brand_logo[0].buffer,
         filename: `/brand/${brand.brand_id}/${brand.brand_id}.webp`,
         contentType: 'image/webp',
       },
     ]);
+    updateData.brand_logo = image_logo[0];
   }
   if (brandFiles.brand_banner) {
-    await uploadFiles([
+    const image_banner = await uploadFiles([
       {
         buffer: brandFiles.brand_banner[0].buffer,
         filename: `/brand/${brand.brand_id}/${brand.brand_id}_banner.webp`,
         contentType: 'image/webp',
       },
     ]);
+
+    updateData.brand_banner = image_banner[0];
   }
   return brand
-    .set({
-      ...brandBody,
-      brand_logo: `${brand.brand_id}.webp`,
-      brand_banner: `${brand.brand_id}_banner.webp`,
-    })
+    .set(updateData)
     .save();
 };
 

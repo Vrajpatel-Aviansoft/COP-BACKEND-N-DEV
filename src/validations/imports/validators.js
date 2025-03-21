@@ -19,7 +19,7 @@ const validators = {
 
   length: (value, fieldName, rowNumber, min, max) => {
     const trimmedValue = value?.trim() || '';
-    if (trimmedValue.length < min || trimmedValue.length > max) {
+    if (trimmedValue.trim().length < min || trimmedValue.trim().length > max) {
       return `Row ${rowNumber}: ${fieldName} must be between ${min} to ${max} characters`;
     }
     return null;
